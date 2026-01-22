@@ -1,6 +1,8 @@
 # LLM-MTD Evolutionary Simulator
 
-This project simulates a hospital edge-cloud system under an attacker-defender evolutionary game with an LLM-guided defender. Each episode follows a two-state attack path. The attacker evolves via replicator dynamics, while the defender uses an LLM-augmented replicator-mutator update with pool promotion and demotion controls.
+This project simulates a  edge-cloud system under an attacker-defender evolutionary game with an LLM-guided defender. Each episode follows a two-state attack path. The attacker evolves via replicator dynamics.
+
+![LLM-MTD Architecture](pics/LLM_MTD.jpg)
 
 ## Requirements
 - Python 3.9+ (3.10+ recommended)
