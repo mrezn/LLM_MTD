@@ -2,7 +2,7 @@
 
 This project simulates a  edge-cloud system under an attacker-defender evolutionary game with an LLM-guided defender. Each episode follows a two-state attack path. The attacker evolves via replicator dynamics.
 
-![LLM-MTD Architecture](pics/LLM_MTD.jpg)
+![LLM-MTD Architecture](pics/LLM_MTD.png)
 
 ## Requirements
 - Python 3.9+ (3.10+ recommended)
