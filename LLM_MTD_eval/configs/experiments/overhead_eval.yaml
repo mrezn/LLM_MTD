@@ -1,0 +1,15 @@
+name: overhead_eval
+description: Evaluate controller overhead in dry-run mode.
+models:
+  - llm_only
+  - rule_only
+scenarios:
+  - sen4_edge2_clouddb
+seeds: [42]
+repeats: 2
+metrics:
+  - ryu_apply_duration_ms
+  - flow_rules_installed
+  - flow_delete_commands
+  - meters_added
+  - active_policy_actions

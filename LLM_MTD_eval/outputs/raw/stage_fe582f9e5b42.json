@@ -1,0 +1,2513 @@
+{
+  "active": {
+    "attacker_ids": [
+      "A2_sensor_http_abuse_sen4",
+      "A6_sen4_edge_to_cloud_probe"
+    ],
+    "attackers": [
+      {
+        "action": "sensor_to_edge_http_abuse",
+        "base_cost": 0.35,
+        "base_reward": 0.82,
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db"
+      },
+      {
+        "action": "edge_to_cloud_probe",
+        "base_cost": 0.28,
+        "base_reward": 0.58,
+        "expected_effects": [
+          "cloud_seen",
+          "cloud_summary_rate_changes"
+        ],
+        "id": "A6_sen4_edge_to_cloud_probe",
+        "name": "Probe cloud reachability after sen4 Edge 2 pivot",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db"
+      }
+    ],
+    "defender_ids": [
+      "D0_observe",
+      "D1_quarantine_sen4",
+      "D2_rate_limit_sen4",
+      "D3_isolate_edge2_gw_for_sen4",
+      "D4_isolate_edge2_vm_s4"
+    ],
+    "defenders": [
+      {
+        "action": "observe",
+        "base_cost": 0.02,
+        "base_reward": 0.05,
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "name": "Observe and log current strategy context",
+        "scenario_id": "*",
+        "target": ""
+      },
+      {
+        "action": "quarantine_sensor",
+        "base_cost": 0.2,
+        "base_reward": 0.75,
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "name": "Quarantine sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4"
+      },
+      {
+        "action": "rate_limit",
+        "base_cost": 0.13,
+        "base_reward": 0.55,
+        "expected_effects": [
+          "throttled_traffic",
+          "lower_gateway_queue"
+        ],
+        "id": "D2_rate_limit_sen4",
+        "name": "Rate-limit sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4"
+      },
+      {
+        "action": "isolate_sensor",
+        "base_cost": 0.42,
+        "base_reward": 0.82,
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_gw"
+      },
+      {
+        "action": "isolate_sensor",
+        "base_cost": 0.32,
+        "base_reward": 0.74,
+        "expected_effects": [
+          "worker_blocked",
+          "cloud_progression_suppressed"
+        ],
+        "id": "D4_isolate_edge2_vm_s4",
+        "name": "Isolate Edge 2 worker for sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_vm_s4"
+      }
+    ]
+  },
+  "decision_source": "llm_defender",
+  "decision_trace": {
+    "average_utility": {
+      "attacker": 0.34172333606102157,
+      "defender": 0.5472929255413713
+    },
+    "baseline_game_prior": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.5053794991250206,
+        "population_after_rank": 1,
+        "population_before": 0.5028142266544947,
+        "population_before_rank": 1,
+        "population_delta": 0.002565272470525848,
+        "probability": 0.5053794991250206,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.37006683345958713,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "action_payload": {
+          "action": "quarantine_sensor",
+          "target": "sen4"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Quarantine sen4",
+        "path": null,
+        "population_after": 0.2462425229694964,
+        "population_after_rank": 1,
+        "population_before": 0.24109303061317636,
+        "population_before_rank": 1,
+        "population_delta": 0.0051494923563200345,
+        "probability": 0.2462425229694964,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4",
+        "utility": 0.644379031175729,
+        "utility_rank": 1
+      }
+    },
+    "decision_source": "llm_defender",
+    "execution": {
+      "attacker": {
+        "attempted_path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "dispatch_http_status": 202,
+        "dispatch_ok": true,
+        "dispatch_url": "http://127.0.0.1:9000/caldera/dispatch",
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "operation_id": "18a412ae-e9a8-4531-9979-71924e73187b",
+        "status": "dispatched",
+        "strategy_id": "A2_sensor_http_abuse_sen4",
+        "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "cloud_policy": {
+          "accepted_keys": [
+            "caldera_result",
+            "selected_attacker_strategy",
+            "selected_defender_strategy",
+            "strategy_layer"
+          ],
+          "context_http_status": 202,
+          "context_ok": true,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "quarantine_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+              "source": "llm_defender",
+              "source_strategy_id": "D1_quarantine_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "quarantine_sensor"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {},
+          "status": "skipped",
+          "url": ""
+        },
+        "ryu_response": {
+          "action": "quarantine_sensor",
+          "active_policy_actions": 0,
+          "apply_duration_ms": 0.0,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "http_status": 0,
+          "meters_added": 0,
+          "ok": false,
+          "rule": "",
+          "status": "",
+          "target": "sen4",
+          "target_ips": []
+        },
+        "status": "dry_run",
+        "target": "sen4"
+      }
+    },
+    "llm": {
+      "confidence": 0.73,
+      "expected_qos_impact": 0.0,
+      "expected_security_gain": 0.64,
+      "fallback_reason": "",
+      "fallback_used": false,
+      "model": "llama3.1:latest",
+      "parse_success": true,
+      "provider": "ollama",
+      "reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true
+    },
+    "recorded_at": "2026-04-23T11:51:36.745527+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "schema_version": "llm-mtd-decision-trace-v1",
+    "selection": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.5053794991250206,
+        "population_after_rank": 1,
+        "population_before": 0.5028142266544947,
+        "population_before_rank": 1,
+        "population_delta": 0.002565272470525848,
+        "probability": 0.5053794991250206,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.37006683345958713,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "action_payload": {
+          "action": "quarantine_sensor",
+          "target": "sen4"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Quarantine sen4",
+        "path": null,
+        "population_after": 0.2462425229694964,
+        "population_after_rank": 1,
+        "population_before": 0.24109303061317636,
+        "population_before_rank": 1,
+        "population_delta": 0.0051494923563200345,
+        "probability": 0.2462425229694964,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4",
+        "utility": 0.644379031175729,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 4,
+    "stage_summary": {
+      "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "controller_delta": {},
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D1_quarantine_sen4",
+      "execution": {
+        "attacker_status": "dispatched",
+        "defender_action": "quarantine_sensor",
+        "defender_status": "dry_run",
+        "defender_target": "sen4",
+        "defense_confirmed": false,
+        "stage_valid": true
+      },
+      "llm": {
+        "fallback_used": false,
+        "model": "llama3.1:latest",
+        "provider": "ollama",
+        "reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked."
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms": 3.104,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": -0.191727272727273,
+        "throughput_bytes_per_second": -40.035909864325
+      },
+      "recorded_at": "2026-04-23T11:53:05.644411+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_effect_success": true,
+        "defense_success": false
+      },
+      "stage_id": 4,
+      "stage_validation": {
+        "comparable_stage": true,
+        "defense_applied": false,
+        "defense_confirmed": false,
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_valid": true,
+        "stage_kind": "experimental",
+        "stage_success": false
+      },
+      "summary_text": "Stage 4 for sen4_edge2_clouddb: attacker A2_sensor_http_abuse_sen4 met defender D1_quarantine_sen4. The defender choice focused on quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked. After execution the path stage was 3, and the observed outcome was attack remained active after the defender stage."
+    },
+    "stage_validation": {
+      "comparable_stage": true,
+      "defense_applied": false,
+      "defense_confirmed": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_valid": true,
+      "stage_kind": "experimental",
+      "stage_success": false
+    },
+    "state_summary": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "attack_success": true,
+      "cloud_seen": true,
+      "controller_active_actions": 0,
+      "counters_stopped": false,
+      "defense_active": false,
+      "defense_success": false,
+      "drop_rules_active": false,
+      "flow_rules_installed": 0,
+      "gateway_seen": true,
+      "meters_added": 0,
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": true
+    },
+    "transition_id": "d4d5345401ba493e8df934ce014e24ec"
+  },
+  "execution": {
+    "attacker": {
+      "plan": {
+        "bridge_logger_url": "http://127.0.0.1:32825/attack/event",
+        "bridge_policy_url": "http://127.0.0.1:32824/context",
+        "caldera_adversary": "sensor_to_edge",
+        "caldera_adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+        "caldera_adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+        "caldera_env": {
+          "ATTACK_SENSOR_ID": "sen4",
+          "ENTRY_NODE": "sen4",
+          "SCENARIO_ID": "sen4_edge2_clouddb",
+          "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+        },
+        "caldera_target_hosts": [
+          "sen4"
+        ],
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mulval": {
+          "current_path_risk": 0.5,
+          "plausible_paths": [
+            [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ]
+          ]
+        },
+        "note": "Dispatch this plan to Caldera manually or through --attacker-dispatch-url. The first lab workflow still keeps Caldera operation launch outside this repo.",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "scenario_id": "sen4_edge2_clouddb",
+        "strategy_id": "A2_sensor_http_abuse_sen4",
+        "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+      },
+      "post_result": {
+        "body": "{\n  \"attack_start\": {\n    \"payload\": {\n      \"adversary_id\": \"sensor_to_edge\",\n      \"attempted_path\": [\n        \"sen4\",\n        \"edge2_gw\",\n        \"edge2_vm_s4\",\n        \"cloud_db\"\n      ],\n      \"entry_node\": \"sen4\",\n      \"event_type\": \"attack_start\",\n      \"live_attack_type\": \"sensor_to_edge_http_abuse\",\n      \"operation_id\": \"18a412ae-e9a8-4531-9979-71924e73187b\",\n      \"scenario_id\": \"sen4_edge2_clouddb\",\n      \"timestamp\": \"2026-04-23T11:48:29.490339+00:00\",\n      \"tool\": \"caldera\"\n    },\n    \"post_result\": {\n      \"body\": \"{\\\"status\\\": \\\"logged\\\"}\",\n      \"error\": \"\",\n      \"ok\": true,\n      \"status\": 202,\n      \"url\": \"http://127.0.0.1:32825/attack/event\"\n    },\n    \"status\": \"posted\"\n  },\n  \"launch_result\": {\n    \"body\": \"{\\\"id\\\": \\\"18a412ae-e9a8-4531-9979-71924e73187b\\\", \\\"name\\\": \\\"llm-mtd-60734457892d A2_sensor_http_abuse_sen4\\\", \\\"host_group\\\": [{\\\"paw\\\": \\\"ozxvgs\\\", \\\"sleep_min\\\": 30, \\\"sleep_max\\\": 60, \\\"watchdog\\\": 0, \\\"group\\\": \\\"llm-mtd-27438c7c80\\\", \\\"architecture\\\": \\\"amd64\\\", \\\"platform\\\": \\\"linux\\\", \\\"server\\\": \\\"http://192.168.0.148:8888\\\", \\\"upstream_dest\\\": \\\"http://192.168.0.148:8888\\\", \\\"username\\\": \\\"root\\\", \\\"location\\\": \\\"/app/splunkd\\\", \\\"pid\\\": 36, \\\"ppid\\\": 28, \\\"trusted\\\": true, \\\"executors\\\": [\\\"proc\\\", \\\"sh\\\"], \\\"privilege\\\": \\\"Elevated\\\", \\\"exe_name\\\": \\\"splunkd\\\", \\\"host\\\": \\\"sen4\\\", \\\"contact\\\": \\\"HTTP\\\", \\\"proxy_receivers\\\": {}, \\\"proxy_chain\\\": [], \\\"origin_link_id\\\": \\\"\\\", \\\"deadman_enabled\\\": true, \\\"available_contacts\\\": [\\\"HTTP\\\"], \\\"host_ip_addrs\\\": [\\\"172.17.0.5\\\", \\\"10.0.2.14\\\"], \\\"display_name\\\": \\\"sen4$root\\\", \\\"created\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"last_seen\\\": \\\"2026-04-23T11:48:26Z\\\", \\\"links\\\": [{\\\"id\\\": \\\"236399a1-3671-45ce-bddc-11f3ea21f5d1\\\", \\\"paw\\\": \\\"ozxvgs\\\", \\\"command\\\": \\\"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\\\", \\\"plaintext_command\\\": \\\"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\\\", \\\"status\\\": 0, \\\"score\\\": 0, \\\"jitter\\\": 0, \\\"decide\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"pin\\\": 0, \\\"pid\\\": \\\"41\\\", \\\"facts\\\": [], \\\"relationships\\\": [], \\\"used\\\": [], \\\"unique\\\": \\\"236399a1-3671-45ce-bddc-11f3ea21f5d1\\\", \\\"collect\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"finish\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"ability\\\": {\\\"ability_id\\\": \\\"43b3754c-def4-4699-a673-1d85648fda6a\\\", \\\"tactic\\\": \\\"defense-evasion\\\", \\\"technique_name\\\": \\\"Indicator Removal on Host: Clear Command History\\\", \\\"technique_id\\\": \\\"T1070.003\\\", \\\"name\\\": \\\"Avoid logs\\\", \\\"description\\\": \\\"Stop terminal from logging history\\\", \\\"executors\\\": [{\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"darwin\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, {\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"linux\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, {\\\"name\\\": \\\"psh\\\", \\\"platform\\\": \\\"windows\\\", \\\"command\\\": \\\"Clear-History;Clear\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}], \\\"requirements\\\": [], \\\"privilege\\\": null, \\\"repeatable\\\": false, \\\"buckets\\\": [\\\"defense-evasion\\\"], \\\"additional_info\\\": {}, \\\"access\\\": {}, \\\"singleton\\\": false, \\\"plugin\\\": \\\"stockpile\\\", \\\"delete_payload\\\": true}, \\\"executor\\\": {\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"linux\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, \\\"cleanup\\\": 0, \\\"visibility\\\": {\\\"score\\\": 50, \\\"adjustments\\\": []}, \\\"host\\\": \\\"sen4\\\", \\\"output\\\": \\\"False\\\", \\\"deadman\\\": false, \\\"agent_reported_time\\\": \\\"2026-04-23T04:01:48Z\\\"}], \\\"pending_contact\\\": \\\"HTTP\\\", \\\"status\\\": \\\"alive\\\"}], \\\"adversary\\\": {\\\"adversary_id\\\": \\\"c9bdece2-df3a-4c3f-bb70-31ff46bb7351\\\", \\\"name\\\": \\\"LLM MTD sensor to edge\\\", \\\"description\\\": \\\"Short manual adversary for sen4 -> edge2_gw -> edge2_vm_s4.\\\", \\\"atomic_ordering\\\": [\\\"87b6de2e-fcb6-4f44-9a7e-79af476c7d41\\\", \\\"62e7655e-dc3e-49e2-9564-220d7c15582e\\\"], \\\"objective\\\": \\\"495a9828-cab1-44dd-a0ca-66e58177d8cc\\\", \\\"tags\\\": [], \\\"has_repeatable_abilities\\\": false, \\\"plugin\\\": \\\"stockpile\\\"}, \\\"jitter\\\": \\\"2/8\\\", \\\"planner\\\": {\\\"id\\\": \\\"aaa7c857-37a0-4c4a-85f7-4e9f7f30e31a\\\", \\\"name\\\": \\\"atomic\\\", \\\"module\\\": \\\"app.planners.atomic\\\", \\\"params\\\": {}, \\\"description\\\": \\\"During each phase of the operation, the atomic planner iterates through each agent and sends the next\\\\navailable ability it thinks that agent can complete. This decision is based on the agent matching the operating\\\\nsystem (execution platform) of the ability and the ability command having no unsatisfied variables.\\\\nThe planner then waits for each agent to complete its command before determining the subsequent abilities.\\\\nThe abilities are processed in the order set by each agent's atomic ordering.\\\\nFor instance, if agent A has atomic ordering (A1, A2, A3) and agent B has atomic ordering (B1, B2, B3), then\\\\nthe planner would send (A1, B1) in the first phase, then (A2, B2), etc.\\\\n\\\", \\\"stopping_conditions\\\": [], \\\"ignore_enforcement_modules\\\": [], \\\"allow_repeatable_abilities\\\": false, \\\"plugin\\\": \\\"\\\"}, \\\"start\\\": \\\"2026-04-23T11:48:29Z\\\", \\\"state\\\": \\\"running\\\", \\\"obfuscator\\\": \\\"plain-text\\\", \\\"autonomous\\\": 1, \\\"chain\\\": [], \\\"auto_close\\\": true, \\\"visibility\\\": 51, \\\"objective\\\": \\\"\\\", \\\"use_learning_parsers\\\": true, \\\"group\\\": \\\"llm-mtd-27438c7c80\\\", \\\"source\\\": {\\\"id\\\": \\\"ed32b9c3-9593-4c33-b0db-e2007315096b\\\", \\\"name\\\": \\\"basic\\\", \\\"facts\\\": [{\\\"unique\\\": \\\"file.sensitive.extensionwav\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"name\\\": \\\"file.sensitive.extension\\\", \\\"value\\\": \\\"wav\\\", \\\"created\\\": \\\"2026-04-23T11:48:29Z\\\", \\\"score\\\": 1, \\\"source\\\": \\\"ed32b9c3-9593-4c33-b0db-e2007315096b\\\", \\\"origin_type\\\": \\\"IMPORTED\\\", \\\"links\\\": [], \\\"relationships\\\": [], \\\"limit_count\\\": -1, \\\"collected_by\\\": [], \\\"technique_id\\\": null}, {\\\"unique\\\": \\\"file.sensitive.extensionyml\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"name\\\": \\\"file.sensitive.extension\\\", \\\"value\\\": \\\"yml\\\", \\\"created\\\": \\\"2026-04-23T11:48:29Z\\\", \\\"score\\\": 1, \\\"source\\\": \\\"ed32b9c3-9593-4c33-b0db-e2007315096b\\\", \\\"origin_type\\\": \\\"IMPORTED\\\", \\\"links\\\": [], \\\"relationships\\\": [], \\\"limit_count\\\": -1, \\\"collected_by\\\": [], \\\"technique_id\\\": null}, {\\\"unique\\\": \\\"file.sensitive.extensionpng\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"name\\\": \\\"file.sensitive.extension\\\", \\\"value\\\": \\\"png\\\", \\\"created\\\": \\\"2026-04-23T11:48:29Z\\\", \\\"score\\\": 1, \\\"source\\\": \\\"ed32b9c3-9593-4c33-b0db-e2007315096b\\\", \\\"origin_type\\\": \\\"IMPORTED\\\", \\\"links\\\": [], \\\"relationships\\\": [], \\\"limit_count\\\": -1, \\\"collected_by\\\": [], \\\"technique_id\\\": null}, {\\\"unique\\\": \\\"server.malicious.urlkeyloggedsite.com\\\", \\\"trait\\\": \\\"server.malicious.url\\\", \\\"name\\\": \\\"server.malicious.url\\\", \\\"value\\\": \\\"keyloggedsite.com\\\", \\\"created\\\": \\\"2026-04-23T11:48:29Z\\\", \\\"score\\\": 1, \\\"source\\\": \\\"ed32b9c3-9593-4c33-b0db-e2007315096b\\\", \\\"origin_type\\\": \\\"IMPORTED\\\", \\\"links\\\": [], \\\"relationships\\\": [], \\\"limit_count\\\": -1, \\\"collected_by\\\": [], \\\"technique_id\\\": null}], \\\"rules\\\": [{\\\"action\\\": \\\"DENY\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"match\\\": \\\".*\\\"}, {\\\"action\\\": \\\"ALLOW\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"match\\\": \\\"png\\\"}, {\\\"action\\\": \\\"ALLOW\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"match\\\": \\\"yml\\\"}, {\\\"action\\\": \\\"ALLOW\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"match\\\": \\\"wav\\\"}], \\\"adjustments\\\": [], \\\"relationships\\\": [], \\\"plugin\\\": \\\"stockpile\\\"}}\",\n    \"error\": \"\",\n    \"json\": {\n      \"adversary\": {\n        \"adversary_id\": \"c9bdece2-df3a-4c3f-bb70-31ff46bb7351\",\n        \"atomic_ordering\": [\n          \"87b6de2e-fcb6-4f44-9a7e-79af476c7d41\",\n          \"62e7655e-dc3e-49e2-9564-220d7c15582e\"\n        ],\n        \"description\": \"Short manual adversary for sen4 -> edge2_gw -> edge2_vm_s4.\",\n        \"has_repeatable_abilities\": false,\n        \"name\": \"LLM MTD sensor to edge\",\n        \"objective\": \"495a9828-cab1-44dd-a0ca-66e58177d8cc\",\n        \"plugin\": \"stockpile\",\n        \"tags\": []\n      },\n      \"auto_close\": true,\n      \"autonomous\": 1,\n      \"chain\": [],\n      \"group\": \"llm-mtd-27438c7c80\",\n      \"host_group\": [\n        {\n          \"architecture\": \"amd64\",\n          \"available_contacts\": [\n            \"HTTP\"\n          ],\n          \"contact\": \"HTTP\",\n          \"created\": \"2026-04-23T04:01:48Z\",\n          \"deadman_enabled\": true,\n          \"display_name\": \"sen4$root\",\n          \"exe_name\": \"splunkd\",\n          \"executors\": [\n            \"proc\",\n            \"sh\"\n          ],\n          \"group\": \"llm-mtd-27438c7c80\",\n          \"host\": \"sen4\",\n          \"host_ip_addrs\": [\n            \"172.17.0.5\",\n            \"10.0.2.14\"\n          ],\n          \"last_seen\": \"2026-04-23T11:48:26Z\",\n          \"links\": [\n            {\n              \"ability\": {\n                \"ability_id\": \"43b3754c-def4-4699-a673-1d85648fda6a\",\n                \"access\": {},\n                \"additional_info\": {},\n                \"buckets\": [\n                  \"defense-evasion\"\n                ],\n                \"delete_payload\": true,\n                \"description\": \"Stop terminal from logging history\",\n                \"executors\": [\n                  {\n                    \"additional_info\": {},\n                    \"build_target\": null,\n                    \"cleanup\": [],\n                    \"code\": null,\n                    \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                    \"language\": null,\n                    \"name\": \"sh\",\n                    \"parsers\": [],\n                    \"payloads\": [],\n                    \"platform\": \"darwin\",\n                    \"timeout\": 60,\n                    \"uploads\": [],\n                    \"variations\": []\n                  },\n                  {\n                    \"additional_info\": {},\n                    \"build_target\": null,\n                    \"cleanup\": [],\n                    \"code\": null,\n                    \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                    \"language\": null,\n                    \"name\": \"sh\",\n                    \"parsers\": [],\n                    \"payloads\": [],\n                    \"platform\": \"linux\",\n                    \"timeout\": 60,\n                    \"uploads\": [],\n                    \"variations\": []\n                  },\n                  {\n                    \"additional_info\": {},\n                    \"build_target\": null,\n                    \"cleanup\": [],\n                    \"code\": null,\n                    \"command\": \"Clear-History;Clear\",\n                    \"language\": null,\n                    \"name\": \"psh\",\n                    \"parsers\": [],\n                    \"payloads\": [],\n                    \"platform\": \"windows\",\n                    \"timeout\": 60,\n                    \"uploads\": [],\n                    \"variations\": []\n                  }\n                ],\n                \"name\": \"Avoid logs\",\n                \"plugin\": \"stockpile\",\n                \"privilege\": null,\n                \"repeatable\": false,\n                \"requirements\": [],\n                \"singleton\": false,\n                \"tactic\": \"defense-evasion\",\n                \"technique_id\": \"T1070.003\",\n                \"technique_name\": \"Indicator Removal on Host: Clear Command History\"\n              },\n              \"agent_reported_time\": \"2026-04-23T04:01:48Z\",\n              \"cleanup\": 0,\n              \"collect\": \"2026-04-23T04:01:48Z\",\n              \"command\": \"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\",\n              \"deadman\": false,\n              \"decide\": \"2026-04-23T04:01:48Z\",\n              \"executor\": {\n                \"additional_info\": {},\n                \"build_target\": null,\n                \"cleanup\": [],\n                \"code\": null,\n                \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                \"language\": null,\n                \"name\": \"sh\",\n                \"parsers\": [],\n                \"payloads\": [],\n                \"platform\": \"linux\",\n                \"timeout\": 60,\n                \"uploads\": [],\n                \"variations\": []\n              },\n              \"facts\": [],\n              \"finish\": \"2026-04-23T04:01:48Z\",\n              \"host\": \"sen4\",\n              \"id\": \"236399a1-3671-45ce-bddc-11f3ea21f5d1\",\n              \"jitter\": 0,\n              \"output\": \"False\",\n              \"paw\": \"ozxvgs\",\n              \"pid\": \"41\",\n              \"pin\": 0,\n              \"plaintext_command\": \"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\",\n              \"relationships\": [],\n              \"score\": 0,\n              \"status\": 0,\n              \"unique\": \"236399a1-3671-45ce-bddc-11f3ea21f5d1\",\n              \"used\": [],\n              \"visibility\": {\n                \"adjustments\": [],\n                \"score\": 50\n              }\n            }\n          ],\n          \"location\": \"/app/splunkd\",\n          \"origin_link_id\": \"\",\n          \"paw\": \"ozxvgs\",\n          \"pending_contact\": \"HTTP\",\n          \"pid\": 36,\n          \"platform\": \"linux\",\n          \"ppid\": 28,\n          \"privilege\": \"Elevated\",\n          \"proxy_chain\": [],\n          \"proxy_receivers\": {},\n          \"server\": \"http://192.168.0.148:8888\",\n          \"sleep_max\": 60,\n          \"sleep_min\": 30,\n          \"status\": \"alive\",\n          \"trusted\": true,\n          \"upstream_dest\": \"http://192.168.0.148:8888\",\n          \"username\": \"root\",\n          \"watchdog\": 0\n        }\n      ],\n      \"id\": \"18a412ae-e9a8-4531-9979-71924e73187b\",\n      \"jitter\": \"2/8\",\n      \"name\": \"llm-mtd-60734457892d A2_sensor_http_abuse_sen4\",\n      \"obfuscator\": \"plain-text\",\n      \"objective\": \"\",\n      \"planner\": {\n        \"allow_repeatable_abilities\": false,\n        \"description\": \"During each phase of the operation, the atomic planner iterates through each agent and sends the next\\navailable ability it thinks that agent can complete. This decision is based on the agent matching the operating\\nsystem (execution platform) of the ability and the ability command having no unsatisfied variables.\\nThe planner then waits for each agent to complete its command before determining the subsequent abilities.\\nThe abilities are processed in the order set by each agent's atomic ordering.\\nFor instance, if agent A has atomic ordering (A1, A2, A3) and agent B has atomic ordering (B1, B2, B3), then\\nthe planner would send (A1, B1) in the first phase, then (A2, B2), etc.\\n\",\n        \"id\": \"aaa7c857-37a0-4c4a-85f7-4e9f7f30e31a\",\n        \"ignore_enforcement_modules\": [],\n        \"module\": \"app.planners.atomic\",\n        \"name\": \"atomic\",\n        \"params\": {},\n        \"plugin\": \"\",\n        \"stopping_conditions\": []\n      },\n      \"source\": {\n        \"adjustments\": [],\n        \"facts\": [\n          {\n            \"collected_by\": [],\n            \"created\": \"2026-04-23T11:48:29Z\",\n            \"limit_count\": -1,\n            \"links\": [],\n            \"name\": \"file.sensitive.extension\",\n            \"origin_type\": \"IMPORTED\",\n            \"relationships\": [],\n            \"score\": 1,\n            \"source\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\",\n            \"technique_id\": null,\n            \"trait\": \"file.sensitive.extension\",\n            \"unique\": \"file.sensitive.extensionwav\",\n            \"value\": \"wav\"\n          },\n          {\n            \"collected_by\": [],\n            \"created\": \"2026-04-23T11:48:29Z\",\n            \"limit_count\": -1,\n            \"links\": [],\n            \"name\": \"file.sensitive.extension\",\n            \"origin_type\": \"IMPORTED\",\n            \"relationships\": [],\n            \"score\": 1,\n            \"source\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\",\n            \"technique_id\": null,\n            \"trait\": \"file.sensitive.extension\",\n            \"unique\": \"file.sensitive.extensionyml\",\n            \"value\": \"yml\"\n          },\n          {\n            \"collected_by\": [],\n            \"created\": \"2026-04-23T11:48:29Z\",\n            \"limit_count\": -1,\n            \"links\": [],\n            \"name\": \"file.sensitive.extension\",\n            \"origin_type\": \"IMPORTED\",\n            \"relationships\": [],\n            \"score\": 1,\n            \"source\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\",\n            \"technique_id\": null,\n            \"trait\": \"file.sensitive.extension\",\n            \"unique\": \"file.sensitive.extensionpng\",\n            \"value\": \"png\"\n          },\n          {\n            \"collected_by\": [],\n            \"created\": \"2026-04-23T11:48:29Z\",\n            \"limit_count\": -1,\n            \"links\": [],\n            \"name\": \"server.malicious.url\",\n            \"origin_type\": \"IMPORTED\",\n            \"relationships\": [],\n            \"score\": 1,\n            \"source\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\",\n            \"technique_id\": null,\n            \"trait\": \"server.malicious.url\",\n            \"unique\": \"server.malicious.urlkeyloggedsite.com\",\n            \"value\": \"keyloggedsite.com\"\n          }\n        ],\n        \"id\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\",\n        \"name\": \"basic\",\n        \"plugin\": \"stockpile\",\n        \"relationships\": [],\n        \"rules\": [\n          {\n            \"action\": \"DENY\",\n            \"match\": \".*\",\n            \"trait\": \"file.sensitive.extension\"\n          },\n          {\n            \"action\": \"ALLOW\",\n            \"match\": \"png\",\n            \"trait\": \"file.sensitive.extension\"\n          },\n          {\n            \"action\": \"ALLOW\",\n            \"match\": \"yml\",\n            \"trait\": \"file.sensitive.extension\"\n          },\n          {\n            \"action\": \"ALLOW\",\n            \"match\": \"wav\",\n            \"trait\": \"file.sensitive.extension\"\n          }\n        ]\n      },\n      \"start\": \"2026-04-23T11:48:29Z\",\n      \"state\": \"running\",\n      \"use_learning_parsers\": true,\n      \"visibility\": 51\n    },\n    \"ok\": true,\n    \"status\": 200,\n    \"url\": \"http://127.0.0.1:8888/api/v2/operations\"\n  },\n  \"operation_id\": \"18a412ae-e9a8-4531-9979-71924e73187b\",\n  \"operation_payload\": {\n    \"adversary\": {\n      \"adversary_id\": \"c9bdece2-df3a-4c3f-bb70-31ff46bb7351\"\n    },\n    \"auto_close\": true,\n    \"autonomous\": 1,\n    \"group\": \"llm-mtd-27438c7c80\",\n    \"jitter\": \"2/8\",\n    \"name\": \"llm-mtd-60734457892d A2_sensor_http_abuse_sen4\",\n    \"obfuscator\": \"plain-text\",\n    \"planner\": {\n      \"id\": \"aaa7c857-37a0-4c4a-85f7-4e9f7f30e31a\"\n    },\n    \"source\": {\n      \"id\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\"\n    },\n    \"state\": \"running\",\n    \"use_learning_parsers\": true,\n    \"visibility\": 51\n  },\n  \"polling\": \"started\",\n  \"status\": \"dispatched\",\n  \"targeting\": {\n    \"group_assignments\": [\n      {\n        \"host\": \"sen4\",\n        \"original_group\": \"red\",\n        \"paw\": \"ozxvgs\"\n      }\n    ],\n    \"mode\": \"scoped_group\",\n    \"operation_group\": \"llm-mtd-27438c7c80\",\n    \"patch_results\": [\n      {\n        \"group\": \"llm-mtd-27438c7c80\",\n        \"host\": \"sen4\",\n        \"paw\": \"ozxvgs\",\n        \"result\": {\n          \"body\": \"{\\\"paw\\\": \\\"ozxvgs\\\", \\\"sleep_min\\\": 30, \\\"sleep_max\\\": 60, \\\"watchdog\\\": 0, \\\"group\\\": \\\"llm-mtd-27438c7c80\\\", \\\"architecture\\\": \\\"amd64\\\", \\\"platform\\\": \\\"linux\\\", \\\"server\\\": \\\"http://192.168.0.148:8888\\\", \\\"upstream_dest\\\": \\\"http://192.168.0.148:8888\\\", \\\"username\\\": \\\"root\\\", \\\"location\\\": \\\"/app/splunkd\\\", \\\"pid\\\": 36, \\\"ppid\\\": 28, \\\"trusted\\\": true, \\\"executors\\\": [\\\"proc\\\", \\\"sh\\\"], \\\"privilege\\\": \\\"Elevated\\\", \\\"exe_name\\\": \\\"splunkd\\\", \\\"host\\\": \\\"sen4\\\", \\\"contact\\\": \\\"HTTP\\\", \\\"proxy_receivers\\\": {}, \\\"proxy_chain\\\": [], \\\"origin_link_id\\\": \\\"\\\", \\\"deadman_enabled\\\": true, \\\"available_contacts\\\": [\\\"HTTP\\\"], \\\"host_ip_addrs\\\": [\\\"172.17.0.5\\\", \\\"10.0.2.14\\\"], \\\"display_name\\\": \\\"sen4$root\\\", \\\"created\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"last_seen\\\": \\\"2026-04-23T11:48:26Z\\\", \\\"links\\\": [{\\\"id\\\": \\\"236399a1-3671-45ce-bddc-11f3ea21f5d1\\\", \\\"paw\\\": \\\"ozxvgs\\\", \\\"command\\\": \\\"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\\\", \\\"plaintext_command\\\": \\\"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\\\", \\\"status\\\": 0, \\\"score\\\": 0, \\\"jitter\\\": 0, \\\"decide\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"pin\\\": 0, \\\"pid\\\": \\\"41\\\", \\\"facts\\\": [], \\\"relationships\\\": [], \\\"used\\\": [], \\\"unique\\\": \\\"236399a1-3671-45ce-bddc-11f3ea21f5d1\\\", \\\"collect\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"finish\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"ability\\\": {\\\"ability_id\\\": \\\"43b3754c-def4-4699-a673-1d85648fda6a\\\", \\\"tactic\\\": \\\"defense-evasion\\\", \\\"technique_name\\\": \\\"Indicator Removal on Host: Clear Command History\\\", \\\"technique_id\\\": \\\"T1070.003\\\", \\\"name\\\": \\\"Avoid logs\\\", \\\"description\\\": \\\"Stop terminal from logging history\\\", \\\"executors\\\": [{\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"darwin\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, {\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"linux\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, {\\\"name\\\": \\\"psh\\\", \\\"platform\\\": \\\"windows\\\", \\\"command\\\": \\\"Clear-History;Clear\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}], \\\"requirements\\\": [], \\\"privilege\\\": null, \\\"repeatable\\\": false, \\\"buckets\\\": [\\\"defense-evasion\\\"], \\\"additional_info\\\": {}, \\\"access\\\": {}, \\\"singleton\\\": false, \\\"plugin\\\": \\\"stockpile\\\", \\\"delete_payload\\\": true}, \\\"executor\\\": {\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"linux\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, \\\"cleanup\\\": 0, \\\"visibility\\\": {\\\"score\\\": 50, \\\"adjustments\\\": []}, \\\"host\\\": \\\"sen4\\\", \\\"output\\\": \\\"False\\\", \\\"deadman\\\": false, \\\"agent_reported_time\\\": \\\"2026-04-23T04:01:48Z\\\"}], \\\"pending_contact\\\": \\\"HTTP\\\", \\\"status\\\": \\\"alive\\\"}\",\n          \"error\": \"\",\n          \"json\": {\n            \"architecture\": \"amd64\",\n            \"available_contacts\": [\n              \"HTTP\"\n            ],\n            \"contact\": \"HTTP\",\n            \"created\": \"2026-04-23T04:01:48Z\",\n            \"deadman_enabled\": true,\n            \"display_name\": \"sen4$root\",\n            \"exe_name\": \"splunkd\",\n            \"executors\": [\n              \"proc\",\n              \"sh\"\n            ],\n            \"group\": \"llm-mtd-27438c7c80\",\n            \"host\": \"sen4\",\n            \"host_ip_addrs\": [\n              \"172.17.0.5\",\n              \"10.0.2.14\"\n            ],\n            \"last_seen\": \"2026-04-23T11:48:26Z\",\n            \"links\": [\n              {\n                \"ability\": {\n                  \"ability_id\": \"43b3754c-def4-4699-a673-1d85648fda6a\",\n                  \"access\": {},\n                  \"additional_info\": {},\n                  \"buckets\": [\n                    \"defense-evasion\"\n                  ],\n                  \"delete_payload\": true,\n                  \"description\": \"Stop terminal from logging history\",\n                  \"executors\": [\n                    {\n                      \"additional_info\": {},\n                      \"build_target\": null,\n                      \"cleanup\": [],\n                      \"code\": null,\n                      \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                      \"language\": null,\n                      \"name\": \"sh\",\n                      \"parsers\": [],\n                      \"payloads\": [],\n                      \"platform\": \"darwin\",\n                      \"timeout\": 60,\n                      \"uploads\": [],\n                      \"variations\": []\n                    },\n                    {\n                      \"additional_info\": {},\n                      \"build_target\": null,\n                      \"cleanup\": [],\n                      \"code\": null,\n                      \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                      \"language\": null,\n                      \"name\": \"sh\",\n                      \"parsers\": [],\n                      \"payloads\": [],\n                      \"platform\": \"linux\",\n                      \"timeout\": 60,\n                      \"uploads\": [],\n                      \"variations\": []\n                    },\n                    {\n                      \"additional_info\": {},\n                      \"build_target\": null,\n                      \"cleanup\": [],\n                      \"code\": null,\n                      \"command\": \"Clear-History;Clear\",\n                      \"language\": null,\n                      \"name\": \"psh\",\n                      \"parsers\": [],\n                      \"payloads\": [],\n                      \"platform\": \"windows\",\n                      \"timeout\": 60,\n                      \"uploads\": [],\n                      \"variations\": []\n                    }\n                  ],\n                  \"name\": \"Avoid logs\",\n                  \"plugin\": \"stockpile\",\n                  \"privilege\": null,\n                  \"repeatable\": false,\n                  \"requirements\": [],\n                  \"singleton\": false,\n                  \"tactic\": \"defense-evasion\",\n                  \"technique_id\": \"T1070.003\",\n                  \"technique_name\": \"Indicator Removal on Host: Clear Command History\"\n                },\n                \"agent_reported_time\": \"2026-04-23T04:01:48Z\",\n                \"cleanup\": 0,\n                \"collect\": \"2026-04-23T04:01:48Z\",\n                \"command\": \"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\",\n                \"deadman\": false,\n                \"decide\": \"2026-04-23T04:01:48Z\",\n                \"executor\": {\n                  \"additional_info\": {},\n                  \"build_target\": null,\n                  \"cleanup\": [],\n                  \"code\": null,\n                  \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                  \"language\": null,\n                  \"name\": \"sh\",\n                  \"parsers\": [],\n                  \"payloads\": [],\n                  \"platform\": \"linux\",\n                  \"timeout\": 60,\n                  \"uploads\": [],\n                  \"variations\": []\n                },\n                \"facts\": [],\n                \"finish\": \"2026-04-23T04:01:48Z\",\n                \"host\": \"sen4\",\n                \"id\": \"236399a1-3671-45ce-bddc-11f3ea21f5d1\",\n                \"jitter\": 0,\n                \"output\": \"False\",\n                \"paw\": \"ozxvgs\",\n                \"pid\": \"41\",\n                \"pin\": 0,\n                \"plaintext_command\": \"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\",\n                \"relationships\": [],\n                \"score\": 0,\n                \"status\": 0,\n                \"unique\": \"236399a1-3671-45ce-bddc-11f3ea21f5d1\",\n                \"used\": [],\n                \"visibility\": {\n                  \"adjustments\": [],\n                  \"score\": 50\n                }\n              }\n            ],\n            \"location\": \"/app/splunkd\",\n            \"origin_link_id\": \"\",\n            \"paw\": \"ozxvgs\",\n            \"pending_contact\": \"HTTP\",\n            \"pid\": 36,\n            \"platform\": \"linux\",\n            \"ppid\": 28,\n            \"privilege\": \"Elevated\",\n            \"proxy_chain\": [],\n            \"proxy_receivers\": {},\n            \"server\": \"http://192.168.0.148:8888\",\n            \"sleep_max\": 60,\n            \"sleep_min\": 30,\n            \"status\": \"alive\",\n            \"trusted\": true,\n            \"upstream_dest\": \"http://192.168.0.148:8888\",\n            \"username\": \"root\",\n            \"watchdog\": 0\n          },\n          \"ok\": true,\n          \"status\": 200,\n          \"url\": \"http://127.0.0.1:8888/api/v2/agents/ozxvgs\"\n        }\n      }\n    ],\n    \"selected_agents\": [\n      {\n        \"group\": \"red\",\n        \"host\": \"sen4\",\n        \"paw\": \"ozxvgs\"\n      }\n    ],\n    \"target_hosts\": [\n      \"sen4\"\n    ]\n  }\n}",
+        "error": "",
+        "ok": true,
+        "status": 202,
+        "url": "http://127.0.0.1:9000/caldera/dispatch"
+      },
+      "status": "dispatched"
+    },
+    "defender": {
+      "cloud_policy_context": {
+        "body": "{\"accepted_keys\": [\"caldera_result\", \"selected_attacker_strategy\", \"selected_defender_strategy\", \"strategy_layer\"], \"observe_only\": true, \"status\": \"accepted\"}",
+        "error": "",
+        "ok": true,
+        "status": 202,
+        "url": "http://127.0.0.1:32824/context"
+      },
+      "cloud_policy_context_payload": {
+        "caldera_result": {
+          "adversary_id": "sensor_to_edge",
+          "attack_effect_success": true,
+          "attempted_path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "cloud_seen": true,
+          "entry_node": "sen4",
+          "event_type": "attack_result",
+          "gateway_seen": true,
+          "live_attack_type": "sensor_to_edge_http_abuse",
+          "operation_id": "state-sen4_edge2_clouddb",
+          "scenario_id": "sen4_edge2_clouddb",
+          "signals": {
+            "ability_link_count": 2.0,
+            "attack_active": 0.0,
+            "attack_effect_success": 1.0,
+            "cleanup_link_count": 2.0,
+            "cloud_seen": 1.0,
+            "completed_link_count": 2.0,
+            "entry_node_present": 1.0,
+            "events_total": 1.0,
+            "failed_link_count": 0.0,
+            "gateway_seen": 1.0,
+            "link_count": 4.0,
+            "success": 1.0,
+            "successful_link_count": 2.0,
+            "worker_seen": 1.0
+          },
+          "success": true,
+          "target_asset": "cloud_db",
+          "timestamp": "2026-04-23T11:48:28.532913+00:00",
+          "tool": "strategy_state",
+          "worker_seen": true
+        },
+        "llm_defender_selection": {
+          "attack_dispatch_status": "dispatched",
+          "caldera_success": true,
+          "decision_source": "llm_defender",
+          "first_mulval_path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_model": "llama3.1:latest",
+          "llm_provider": "ollama",
+          "llm_reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+          "mulval_path_count": 1,
+          "operation_id": "18a412ae-e9a8-4531-9979-71924e73187b",
+          "selected_attacker_path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "selected_defender_strategy_id": "D1_quarantine_sen4"
+        },
+        "selected_attacker_strategy": {
+          "action": "sensor_to_edge_http_abuse",
+          "action_payload": null,
+          "executor": {
+            "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+            "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+            "env": {
+              "ATTACK_SENSOR_ID": "sen4",
+              "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+            },
+            "name": "sensor_to_edge",
+            "type": "caldera_adversary"
+          },
+          "expected_effects": [
+            "gateway_seen",
+            "worker_seen",
+            "cloud_seen",
+            "attack_effect_success"
+          ],
+          "id": "A2_sensor_http_abuse_sen4",
+          "live_attack_type": "sensor_to_edge_http_abuse",
+          "mode": "dominant",
+          "name": "Controlled sen4 HTTP telemetry abuse",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "probability": 0.5053794991250206,
+          "scenario_id": "sen4_edge2_clouddb",
+          "target": "cloud_db",
+          "utility": 0.37006683345958713
+        },
+        "selected_defender_strategy": {
+          "action": "quarantine_sensor",
+          "action_payload": {
+            "action": "quarantine_sensor",
+            "target": "sen4"
+          },
+          "decision_source": "llm_defender",
+          "executor": {
+            "type": "ryu_rest"
+          },
+          "expected_effects": [
+            "drop_rules_active",
+            "counters_stopped"
+          ],
+          "id": "D1_quarantine_sen4",
+          "live_attack_type": null,
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+          "mode": "llm_defender",
+          "name": "Quarantine sen4",
+          "path": null,
+          "probability": 0.2462425229694964,
+          "scenario_id": "sen4_edge2_clouddb",
+          "target": "sen4",
+          "utility": 0.644379031175729
+        },
+        "strategy_layer": {
+          "selection": {
+            "attacker": {
+              "action": "sensor_to_edge_http_abuse",
+              "action_payload": null,
+              "executor": {
+                "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+                "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+                "env": {
+                  "ATTACK_SENSOR_ID": "sen4",
+                  "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+                },
+                "name": "sensor_to_edge",
+                "type": "caldera_adversary"
+              },
+              "expected_effects": [
+                "gateway_seen",
+                "worker_seen",
+                "cloud_seen",
+                "attack_effect_success"
+              ],
+              "id": "A2_sensor_http_abuse_sen4",
+              "live_attack_type": "sensor_to_edge_http_abuse",
+              "mode": "dominant",
+              "name": "Controlled sen4 HTTP telemetry abuse",
+              "path": [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ],
+              "probability": 0.5053794991250206,
+              "scenario_id": "sen4_edge2_clouddb",
+              "target": "cloud_db",
+              "utility": 0.37006683345958713
+            },
+            "defender": {
+              "action": "quarantine_sensor",
+              "action_payload": {
+                "action": "quarantine_sensor",
+                "target": "sen4"
+              },
+              "executor": {
+                "type": "ryu_rest"
+              },
+              "expected_effects": [
+                "drop_rules_active",
+                "counters_stopped"
+              ],
+              "id": "D1_quarantine_sen4",
+              "live_attack_type": null,
+              "mode": "llm_defender",
+              "name": "Quarantine sen4",
+              "path": null,
+              "probability": 0.2462425229694964,
+              "scenario_id": "sen4_edge2_clouddb",
+              "target": "sen4",
+              "utility": 0.644379031175729
+            }
+          },
+          "state": {
+            "attack_active": true,
+            "current_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "defense_active": false,
+            "mulval": {
+              "current_path_risk": 0.5,
+              "path_candidates": [
+                {
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "base_edge2_path",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->cloud_db",
+                  "risk_score": 0.74,
+                  "scenario_id": "base_edge2_path",
+                  "source": "mulval_policy",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen6"
+                    },
+                    {
+                      "action": "reroute_traffic",
+                      "target": "sen6",
+                      "via": "s_edge2"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen6"
+                    }
+                  ],
+                  "entry_node": "sen6",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen6",
+                    "edge3_gw",
+                    "edge3_vm_s6",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen6_edge3_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "rate_limit",
+                      "kbps": 256,
+                      "target": "edge2_gw"
+                    },
+                    {
+                      "action": "isolate_sensor",
+                      "target": "edge2_gw"
+                    }
+                  ],
+                  "entry_node": "edge2_gw",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "edge2_gateway_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_candidates": [
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_paths": [
+                [
+                  "sen4",
+                  "edge2_gw",
+                  "edge2_vm_s4",
+                  "cloud_db"
+                ]
+              ],
+              "policy_path": "/home/reza/LLM_MTD_emo/integrations/mulval/outputs/base_edge2_policy.json",
+              "policy_scenario_id": "base_edge2_path"
+            },
+            "path_stage": 3,
+            "scenario_id": "sen4_edge2_clouddb"
+          }
+        }
+      },
+      "cloud_policy_decision": {
+        "json": {
+          "decision_source": "llm_defender",
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "quarantine_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+              "source": "llm_defender",
+              "source_strategy_id": "D1_quarantine_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "quarantine_sensor"
+          }
+        },
+        "reason": "llm_selected_direct_ryu_intent",
+        "status": "skipped"
+      },
+      "defense_event": {
+        "reason": "defender action was not confirmed by Ryu/controller metrics",
+        "status": "skipped"
+      },
+      "payload": {
+        "action": "quarantine_sensor",
+        "decision_source": "llm_defender",
+        "llm_reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+        "source": "llm_defender",
+        "source_strategy_id": "D1_quarantine_sen4",
+        "target": "sen4"
+      },
+      "status": "dry_run"
+    }
+  },
+  "game": {
+    "attacker_average_utility": 0.34172333606102157,
+    "attacker_payoffs": {
+      "A2_sensor_http_abuse_sen4": {
+        "D0_observe": 0.6645789200000003,
+        "D1_quarantine_sen4": 0.2216020640000001,
+        "D2_rate_limit_sen4": 0.3562720160000003,
+        "D3_isolate_edge2_gw_for_sen4": 0.25433434400000016,
+        "D4_isolate_edge2_vm_s4": 0.2767793360000002
+      },
+      "A6_sen4_edge_to_cloud_probe": {
+        "D0_observe": 0.558227984,
+        "D1_quarantine_sen4": 0.1894682527999999,
+        "D2_rate_limit_sen4": 0.3015753632,
+        "D3_isolate_edge2_gw_for_sen4": 0.21671650879999999,
+        "D4_isolate_edge2_vm_s4": 0.2354010272
+      }
+    },
+    "attacker_population": {
+      "A2_sensor_http_abuse_sen4": 0.5053794991250206,
+      "A6_sen4_edge_to_cloud_probe": 0.4946205008749795
+    },
+    "attacker_population_before": {
+      "A2_sensor_http_abuse_sen4": 0.5028142266544947,
+      "A6_sen4_edge_to_cloud_probe": 0.4971857733455053
+    },
+    "attacker_utilities": {
+      "A2_sensor_http_abuse_sen4": 0.37006683345958713,
+      "A6_sen4_edge_to_cloud_probe": 0.31305897257924564
+    },
+    "defender_average_utility": 0.5472929255413713,
+    "defender_payoffs": {
+      "A2_sensor_http_abuse_sen4": {
+        "D0_observe": 0.4269435311757291,
+        "D1_quarantine_sen4": 0.644379031175729,
+        "D2_rate_limit_sen4": 0.5881296978423958,
+        "D3_isolate_edge2_gw_for_sen4": 0.5112015311757291,
+        "D4_isolate_edge2_vm_s4": 0.547465531175729
+      },
+      "A6_sen4_edge_to_cloud_probe": {
+        "D0_observe": 0.4269435311757291,
+        "D1_quarantine_sen4": 0.644379031175729,
+        "D2_rate_limit_sen4": 0.5881296978423958,
+        "D3_isolate_edge2_gw_for_sen4": 0.5112015311757291,
+        "D4_isolate_edge2_vm_s4": 0.547465531175729
+      }
+    },
+    "defender_population": {
+      "D0_observe": 0.22758431030895235,
+      "D1_quarantine_sen4": 0.2462425229694964,
+      "D2_rate_limit_sen4": 0.24262108848970604,
+      "D3_isolate_edge2_gw_for_sen4": 0.14064064324703324,
+      "D4_isolate_edge2_vm_s4": 0.14291143498481196
+    },
+    "defender_population_before": {
+      "D0_observe": 0.23377391100263642,
+      "D1_quarantine_sen4": 0.24109303061317636,
+      "D2_rate_limit_sen4": 0.24046076733703023,
+      "D3_isolate_edge2_gw_for_sen4": 0.14176628266643562,
+      "D4_isolate_edge2_vm_s4": 0.14290600838072134
+    },
+    "defender_utilities": {
+      "D0_observe": 0.4269435311757291,
+      "D1_quarantine_sen4": 0.644379031175729,
+      "D2_rate_limit_sen4": 0.5881296978423958,
+      "D3_isolate_edge2_gw_for_sen4": 0.5112015311757291,
+      "D4_isolate_edge2_vm_s4": 0.547465531175729
+    },
+    "parameters": {
+      "eta_attacker": 0.18,
+      "eta_defender": 0.22,
+      "omega_ac": 0.65,
+      "omega_dc": 0.7,
+      "omega_gp": 0.25,
+      "omega_r": 0.1,
+      "regulatory_beta": 0.18
+    }
+  },
+  "llm": {
+    "confidence": 0.73,
+    "expected_qos_impact": 0.0,
+    "expected_security_gain": 0.64,
+    "fallback_reason": "",
+    "fallback_used": false,
+    "latency_ms": 142176.4691540011,
+    "model": "llama3.1:latest",
+    "parse_success": true,
+    "prompt_preview": "Select one defender strategy ID from the active candidates.\nAllowed defender IDs only: [\"D0_observe\", \"D1_quarantine_sen4\", \"D2_rate_limit_sen4\", \"D3_isolate_edge2_gw_for_sen4\", \"D4_isolate_edge2_vm_s4\"]\n\nReturn exactly one compact JSON obj",
+    "provider": "ollama",
+    "raw_response": {
+      "confidence": 0.73,
+      "expected_qos_impact": -0.02,
+      "expected_security_gain": 0.64,
+      "reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+      "selected_defender_strategy_id": "D1_quarantine_sen4"
+    },
+    "reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+    "recovery_used": false,
+    "request_error": "",
+    "request_success": true,
+    "retries_used": 1
+  },
+  "next_state": {
+    "attack_active": true,
+    "attack_effect_success": true,
+    "attack_success": true,
+    "attacker_observation": {
+      "estimated_containment": 0.0,
+      "estimated_risk": 0.22,
+      "estimated_success_probability": 1.0,
+      "foothold": "sen4",
+      "observed_blocking": false,
+      "observed_path_stage": 3
+    },
+    "built_at": "2026-04-23T11:51:36.744972+00:00",
+    "controller": {
+      "active_actions": []
+    },
+    "controller_reachable": true,
+    "counters_stopped": false,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {
+        "ability_link_count": 2.0,
+        "attack_active": 0.0,
+        "attack_effect_success": 1.0,
+        "cleanup_link_count": 2.0,
+        "cloud_seen": 1.0,
+        "completed_link_count": 2.0,
+        "entry_node_present": 1.0,
+        "events_total": 2.0,
+        "failed_link_count": 0.0,
+        "gateway_seen": 1.0,
+        "link_count": 4.0,
+        "success": 1.0,
+        "successful_link_count": 2.0,
+        "worker_seen": 1.0
+      },
+      "cloud_seen": true,
+      "defense_metrics": {},
+      "gateway_seen": true,
+      "topology": {
+        "active_action_count": 0,
+        "active_actions": [],
+        "connected_switch_count": 5,
+        "known_host_count": 29,
+        "switch_count": 5
+      },
+      "worker_seen": true
+    },
+    "defense_active": false,
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": false,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.5,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "base_edge2_path",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "base_edge2_path",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/reza/LLM_MTD_emo/integrations/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "base_edge2_path"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 0,
+      "controller_apply_ms": 0.01032499858411029,
+      "flow_delete_commands": 0,
+      "flow_rules_installed": 0,
+      "meters_added": 0,
+      "total_cpu_seconds": 1259.573097316,
+      "total_memory_kb": 435716.0
+    },
+    "path_stage": 3,
+    "path_stage_label": "cloud",
+    "qos": {
+      "edge_to_cloud_latency_ms": 3.104,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 2.728727272727273,
+      "throughput_bytes_per_second": 9560.142296374033
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 30929.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 14057.0,
+      "gateway_received": 14057.0,
+      "generated_total": 14064.0,
+      "worker_requests": 14059.0
+    }
+  },
+  "persistence": {
+    "decision_trace_logged": true,
+    "learning_eligible": true,
+    "learning_skipped_reason": "",
+    "population_saved": true,
+    "reason": "",
+    "skipped": false,
+    "stage_logged": true,
+    "summary_logged": true
+  },
+  "recorded_at": "2026-04-23T11:53:05.657469+00:00",
+  "run_id": "stage_fe582f9e5b42",
+  "schema_version": "llm-mtd-live-stage-result-v1",
+  "selection": {
+    "attacker": {
+      "action": "sensor_to_edge_http_abuse",
+      "action_payload": null,
+      "executor": {
+        "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+        "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+        "env": {
+          "ATTACK_SENSOR_ID": "sen4",
+          "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+        },
+        "name": "sensor_to_edge",
+        "type": "caldera_adversary"
+      },
+      "expected_effects": [
+        "gateway_seen",
+        "worker_seen",
+        "cloud_seen",
+        "attack_effect_success"
+      ],
+      "id": "A2_sensor_http_abuse_sen4",
+      "live_attack_type": "sensor_to_edge_http_abuse",
+      "mode": "dominant",
+      "name": "Controlled sen4 HTTP telemetry abuse",
+      "path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "probability": 0.5053794991250206,
+      "scenario_id": "sen4_edge2_clouddb",
+      "target": "cloud_db",
+      "utility": 0.37006683345958713
+    },
+    "defender": {
+      "action": "quarantine_sensor",
+      "action_payload": {
+        "action": "quarantine_sensor",
+        "target": "sen4"
+      },
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "expected_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "id": "D1_quarantine_sen4",
+      "live_attack_type": null,
+      "mode": "llm_defender",
+      "name": "Quarantine sen4",
+      "path": null,
+      "probability": 0.2462425229694964,
+      "scenario_id": "sen4_edge2_clouddb",
+      "target": "sen4",
+      "utility": 0.644379031175729
+    }
+  },
+  "stage_summary": {
+    "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+    "controller_delta": {},
+    "decision_source": "llm_defender",
+    "defender_strategy_id": "D1_quarantine_sen4",
+    "execution": {
+      "attacker_status": "dispatched",
+      "defender_action": "quarantine_sensor",
+      "defender_status": "dry_run",
+      "defender_target": "sen4",
+      "defense_confirmed": false,
+      "stage_valid": true
+    },
+    "llm": {
+      "fallback_used": false,
+      "model": "llama3.1:latest",
+      "provider": "ollama",
+      "reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked."
+    },
+    "qos_delta": {
+      "edge_to_cloud_latency_ms": 3.104,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": -0.191727272727273,
+      "throughput_bytes_per_second": -40.035909864325
+    },
+    "recorded_at": "2026-04-23T11:53:05.644411+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "security_outcome": {
+      "attack_effect_success": true,
+      "defense_success": false
+    },
+    "stage_id": 4,
+    "stage_validation": {
+      "comparable_stage": true,
+      "defense_applied": false,
+      "defense_confirmed": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_valid": true,
+      "stage_kind": "experimental",
+      "stage_success": false
+    },
+    "summary_text": "Stage 4 for sen4_edge2_clouddb: attacker A2_sensor_http_abuse_sen4 met defender D1_quarantine_sen4. The defender choice focused on quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked. After execution the path stage was 3, and the observed outcome was attack remained active after the defender stage."
+  },
+  "stage_validation": {
+    "comparable_stage": true,
+    "defense_applied": false,
+    "defense_confirmed": false,
+    "llm_parse_success": true,
+    "llm_recovery_used": false,
+    "llm_request_error": "",
+    "llm_request_success": true,
+    "llm_stage_valid": true,
+    "stage_kind": "experimental",
+    "stage_success": false
+  },
+  "state": {
+    "attack_active": true,
+    "attack_effect_success": true,
+    "attack_success": true,
+    "attacker_observation": {
+      "estimated_containment": 0.0,
+      "estimated_risk": 0.22,
+      "estimated_success_probability": 1.0,
+      "foothold": "sen4",
+      "observed_blocking": false,
+      "observed_path_stage": 3
+    },
+    "built_at": "2026-04-23T11:48:28.532913+00:00",
+    "controller": {
+      "active_actions": []
+    },
+    "controller_reachable": true,
+    "counters_stopped": false,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {
+        "ability_link_count": 2.0,
+        "attack_active": 0.0,
+        "attack_effect_success": 1.0,
+        "cleanup_link_count": 2.0,
+        "cloud_seen": 1.0,
+        "completed_link_count": 2.0,
+        "entry_node_present": 1.0,
+        "events_total": 1.0,
+        "failed_link_count": 0.0,
+        "gateway_seen": 1.0,
+        "link_count": 4.0,
+        "success": 1.0,
+        "successful_link_count": 2.0,
+        "worker_seen": 1.0
+      },
+      "cloud_seen": true,
+      "defense_metrics": {},
+      "gateway_seen": true,
+      "topology": {
+        "active_action_count": 0,
+        "active_actions": [],
+        "connected_switch_count": 5,
+        "known_host_count": 29,
+        "switch_count": 5
+      },
+      "worker_seen": true
+    },
+    "defense_active": false,
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": false,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.5,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "base_edge2_path",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "base_edge2_path",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/reza/LLM_MTD_emo/integrations/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "base_edge2_path"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 0,
+      "controller_apply_ms": 0.01032499858411029,
+      "flow_delete_commands": 0,
+      "flow_rules_installed": 0,
+      "meters_added": 0,
+      "total_cpu_seconds": 1253.7609328170001,
+      "total_memory_kb": 435716.0
+    },
+    "path_stage": 3,
+    "path_stage_label": "cloud",
+    "qos": {
+      "edge_to_cloud_latency_ms": 3.494,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 3.919727272727273,
+      "throughput_bytes_per_second": 9560.106387448137
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 30726.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 13964.0,
+      "gateway_received": 13964.0,
+      "generated_total": 13969.0,
+      "worker_requests": 13965.0
+    }
+  },
+  "transition": {
+    "average_utility": {
+      "attacker": 0.34172333606102157,
+      "defender": 0.5472929255413713
+    },
+    "baseline_game_prior": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.5053794991250206,
+        "population_after_rank": 1,
+        "population_before": 0.5028142266544947,
+        "population_before_rank": 1,
+        "population_delta": 0.002565272470525848,
+        "probability": 0.5053794991250206,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.37006683345958713,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "action_payload": {
+          "action": "quarantine_sensor",
+          "target": "sen4"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Quarantine sen4",
+        "path": null,
+        "population_after": 0.2462425229694964,
+        "population_after_rank": 1,
+        "population_before": 0.24109303061317636,
+        "population_before_rank": 1,
+        "population_delta": 0.0051494923563200345,
+        "probability": 0.2462425229694964,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4",
+        "utility": 0.644379031175729,
+        "utility_rank": 1
+      }
+    },
+    "decision_source": "llm_defender",
+    "execution": {
+      "attacker": {
+        "plan": {
+          "bridge_logger_url": "http://127.0.0.1:32825/attack/event",
+          "bridge_policy_url": "http://127.0.0.1:32824/context",
+          "caldera_adversary": "sensor_to_edge",
+          "caldera_adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "caldera_adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "caldera_env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "ENTRY_NODE": "sen4",
+            "SCENARIO_ID": "sen4_edge2_clouddb",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "caldera_target_hosts": [
+            "sen4"
+          ],
+          "executor": {
+            "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+            "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+            "env": {
+              "ATTACK_SENSOR_ID": "sen4",
+              "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+            },
+            "name": "sensor_to_edge",
+            "type": "caldera_adversary"
+          },
+          "expected_effects": [
+            "gateway_seen",
+            "worker_seen",
+            "cloud_seen",
+            "attack_effect_success"
+          ],
+          "live_attack_type": "sensor_to_edge_http_abuse",
+          "mulval": {
+            "current_path_risk": 0.5,
+            "plausible_paths": [
+              [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ]
+            ]
+          },
+          "note": "Dispatch this plan to Caldera manually or through --attacker-dispatch-url. The first lab workflow still keeps Caldera operation launch outside this repo.",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "scenario_id": "sen4_edge2_clouddb",
+          "strategy_id": "A2_sensor_http_abuse_sen4",
+          "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+        },
+        "post_result": {
+          "body": "{\n  \"attack_start\": {\n    \"payload\": {\n      \"adversary_id\": \"sensor_to_edge\",\n      \"attempted_path\": [\n        \"sen4\",\n        \"edge2_gw\",\n        \"edge2_vm_s4\",\n        \"cloud_db\"\n      ],\n      \"entry_node\": \"sen4\",\n      \"event_type\": \"attack_start\",\n      \"live_attack_type\": \"sensor_to_edge_http_abuse\",\n      \"operation_id\": \"18a412ae-e9a8-4531-9979-71924e73187b\",\n      \"scenario_id\": \"sen4_edge2_clouddb\",\n      \"timestamp\": \"2026-04-23T11:48:29.490339+00:00\",\n      \"tool\": \"caldera\"\n    },\n    \"post_result\": {\n      \"body\": \"{\\\"status\\\": \\\"logged\\\"}\",\n      \"error\": \"\",\n      \"ok\": true,\n      \"status\": 202,\n      \"url\": \"http://127.0.0.1:32825/attack/event\"\n    },\n    \"status\": \"posted\"\n  },\n  \"launch_result\": {\n    \"body\": \"{\\\"id\\\": \\\"18a412ae-e9a8-4531-9979-71924e73187b\\\", \\\"name\\\": \\\"llm-mtd-60734457892d A2_sensor_http_abuse_sen4\\\", \\\"host_group\\\": [{\\\"paw\\\": \\\"ozxvgs\\\", \\\"sleep_min\\\": 30, \\\"sleep_max\\\": 60, \\\"watchdog\\\": 0, \\\"group\\\": \\\"llm-mtd-27438c7c80\\\", \\\"architecture\\\": \\\"amd64\\\", \\\"platform\\\": \\\"linux\\\", \\\"server\\\": \\\"http://192.168.0.148:8888\\\", \\\"upstream_dest\\\": \\\"http://192.168.0.148:8888\\\", \\\"username\\\": \\\"root\\\", \\\"location\\\": \\\"/app/splunkd\\\", \\\"pid\\\": 36, \\\"ppid\\\": 28, \\\"trusted\\\": true, \\\"executors\\\": [\\\"proc\\\", \\\"sh\\\"], \\\"privilege\\\": \\\"Elevated\\\", \\\"exe_name\\\": \\\"splunkd\\\", \\\"host\\\": \\\"sen4\\\", \\\"contact\\\": \\\"HTTP\\\", \\\"proxy_receivers\\\": {}, \\\"proxy_chain\\\": [], \\\"origin_link_id\\\": \\\"\\\", \\\"deadman_enabled\\\": true, \\\"available_contacts\\\": [\\\"HTTP\\\"], \\\"host_ip_addrs\\\": [\\\"172.17.0.5\\\", \\\"10.0.2.14\\\"], \\\"display_name\\\": \\\"sen4$root\\\", \\\"created\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"last_seen\\\": \\\"2026-04-23T11:48:26Z\\\", \\\"links\\\": [{\\\"id\\\": \\\"236399a1-3671-45ce-bddc-11f3ea21f5d1\\\", \\\"paw\\\": \\\"ozxvgs\\\", \\\"command\\\": \\\"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\\\", \\\"plaintext_command\\\": \\\"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\\\", \\\"status\\\": 0, \\\"score\\\": 0, \\\"jitter\\\": 0, \\\"decide\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"pin\\\": 0, \\\"pid\\\": \\\"41\\\", \\\"facts\\\": [], \\\"relationships\\\": [], \\\"used\\\": [], \\\"unique\\\": \\\"236399a1-3671-45ce-bddc-11f3ea21f5d1\\\", \\\"collect\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"finish\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"ability\\\": {\\\"ability_id\\\": \\\"43b3754c-def4-4699-a673-1d85648fda6a\\\", \\\"tactic\\\": \\\"defense-evasion\\\", \\\"technique_name\\\": \\\"Indicator Removal on Host: Clear Command History\\\", \\\"technique_id\\\": \\\"T1070.003\\\", \\\"name\\\": \\\"Avoid logs\\\", \\\"description\\\": \\\"Stop terminal from logging history\\\", \\\"executors\\\": [{\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"darwin\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, {\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"linux\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, {\\\"name\\\": \\\"psh\\\", \\\"platform\\\": \\\"windows\\\", \\\"command\\\": \\\"Clear-History;Clear\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}], \\\"requirements\\\": [], \\\"privilege\\\": null, \\\"repeatable\\\": false, \\\"buckets\\\": [\\\"defense-evasion\\\"], \\\"additional_info\\\": {}, \\\"access\\\": {}, \\\"singleton\\\": false, \\\"plugin\\\": \\\"stockpile\\\", \\\"delete_payload\\\": true}, \\\"executor\\\": {\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"linux\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, \\\"cleanup\\\": 0, \\\"visibility\\\": {\\\"score\\\": 50, \\\"adjustments\\\": []}, \\\"host\\\": \\\"sen4\\\", \\\"output\\\": \\\"False\\\", \\\"deadman\\\": false, \\\"agent_reported_time\\\": \\\"2026-04-23T04:01:48Z\\\"}], \\\"pending_contact\\\": \\\"HTTP\\\", \\\"status\\\": \\\"alive\\\"}], \\\"adversary\\\": {\\\"adversary_id\\\": \\\"c9bdece2-df3a-4c3f-bb70-31ff46bb7351\\\", \\\"name\\\": \\\"LLM MTD sensor to edge\\\", \\\"description\\\": \\\"Short manual adversary for sen4 -> edge2_gw -> edge2_vm_s4.\\\", \\\"atomic_ordering\\\": [\\\"87b6de2e-fcb6-4f44-9a7e-79af476c7d41\\\", \\\"62e7655e-dc3e-49e2-9564-220d7c15582e\\\"], \\\"objective\\\": \\\"495a9828-cab1-44dd-a0ca-66e58177d8cc\\\", \\\"tags\\\": [], \\\"has_repeatable_abilities\\\": false, \\\"plugin\\\": \\\"stockpile\\\"}, \\\"jitter\\\": \\\"2/8\\\", \\\"planner\\\": {\\\"id\\\": \\\"aaa7c857-37a0-4c4a-85f7-4e9f7f30e31a\\\", \\\"name\\\": \\\"atomic\\\", \\\"module\\\": \\\"app.planners.atomic\\\", \\\"params\\\": {}, \\\"description\\\": \\\"During each phase of the operation, the atomic planner iterates through each agent and sends the next\\\\navailable ability it thinks that agent can complete. This decision is based on the agent matching the operating\\\\nsystem (execution platform) of the ability and the ability command having no unsatisfied variables.\\\\nThe planner then waits for each agent to complete its command before determining the subsequent abilities.\\\\nThe abilities are processed in the order set by each agent's atomic ordering.\\\\nFor instance, if agent A has atomic ordering (A1, A2, A3) and agent B has atomic ordering (B1, B2, B3), then\\\\nthe planner would send (A1, B1) in the first phase, then (A2, B2), etc.\\\\n\\\", \\\"stopping_conditions\\\": [], \\\"ignore_enforcement_modules\\\": [], \\\"allow_repeatable_abilities\\\": false, \\\"plugin\\\": \\\"\\\"}, \\\"start\\\": \\\"2026-04-23T11:48:29Z\\\", \\\"state\\\": \\\"running\\\", \\\"obfuscator\\\": \\\"plain-text\\\", \\\"autonomous\\\": 1, \\\"chain\\\": [], \\\"auto_close\\\": true, \\\"visibility\\\": 51, \\\"objective\\\": \\\"\\\", \\\"use_learning_parsers\\\": true, \\\"group\\\": \\\"llm-mtd-27438c7c80\\\", \\\"source\\\": {\\\"id\\\": \\\"ed32b9c3-9593-4c33-b0db-e2007315096b\\\", \\\"name\\\": \\\"basic\\\", \\\"facts\\\": [{\\\"unique\\\": \\\"file.sensitive.extensionwav\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"name\\\": \\\"file.sensitive.extension\\\", \\\"value\\\": \\\"wav\\\", \\\"created\\\": \\\"2026-04-23T11:48:29Z\\\", \\\"score\\\": 1, \\\"source\\\": \\\"ed32b9c3-9593-4c33-b0db-e2007315096b\\\", \\\"origin_type\\\": \\\"IMPORTED\\\", \\\"links\\\": [], \\\"relationships\\\": [], \\\"limit_count\\\": -1, \\\"collected_by\\\": [], \\\"technique_id\\\": null}, {\\\"unique\\\": \\\"file.sensitive.extensionyml\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"name\\\": \\\"file.sensitive.extension\\\", \\\"value\\\": \\\"yml\\\", \\\"created\\\": \\\"2026-04-23T11:48:29Z\\\", \\\"score\\\": 1, \\\"source\\\": \\\"ed32b9c3-9593-4c33-b0db-e2007315096b\\\", \\\"origin_type\\\": \\\"IMPORTED\\\", \\\"links\\\": [], \\\"relationships\\\": [], \\\"limit_count\\\": -1, \\\"collected_by\\\": [], \\\"technique_id\\\": null}, {\\\"unique\\\": \\\"file.sensitive.extensionpng\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"name\\\": \\\"file.sensitive.extension\\\", \\\"value\\\": \\\"png\\\", \\\"created\\\": \\\"2026-04-23T11:48:29Z\\\", \\\"score\\\": 1, \\\"source\\\": \\\"ed32b9c3-9593-4c33-b0db-e2007315096b\\\", \\\"origin_type\\\": \\\"IMPORTED\\\", \\\"links\\\": [], \\\"relationships\\\": [], \\\"limit_count\\\": -1, \\\"collected_by\\\": [], \\\"technique_id\\\": null}, {\\\"unique\\\": \\\"server.malicious.urlkeyloggedsite.com\\\", \\\"trait\\\": \\\"server.malicious.url\\\", \\\"name\\\": \\\"server.malicious.url\\\", \\\"value\\\": \\\"keyloggedsite.com\\\", \\\"created\\\": \\\"2026-04-23T11:48:29Z\\\", \\\"score\\\": 1, \\\"source\\\": \\\"ed32b9c3-9593-4c33-b0db-e2007315096b\\\", \\\"origin_type\\\": \\\"IMPORTED\\\", \\\"links\\\": [], \\\"relationships\\\": [], \\\"limit_count\\\": -1, \\\"collected_by\\\": [], \\\"technique_id\\\": null}], \\\"rules\\\": [{\\\"action\\\": \\\"DENY\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"match\\\": \\\".*\\\"}, {\\\"action\\\": \\\"ALLOW\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"match\\\": \\\"png\\\"}, {\\\"action\\\": \\\"ALLOW\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"match\\\": \\\"yml\\\"}, {\\\"action\\\": \\\"ALLOW\\\", \\\"trait\\\": \\\"file.sensitive.extension\\\", \\\"match\\\": \\\"wav\\\"}], \\\"adjustments\\\": [], \\\"relationships\\\": [], \\\"plugin\\\": \\\"stockpile\\\"}}\",\n    \"error\": \"\",\n    \"json\": {\n      \"adversary\": {\n        \"adversary_id\": \"c9bdece2-df3a-4c3f-bb70-31ff46bb7351\",\n        \"atomic_ordering\": [\n          \"87b6de2e-fcb6-4f44-9a7e-79af476c7d41\",\n          \"62e7655e-dc3e-49e2-9564-220d7c15582e\"\n        ],\n        \"description\": \"Short manual adversary for sen4 -> edge2_gw -> edge2_vm_s4.\",\n        \"has_repeatable_abilities\": false,\n        \"name\": \"LLM MTD sensor to edge\",\n        \"objective\": \"495a9828-cab1-44dd-a0ca-66e58177d8cc\",\n        \"plugin\": \"stockpile\",\n        \"tags\": []\n      },\n      \"auto_close\": true,\n      \"autonomous\": 1,\n      \"chain\": [],\n      \"group\": \"llm-mtd-27438c7c80\",\n      \"host_group\": [\n        {\n          \"architecture\": \"amd64\",\n          \"available_contacts\": [\n            \"HTTP\"\n          ],\n          \"contact\": \"HTTP\",\n          \"created\": \"2026-04-23T04:01:48Z\",\n          \"deadman_enabled\": true,\n          \"display_name\": \"sen4$root\",\n          \"exe_name\": \"splunkd\",\n          \"executors\": [\n            \"proc\",\n            \"sh\"\n          ],\n          \"group\": \"llm-mtd-27438c7c80\",\n          \"host\": \"sen4\",\n          \"host_ip_addrs\": [\n            \"172.17.0.5\",\n            \"10.0.2.14\"\n          ],\n          \"last_seen\": \"2026-04-23T11:48:26Z\",\n          \"links\": [\n            {\n              \"ability\": {\n                \"ability_id\": \"43b3754c-def4-4699-a673-1d85648fda6a\",\n                \"access\": {},\n                \"additional_info\": {},\n                \"buckets\": [\n                  \"defense-evasion\"\n                ],\n                \"delete_payload\": true,\n                \"description\": \"Stop terminal from logging history\",\n                \"executors\": [\n                  {\n                    \"additional_info\": {},\n                    \"build_target\": null,\n                    \"cleanup\": [],\n                    \"code\": null,\n                    \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                    \"language\": null,\n                    \"name\": \"sh\",\n                    \"parsers\": [],\n                    \"payloads\": [],\n                    \"platform\": \"darwin\",\n                    \"timeout\": 60,\n                    \"uploads\": [],\n                    \"variations\": []\n                  },\n                  {\n                    \"additional_info\": {},\n                    \"build_target\": null,\n                    \"cleanup\": [],\n                    \"code\": null,\n                    \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                    \"language\": null,\n                    \"name\": \"sh\",\n                    \"parsers\": [],\n                    \"payloads\": [],\n                    \"platform\": \"linux\",\n                    \"timeout\": 60,\n                    \"uploads\": [],\n                    \"variations\": []\n                  },\n                  {\n                    \"additional_info\": {},\n                    \"build_target\": null,\n                    \"cleanup\": [],\n                    \"code\": null,\n                    \"command\": \"Clear-History;Clear\",\n                    \"language\": null,\n                    \"name\": \"psh\",\n                    \"parsers\": [],\n                    \"payloads\": [],\n                    \"platform\": \"windows\",\n                    \"timeout\": 60,\n                    \"uploads\": [],\n                    \"variations\": []\n                  }\n                ],\n                \"name\": \"Avoid logs\",\n                \"plugin\": \"stockpile\",\n                \"privilege\": null,\n                \"repeatable\": false,\n                \"requirements\": [],\n                \"singleton\": false,\n                \"tactic\": \"defense-evasion\",\n                \"technique_id\": \"T1070.003\",\n                \"technique_name\": \"Indicator Removal on Host: Clear Command History\"\n              },\n              \"agent_reported_time\": \"2026-04-23T04:01:48Z\",\n              \"cleanup\": 0,\n              \"collect\": \"2026-04-23T04:01:48Z\",\n              \"command\": \"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\",\n              \"deadman\": false,\n              \"decide\": \"2026-04-23T04:01:48Z\",\n              \"executor\": {\n                \"additional_info\": {},\n                \"build_target\": null,\n                \"cleanup\": [],\n                \"code\": null,\n                \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                \"language\": null,\n                \"name\": \"sh\",\n                \"parsers\": [],\n                \"payloads\": [],\n                \"platform\": \"linux\",\n                \"timeout\": 60,\n                \"uploads\": [],\n                \"variations\": []\n              },\n              \"facts\": [],\n              \"finish\": \"2026-04-23T04:01:48Z\",\n              \"host\": \"sen4\",\n              \"id\": \"236399a1-3671-45ce-bddc-11f3ea21f5d1\",\n              \"jitter\": 0,\n              \"output\": \"False\",\n              \"paw\": \"ozxvgs\",\n              \"pid\": \"41\",\n              \"pin\": 0,\n              \"plaintext_command\": \"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\",\n              \"relationships\": [],\n              \"score\": 0,\n              \"status\": 0,\n              \"unique\": \"236399a1-3671-45ce-bddc-11f3ea21f5d1\",\n              \"used\": [],\n              \"visibility\": {\n                \"adjustments\": [],\n                \"score\": 50\n              }\n            }\n          ],\n          \"location\": \"/app/splunkd\",\n          \"origin_link_id\": \"\",\n          \"paw\": \"ozxvgs\",\n          \"pending_contact\": \"HTTP\",\n          \"pid\": 36,\n          \"platform\": \"linux\",\n          \"ppid\": 28,\n          \"privilege\": \"Elevated\",\n          \"proxy_chain\": [],\n          \"proxy_receivers\": {},\n          \"server\": \"http://192.168.0.148:8888\",\n          \"sleep_max\": 60,\n          \"sleep_min\": 30,\n          \"status\": \"alive\",\n          \"trusted\": true,\n          \"upstream_dest\": \"http://192.168.0.148:8888\",\n          \"username\": \"root\",\n          \"watchdog\": 0\n        }\n      ],\n      \"id\": \"18a412ae-e9a8-4531-9979-71924e73187b\",\n      \"jitter\": \"2/8\",\n      \"name\": \"llm-mtd-60734457892d A2_sensor_http_abuse_sen4\",\n      \"obfuscator\": \"plain-text\",\n      \"objective\": \"\",\n      \"planner\": {\n        \"allow_repeatable_abilities\": false,\n        \"description\": \"During each phase of the operation, the atomic planner iterates through each agent and sends the next\\navailable ability it thinks that agent can complete. This decision is based on the agent matching the operating\\nsystem (execution platform) of the ability and the ability command having no unsatisfied variables.\\nThe planner then waits for each agent to complete its command before determining the subsequent abilities.\\nThe abilities are processed in the order set by each agent's atomic ordering.\\nFor instance, if agent A has atomic ordering (A1, A2, A3) and agent B has atomic ordering (B1, B2, B3), then\\nthe planner would send (A1, B1) in the first phase, then (A2, B2), etc.\\n\",\n        \"id\": \"aaa7c857-37a0-4c4a-85f7-4e9f7f30e31a\",\n        \"ignore_enforcement_modules\": [],\n        \"module\": \"app.planners.atomic\",\n        \"name\": \"atomic\",\n        \"params\": {},\n        \"plugin\": \"\",\n        \"stopping_conditions\": []\n      },\n      \"source\": {\n        \"adjustments\": [],\n        \"facts\": [\n          {\n            \"collected_by\": [],\n            \"created\": \"2026-04-23T11:48:29Z\",\n            \"limit_count\": -1,\n            \"links\": [],\n            \"name\": \"file.sensitive.extension\",\n            \"origin_type\": \"IMPORTED\",\n            \"relationships\": [],\n            \"score\": 1,\n            \"source\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\",\n            \"technique_id\": null,\n            \"trait\": \"file.sensitive.extension\",\n            \"unique\": \"file.sensitive.extensionwav\",\n            \"value\": \"wav\"\n          },\n          {\n            \"collected_by\": [],\n            \"created\": \"2026-04-23T11:48:29Z\",\n            \"limit_count\": -1,\n            \"links\": [],\n            \"name\": \"file.sensitive.extension\",\n            \"origin_type\": \"IMPORTED\",\n            \"relationships\": [],\n            \"score\": 1,\n            \"source\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\",\n            \"technique_id\": null,\n            \"trait\": \"file.sensitive.extension\",\n            \"unique\": \"file.sensitive.extensionyml\",\n            \"value\": \"yml\"\n          },\n          {\n            \"collected_by\": [],\n            \"created\": \"2026-04-23T11:48:29Z\",\n            \"limit_count\": -1,\n            \"links\": [],\n            \"name\": \"file.sensitive.extension\",\n            \"origin_type\": \"IMPORTED\",\n            \"relationships\": [],\n            \"score\": 1,\n            \"source\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\",\n            \"technique_id\": null,\n            \"trait\": \"file.sensitive.extension\",\n            \"unique\": \"file.sensitive.extensionpng\",\n            \"value\": \"png\"\n          },\n          {\n            \"collected_by\": [],\n            \"created\": \"2026-04-23T11:48:29Z\",\n            \"limit_count\": -1,\n            \"links\": [],\n            \"name\": \"server.malicious.url\",\n            \"origin_type\": \"IMPORTED\",\n            \"relationships\": [],\n            \"score\": 1,\n            \"source\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\",\n            \"technique_id\": null,\n            \"trait\": \"server.malicious.url\",\n            \"unique\": \"server.malicious.urlkeyloggedsite.com\",\n            \"value\": \"keyloggedsite.com\"\n          }\n        ],\n        \"id\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\",\n        \"name\": \"basic\",\n        \"plugin\": \"stockpile\",\n        \"relationships\": [],\n        \"rules\": [\n          {\n            \"action\": \"DENY\",\n            \"match\": \".*\",\n            \"trait\": \"file.sensitive.extension\"\n          },\n          {\n            \"action\": \"ALLOW\",\n            \"match\": \"png\",\n            \"trait\": \"file.sensitive.extension\"\n          },\n          {\n            \"action\": \"ALLOW\",\n            \"match\": \"yml\",\n            \"trait\": \"file.sensitive.extension\"\n          },\n          {\n            \"action\": \"ALLOW\",\n            \"match\": \"wav\",\n            \"trait\": \"file.sensitive.extension\"\n          }\n        ]\n      },\n      \"start\": \"2026-04-23T11:48:29Z\",\n      \"state\": \"running\",\n      \"use_learning_parsers\": true,\n      \"visibility\": 51\n    },\n    \"ok\": true,\n    \"status\": 200,\n    \"url\": \"http://127.0.0.1:8888/api/v2/operations\"\n  },\n  \"operation_id\": \"18a412ae-e9a8-4531-9979-71924e73187b\",\n  \"operation_payload\": {\n    \"adversary\": {\n      \"adversary_id\": \"c9bdece2-df3a-4c3f-bb70-31ff46bb7351\"\n    },\n    \"auto_close\": true,\n    \"autonomous\": 1,\n    \"group\": \"llm-mtd-27438c7c80\",\n    \"jitter\": \"2/8\",\n    \"name\": \"llm-mtd-60734457892d A2_sensor_http_abuse_sen4\",\n    \"obfuscator\": \"plain-text\",\n    \"planner\": {\n      \"id\": \"aaa7c857-37a0-4c4a-85f7-4e9f7f30e31a\"\n    },\n    \"source\": {\n      \"id\": \"ed32b9c3-9593-4c33-b0db-e2007315096b\"\n    },\n    \"state\": \"running\",\n    \"use_learning_parsers\": true,\n    \"visibility\": 51\n  },\n  \"polling\": \"started\",\n  \"status\": \"dispatched\",\n  \"targeting\": {\n    \"group_assignments\": [\n      {\n        \"host\": \"sen4\",\n        \"original_group\": \"red\",\n        \"paw\": \"ozxvgs\"\n      }\n    ],\n    \"mode\": \"scoped_group\",\n    \"operation_group\": \"llm-mtd-27438c7c80\",\n    \"patch_results\": [\n      {\n        \"group\": \"llm-mtd-27438c7c80\",\n        \"host\": \"sen4\",\n        \"paw\": \"ozxvgs\",\n        \"result\": {\n          \"body\": \"{\\\"paw\\\": \\\"ozxvgs\\\", \\\"sleep_min\\\": 30, \\\"sleep_max\\\": 60, \\\"watchdog\\\": 0, \\\"group\\\": \\\"llm-mtd-27438c7c80\\\", \\\"architecture\\\": \\\"amd64\\\", \\\"platform\\\": \\\"linux\\\", \\\"server\\\": \\\"http://192.168.0.148:8888\\\", \\\"upstream_dest\\\": \\\"http://192.168.0.148:8888\\\", \\\"username\\\": \\\"root\\\", \\\"location\\\": \\\"/app/splunkd\\\", \\\"pid\\\": 36, \\\"ppid\\\": 28, \\\"trusted\\\": true, \\\"executors\\\": [\\\"proc\\\", \\\"sh\\\"], \\\"privilege\\\": \\\"Elevated\\\", \\\"exe_name\\\": \\\"splunkd\\\", \\\"host\\\": \\\"sen4\\\", \\\"contact\\\": \\\"HTTP\\\", \\\"proxy_receivers\\\": {}, \\\"proxy_chain\\\": [], \\\"origin_link_id\\\": \\\"\\\", \\\"deadman_enabled\\\": true, \\\"available_contacts\\\": [\\\"HTTP\\\"], \\\"host_ip_addrs\\\": [\\\"172.17.0.5\\\", \\\"10.0.2.14\\\"], \\\"display_name\\\": \\\"sen4$root\\\", \\\"created\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"last_seen\\\": \\\"2026-04-23T11:48:26Z\\\", \\\"links\\\": [{\\\"id\\\": \\\"236399a1-3671-45ce-bddc-11f3ea21f5d1\\\", \\\"paw\\\": \\\"ozxvgs\\\", \\\"command\\\": \\\"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\\\", \\\"plaintext_command\\\": \\\"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\\\", \\\"status\\\": 0, \\\"score\\\": 0, \\\"jitter\\\": 0, \\\"decide\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"pin\\\": 0, \\\"pid\\\": \\\"41\\\", \\\"facts\\\": [], \\\"relationships\\\": [], \\\"used\\\": [], \\\"unique\\\": \\\"236399a1-3671-45ce-bddc-11f3ea21f5d1\\\", \\\"collect\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"finish\\\": \\\"2026-04-23T04:01:48Z\\\", \\\"ability\\\": {\\\"ability_id\\\": \\\"43b3754c-def4-4699-a673-1d85648fda6a\\\", \\\"tactic\\\": \\\"defense-evasion\\\", \\\"technique_name\\\": \\\"Indicator Removal on Host: Clear Command History\\\", \\\"technique_id\\\": \\\"T1070.003\\\", \\\"name\\\": \\\"Avoid logs\\\", \\\"description\\\": \\\"Stop terminal from logging history\\\", \\\"executors\\\": [{\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"darwin\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, {\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"linux\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, {\\\"name\\\": \\\"psh\\\", \\\"platform\\\": \\\"windows\\\", \\\"command\\\": \\\"Clear-History;Clear\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}], \\\"requirements\\\": [], \\\"privilege\\\": null, \\\"repeatable\\\": false, \\\"buckets\\\": [\\\"defense-evasion\\\"], \\\"additional_info\\\": {}, \\\"access\\\": {}, \\\"singleton\\\": false, \\\"plugin\\\": \\\"stockpile\\\", \\\"delete_payload\\\": true}, \\\"executor\\\": {\\\"name\\\": \\\"sh\\\", \\\"platform\\\": \\\"linux\\\", \\\"command\\\": \\\"> $HOME/.bash_history && unset HISTFILE\\\", \\\"code\\\": null, \\\"language\\\": null, \\\"build_target\\\": null, \\\"payloads\\\": [], \\\"uploads\\\": [], \\\"timeout\\\": 60, \\\"parsers\\\": [], \\\"cleanup\\\": [], \\\"variations\\\": [], \\\"additional_info\\\": {}}, \\\"cleanup\\\": 0, \\\"visibility\\\": {\\\"score\\\": 50, \\\"adjustments\\\": []}, \\\"host\\\": \\\"sen4\\\", \\\"output\\\": \\\"False\\\", \\\"deadman\\\": false, \\\"agent_reported_time\\\": \\\"2026-04-23T04:01:48Z\\\"}], \\\"pending_contact\\\": \\\"HTTP\\\", \\\"status\\\": \\\"alive\\\"}\",\n          \"error\": \"\",\n          \"json\": {\n            \"architecture\": \"amd64\",\n            \"available_contacts\": [\n              \"HTTP\"\n            ],\n            \"contact\": \"HTTP\",\n            \"created\": \"2026-04-23T04:01:48Z\",\n            \"deadman_enabled\": true,\n            \"display_name\": \"sen4$root\",\n            \"exe_name\": \"splunkd\",\n            \"executors\": [\n              \"proc\",\n              \"sh\"\n            ],\n            \"group\": \"llm-mtd-27438c7c80\",\n            \"host\": \"sen4\",\n            \"host_ip_addrs\": [\n              \"172.17.0.5\",\n              \"10.0.2.14\"\n            ],\n            \"last_seen\": \"2026-04-23T11:48:26Z\",\n            \"links\": [\n              {\n                \"ability\": {\n                  \"ability_id\": \"43b3754c-def4-4699-a673-1d85648fda6a\",\n                  \"access\": {},\n                  \"additional_info\": {},\n                  \"buckets\": [\n                    \"defense-evasion\"\n                  ],\n                  \"delete_payload\": true,\n                  \"description\": \"Stop terminal from logging history\",\n                  \"executors\": [\n                    {\n                      \"additional_info\": {},\n                      \"build_target\": null,\n                      \"cleanup\": [],\n                      \"code\": null,\n                      \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                      \"language\": null,\n                      \"name\": \"sh\",\n                      \"parsers\": [],\n                      \"payloads\": [],\n                      \"platform\": \"darwin\",\n                      \"timeout\": 60,\n                      \"uploads\": [],\n                      \"variations\": []\n                    },\n                    {\n                      \"additional_info\": {},\n                      \"build_target\": null,\n                      \"cleanup\": [],\n                      \"code\": null,\n                      \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                      \"language\": null,\n                      \"name\": \"sh\",\n                      \"parsers\": [],\n                      \"payloads\": [],\n                      \"platform\": \"linux\",\n                      \"timeout\": 60,\n                      \"uploads\": [],\n                      \"variations\": []\n                    },\n                    {\n                      \"additional_info\": {},\n                      \"build_target\": null,\n                      \"cleanup\": [],\n                      \"code\": null,\n                      \"command\": \"Clear-History;Clear\",\n                      \"language\": null,\n                      \"name\": \"psh\",\n                      \"parsers\": [],\n                      \"payloads\": [],\n                      \"platform\": \"windows\",\n                      \"timeout\": 60,\n                      \"uploads\": [],\n                      \"variations\": []\n                    }\n                  ],\n                  \"name\": \"Avoid logs\",\n                  \"plugin\": \"stockpile\",\n                  \"privilege\": null,\n                  \"repeatable\": false,\n                  \"requirements\": [],\n                  \"singleton\": false,\n                  \"tactic\": \"defense-evasion\",\n                  \"technique_id\": \"T1070.003\",\n                  \"technique_name\": \"Indicator Removal on Host: Clear Command History\"\n                },\n                \"agent_reported_time\": \"2026-04-23T04:01:48Z\",\n                \"cleanup\": 0,\n                \"collect\": \"2026-04-23T04:01:48Z\",\n                \"command\": \"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\",\n                \"deadman\": false,\n                \"decide\": \"2026-04-23T04:01:48Z\",\n                \"executor\": {\n                  \"additional_info\": {},\n                  \"build_target\": null,\n                  \"cleanup\": [],\n                  \"code\": null,\n                  \"command\": \"> $HOME/.bash_history && unset HISTFILE\",\n                  \"language\": null,\n                  \"name\": \"sh\",\n                  \"parsers\": [],\n                  \"payloads\": [],\n                  \"platform\": \"linux\",\n                  \"timeout\": 60,\n                  \"uploads\": [],\n                  \"variations\": []\n                },\n                \"facts\": [],\n                \"finish\": \"2026-04-23T04:01:48Z\",\n                \"host\": \"sen4\",\n                \"id\": \"236399a1-3671-45ce-bddc-11f3ea21f5d1\",\n                \"jitter\": 0,\n                \"output\": \"False\",\n                \"paw\": \"ozxvgs\",\n                \"pid\": \"41\",\n                \"pin\": 0,\n                \"plaintext_command\": \"PiAkSE9NRS8uYmFzaF9oaXN0b3J5ICYmIHVuc2V0IEhJU1RGSUxF\",\n                \"relationships\": [],\n                \"score\": 0,\n                \"status\": 0,\n                \"unique\": \"236399a1-3671-45ce-bddc-11f3ea21f5d1\",\n                \"used\": [],\n                \"visibility\": {\n                  \"adjustments\": [],\n                  \"score\": 50\n                }\n              }\n            ],\n            \"location\": \"/app/splunkd\",\n            \"origin_link_id\": \"\",\n            \"paw\": \"ozxvgs\",\n            \"pending_contact\": \"HTTP\",\n            \"pid\": 36,\n            \"platform\": \"linux\",\n            \"ppid\": 28,\n            \"privilege\": \"Elevated\",\n            \"proxy_chain\": [],\n            \"proxy_receivers\": {},\n            \"server\": \"http://192.168.0.148:8888\",\n            \"sleep_max\": 60,\n            \"sleep_min\": 30,\n            \"status\": \"alive\",\n            \"trusted\": true,\n            \"upstream_dest\": \"http://192.168.0.148:8888\",\n            \"username\": \"root\",\n            \"watchdog\": 0\n          },\n          \"ok\": true,\n          \"status\": 200,\n          \"url\": \"http://127.0.0.1:8888/api/v2/agents/ozxvgs\"\n        }\n      }\n    ],\n    \"selected_agents\": [\n      {\n        \"group\": \"red\",\n        \"host\": \"sen4\",\n        \"paw\": \"ozxvgs\"\n      }\n    ],\n    \"target_hosts\": [\n      \"sen4\"\n    ]\n  }\n}",
+          "error": "",
+          "ok": true,
+          "status": 202,
+          "url": "http://127.0.0.1:9000/caldera/dispatch"
+        },
+        "status": "dispatched"
+      },
+      "defender": {
+        "cloud_policy_context": {
+          "body": "{\"accepted_keys\": [\"caldera_result\", \"selected_attacker_strategy\", \"selected_defender_strategy\", \"strategy_layer\"], \"observe_only\": true, \"status\": \"accepted\"}",
+          "error": "",
+          "ok": true,
+          "status": 202,
+          "url": "http://127.0.0.1:32824/context"
+        },
+        "cloud_policy_context_payload": {
+          "caldera_result": {
+            "adversary_id": "sensor_to_edge",
+            "attack_effect_success": true,
+            "attempted_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "cloud_seen": true,
+            "entry_node": "sen4",
+            "event_type": "attack_result",
+            "gateway_seen": true,
+            "live_attack_type": "sensor_to_edge_http_abuse",
+            "operation_id": "state-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb",
+            "signals": {
+              "ability_link_count": 2.0,
+              "attack_active": 0.0,
+              "attack_effect_success": 1.0,
+              "cleanup_link_count": 2.0,
+              "cloud_seen": 1.0,
+              "completed_link_count": 2.0,
+              "entry_node_present": 1.0,
+              "events_total": 1.0,
+              "failed_link_count": 0.0,
+              "gateway_seen": 1.0,
+              "link_count": 4.0,
+              "success": 1.0,
+              "successful_link_count": 2.0,
+              "worker_seen": 1.0
+            },
+            "success": true,
+            "target_asset": "cloud_db",
+            "timestamp": "2026-04-23T11:48:28.532913+00:00",
+            "tool": "strategy_state",
+            "worker_seen": true
+          },
+          "llm_defender_selection": {
+            "attack_dispatch_status": "dispatched",
+            "caldera_success": true,
+            "decision_source": "llm_defender",
+            "first_mulval_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_model": "llama3.1:latest",
+            "llm_provider": "ollama",
+            "llm_reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+            "mulval_path_count": 1,
+            "operation_id": "18a412ae-e9a8-4531-9979-71924e73187b",
+            "selected_attacker_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "selected_defender_strategy_id": "D1_quarantine_sen4"
+          },
+          "selected_attacker_strategy": {
+            "action": "sensor_to_edge_http_abuse",
+            "action_payload": null,
+            "executor": {
+              "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+              "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+              "env": {
+                "ATTACK_SENSOR_ID": "sen4",
+                "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+              },
+              "name": "sensor_to_edge",
+              "type": "caldera_adversary"
+            },
+            "expected_effects": [
+              "gateway_seen",
+              "worker_seen",
+              "cloud_seen",
+              "attack_effect_success"
+            ],
+            "id": "A2_sensor_http_abuse_sen4",
+            "live_attack_type": "sensor_to_edge_http_abuse",
+            "mode": "dominant",
+            "name": "Controlled sen4 HTTP telemetry abuse",
+            "path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "probability": 0.5053794991250206,
+            "scenario_id": "sen4_edge2_clouddb",
+            "target": "cloud_db",
+            "utility": 0.37006683345958713
+          },
+          "selected_defender_strategy": {
+            "action": "quarantine_sensor",
+            "action_payload": {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            "decision_source": "llm_defender",
+            "executor": {
+              "type": "ryu_rest"
+            },
+            "expected_effects": [
+              "drop_rules_active",
+              "counters_stopped"
+            ],
+            "id": "D1_quarantine_sen4",
+            "live_attack_type": null,
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+            "mode": "llm_defender",
+            "name": "Quarantine sen4",
+            "path": null,
+            "probability": 0.2462425229694964,
+            "scenario_id": "sen4_edge2_clouddb",
+            "target": "sen4",
+            "utility": 0.644379031175729
+          },
+          "strategy_layer": {
+            "selection": {
+              "attacker": {
+                "action": "sensor_to_edge_http_abuse",
+                "action_payload": null,
+                "executor": {
+                  "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+                  "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+                  "env": {
+                    "ATTACK_SENSOR_ID": "sen4",
+                    "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+                  },
+                  "name": "sensor_to_edge",
+                  "type": "caldera_adversary"
+                },
+                "expected_effects": [
+                  "gateway_seen",
+                  "worker_seen",
+                  "cloud_seen",
+                  "attack_effect_success"
+                ],
+                "id": "A2_sensor_http_abuse_sen4",
+                "live_attack_type": "sensor_to_edge_http_abuse",
+                "mode": "dominant",
+                "name": "Controlled sen4 HTTP telemetry abuse",
+                "path": [
+                  "sen4",
+                  "edge2_gw",
+                  "edge2_vm_s4",
+                  "cloud_db"
+                ],
+                "probability": 0.5053794991250206,
+                "scenario_id": "sen4_edge2_clouddb",
+                "target": "cloud_db",
+                "utility": 0.37006683345958713
+              },
+              "defender": {
+                "action": "quarantine_sensor",
+                "action_payload": {
+                  "action": "quarantine_sensor",
+                  "target": "sen4"
+                },
+                "executor": {
+                  "type": "ryu_rest"
+                },
+                "expected_effects": [
+                  "drop_rules_active",
+                  "counters_stopped"
+                ],
+                "id": "D1_quarantine_sen4",
+                "live_attack_type": null,
+                "mode": "llm_defender",
+                "name": "Quarantine sen4",
+                "path": null,
+                "probability": 0.2462425229694964,
+                "scenario_id": "sen4_edge2_clouddb",
+                "target": "sen4",
+                "utility": 0.644379031175729
+              }
+            },
+            "state": {
+              "attack_active": true,
+              "current_path": [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ],
+              "defense_active": false,
+              "mulval": {
+                "current_path_risk": 0.5,
+                "path_candidates": [
+                  {
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "base_edge2_path",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->cloud_db",
+                    "risk_score": 0.74,
+                    "scenario_id": "base_edge2_path",
+                    "source": "mulval_policy",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen6"
+                      },
+                      {
+                        "action": "reroute_traffic",
+                        "target": "sen6",
+                        "via": "s_edge2"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen6"
+                      }
+                    ],
+                    "entry_node": "sen6",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen6",
+                      "edge3_gw",
+                      "edge3_vm_s6",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen6_edge3_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "rate_limit",
+                        "kbps": 256,
+                        "target": "edge2_gw"
+                      },
+                      {
+                        "action": "isolate_sensor",
+                        "target": "edge2_gw"
+                      }
+                    ],
+                    "entry_node": "edge2_gw",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "edge2_gateway_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_candidates": [
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_paths": [
+                  [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ]
+                ],
+                "policy_path": "/home/reza/LLM_MTD_emo/integrations/mulval/outputs/base_edge2_policy.json",
+                "policy_scenario_id": "base_edge2_path"
+              },
+              "path_stage": 3,
+              "scenario_id": "sen4_edge2_clouddb"
+            }
+          }
+        },
+        "cloud_policy_decision": {
+          "json": {
+            "decision_source": "llm_defender",
+            "observe_only": false,
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "quarantine_sensor",
+                "decision_source": "llm_defender",
+                "llm_reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+                "source": "llm_defender",
+                "source_strategy_id": "D1_quarantine_sen4",
+                "target": "sen4"
+              },
+              "target": "sen4",
+              "type": "quarantine_sensor"
+            }
+          },
+          "reason": "llm_selected_direct_ryu_intent",
+          "status": "skipped"
+        },
+        "defense_event": {
+          "reason": "defender action was not confirmed by Ryu/controller metrics",
+          "status": "skipped"
+        },
+        "payload": {
+          "action": "quarantine_sensor",
+          "decision_source": "llm_defender",
+          "llm_reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+          "source": "llm_defender",
+          "source_strategy_id": "D1_quarantine_sen4",
+          "target": "sen4"
+        },
+        "status": "dry_run"
+      }
+    },
+    "execution_summary": {
+      "attacker": {
+        "attempted_path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "dispatch_http_status": 202,
+        "dispatch_ok": true,
+        "dispatch_url": "http://127.0.0.1:9000/caldera/dispatch",
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "operation_id": "18a412ae-e9a8-4531-9979-71924e73187b",
+        "status": "dispatched",
+        "strategy_id": "A2_sensor_http_abuse_sen4",
+        "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "cloud_policy": {
+          "accepted_keys": [
+            "caldera_result",
+            "selected_attacker_strategy",
+            "selected_defender_strategy",
+            "strategy_layer"
+          ],
+          "context_http_status": 202,
+          "context_ok": true,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "quarantine_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+              "source": "llm_defender",
+              "source_strategy_id": "D1_quarantine_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "quarantine_sensor"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {},
+          "status": "skipped",
+          "url": ""
+        },
+        "ryu_response": {
+          "action": "quarantine_sensor",
+          "active_policy_actions": 0,
+          "apply_duration_ms": 0.0,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "http_status": 0,
+          "meters_added": 0,
+          "ok": false,
+          "rule": "",
+          "status": "",
+          "target": "sen4",
+          "target_ips": []
+        },
+        "status": "dry_run",
+        "target": "sen4"
+      }
+    },
+    "inference": {
+      "attacker_execution_status": "dispatched",
+      "attacker_expected_effects": [
+        "gateway_seen",
+        "worker_seen",
+        "cloud_seen",
+        "attack_effect_success"
+      ],
+      "attacker_progressed": false,
+      "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "defender_execution_status": "dry_run",
+      "defender_expected_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "defender_strategy_id": "D1_quarantine_sen4",
+      "defense_applied": false,
+      "defense_containment_observed": false,
+      "defense_observed": false,
+      "path_frozen": true,
+      "path_stage_delta": 0
+    },
+    "llm": {
+      "confidence": 0.73,
+      "expected_qos_impact": 0.0,
+      "expected_security_gain": 0.64,
+      "fallback_reason": "",
+      "fallback_used": false,
+      "model": "llama3.1:latest",
+      "parse_success": true,
+      "provider": "ollama",
+      "reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true
+    },
+    "next_state": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "built_at": "2026-04-23T11:51:36.744972+00:00",
+      "counters_stopped": false,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": false,
+      "defense_success": false,
+      "drop_rules_active": false,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.5,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 0,
+        "controller_apply_ms": 0.01032499858411029,
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 0,
+        "meters_added": 0,
+        "total_cpu_seconds": 1259.573097316,
+        "total_memory_kb": 435716.0
+      },
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "qos": {
+        "edge_to_cloud_latency_ms": 3.104,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 2.728727272727273,
+        "throughput_bytes_per_second": 9560.142296374033
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 30929.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 14057.0,
+        "gateway_received": 14057.0,
+        "generated_total": 14064.0,
+        "worker_requests": 14059.0
+      }
+    },
+    "population_after": {
+      "attacker": {
+        "A2_sensor_http_abuse_sen4": 0.5053794991250206,
+        "A6_sen4_edge_to_cloud_probe": 0.4946205008749795
+      },
+      "defender": {
+        "D0_observe": 0.22758431030895235,
+        "D1_quarantine_sen4": 0.2462425229694964,
+        "D2_rate_limit_sen4": 0.24262108848970604,
+        "D3_isolate_edge2_gw_for_sen4": 0.14064064324703324,
+        "D4_isolate_edge2_vm_s4": 0.14291143498481196
+      }
+    },
+    "population_before": {
+      "attacker": {
+        "A2_sensor_http_abuse_sen4": 0.5028142266544947,
+        "A6_sen4_edge_to_cloud_probe": 0.4971857733455053
+      },
+      "defender": {
+        "D0_observe": 0.23377391100263642,
+        "D1_quarantine_sen4": 0.24109303061317636,
+        "D2_rate_limit_sen4": 0.24046076733703023,
+        "D3_isolate_edge2_gw_for_sen4": 0.14176628266643562,
+        "D4_isolate_edge2_vm_s4": 0.14290600838072134
+      }
+    },
+    "previous_state": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "built_at": "2026-04-23T11:48:28.532913+00:00",
+      "counters_stopped": false,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": false,
+      "defense_success": false,
+      "drop_rules_active": false,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.5,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 0,
+        "controller_apply_ms": 0.01032499858411029,
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 0,
+        "meters_added": 0,
+        "total_cpu_seconds": 1253.7609328170001,
+        "total_memory_kb": 435716.0
+      },
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "qos": {
+        "edge_to_cloud_latency_ms": 3.494,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 3.919727272727273,
+        "throughput_bytes_per_second": 9560.106387448137
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 30726.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 13964.0,
+        "gateway_received": 13964.0,
+        "generated_total": 13969.0,
+        "worker_requests": 13965.0
+      }
+    },
+    "recorded_at": "2026-04-23T11:51:36.745177+00:00",
+    "schema_version": "llm-mtd-stage-transition-v2",
+    "selection": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.5053794991250206,
+        "population_after_rank": 1,
+        "population_before": 0.5028142266544947,
+        "population_before_rank": 1,
+        "population_delta": 0.002565272470525848,
+        "probability": 0.5053794991250206,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.37006683345958713,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "action_payload": {
+          "action": "quarantine_sensor",
+          "target": "sen4"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Quarantine sen4",
+        "path": null,
+        "population_after": 0.2462425229694964,
+        "population_after_rank": 1,
+        "population_before": 0.24109303061317636,
+        "population_before_rank": 1,
+        "population_delta": 0.0051494923563200345,
+        "probability": 0.2462425229694964,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4",
+        "utility": 0.644379031175729,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 4,
+    "stage_summary": {
+      "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "controller_delta": {},
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D1_quarantine_sen4",
+      "execution": {
+        "attacker_status": "dispatched",
+        "defender_action": "quarantine_sensor",
+        "defender_status": "dry_run",
+        "defender_target": "sen4",
+        "defense_confirmed": false,
+        "stage_valid": true
+      },
+      "llm": {
+        "fallback_used": false,
+        "model": "llama3.1:latest",
+        "provider": "ollama",
+        "reasoning_summary": "Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked."
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms": 3.104,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": -0.191727272727273,
+        "throughput_bytes_per_second": -40.035909864325
+      },
+      "recorded_at": "2026-04-23T11:53:05.644411+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_effect_success": true,
+        "defense_success": false
+      },
+      "stage_id": 4,
+      "stage_validation": {
+        "comparable_stage": true,
+        "defense_applied": false,
+        "defense_confirmed": false,
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_valid": true,
+        "stage_kind": "experimental",
+        "stage_success": false
+      },
+      "summary_text": "Stage 4 for sen4_edge2_clouddb: attacker A2_sensor_http_abuse_sen4 met defender D1_quarantine_sen4. The defender choice focused on quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progress would be blocked. After execution the path stage was 3, and the observed outcome was attack remained active after the defender stage."
+    },
+    "stage_validation": {
+      "comparable_stage": true,
+      "defense_applied": false,
+      "defense_confirmed": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_valid": true,
+      "stage_kind": "experimental",
+      "stage_success": false
+    },
+    "state_summary": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "attack_success": true,
+      "cloud_seen": true,
+      "controller_active_actions": 0,
+      "counters_stopped": false,
+      "defense_active": false,
+      "defense_success": false,
+      "drop_rules_active": false,
+      "flow_rules_installed": 0,
+      "gateway_seen": true,
+      "meters_added": 0,
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": true
+    },
+    "transition_id": "d4d5345401ba493e8df934ce014e24ec"
+  }
+}

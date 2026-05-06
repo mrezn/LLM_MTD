@@ -1,0 +1,661 @@
+{
+  "schema_version": "llm-mtd-strategy-space-v1",
+  "description": "Game-ready attacker and defender strategy registry for the LLM_MTD_emo lab.",
+  "game_parameters": {
+    "eta_attacker": 0.18,
+    "eta_defender": 0.22,
+    "omega_ac": 0.65,
+    "omega_gp": 0.25,
+    "omega_dc": 0.70,
+    "omega_r": 0.10,
+    "regulatory_beta": 0.18,
+    "selection_mode": "dominant"
+  },
+  "attacker_strategies": [
+    {
+      "id": "A1_sensor_probe_sen4",
+      "name": "Probe sen4 to Edge 2 path",
+      "scenario_id": "sen4_edge2_clouddb",
+      "entry_node": "sen4",
+      "path": ["sen4", "edge2_gw", "edge2_vm_s4", "cloud_db"],
+      "target_asset": "cloud_db",
+      "live_attack_type": "sensor_to_edge_probe",
+      "layer": "sensor_edge",
+      "executor": {
+        "type": "caldera_adversary",
+        "name": "sensor_to_edge",
+        "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+        "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+        "phase_hint": "discovery"
+      },
+      "preconditions": ["sen4 agent alive", "edge2_gw reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 1,
+        "blocked_flags": ["counters_stopped"]
+      },
+      "expected_effects": ["entry_node_present", "gateway_seen"],
+      "attack_cost": {
+        "time": 0.12,
+        "resource": 0.08,
+        "knowledge": 0.12,
+        "risk": 0.08,
+        "detectability": 0.10
+      },
+      "base_cost": 0.14,
+      "base_reward": 0.35,
+      "target_criticality": 0.82,
+      "regulatory_beta": 0.10
+    },
+    {
+      "id": "A2_sensor_http_abuse_sen4",
+      "name": "Controlled sen4 HTTP telemetry abuse",
+      "scenario_id": "sen4_edge2_clouddb",
+      "entry_node": "sen4",
+      "path": ["sen4", "edge2_gw", "edge2_vm_s4", "cloud_db"],
+      "target_asset": "cloud_db",
+      "live_attack_type": "sensor_to_edge_http_abuse",
+      "layer": "sensor_edge_cloud",
+      "executor": {
+        "type": "caldera_adversary",
+        "name": "sensor_to_edge",
+        "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+        "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+        "env": {
+          "ATTACK_SENSOR_ID": "sen4",
+          "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+        }
+      },
+      "preconditions": ["sen4 agent alive", "edge2_gw reachable", "edge2_vm_s4 worker reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "blocked_flags": ["counters_stopped"]
+      },
+      "expected_effects": ["gateway_seen", "worker_seen", "cloud_seen", "attack_effect_success"],
+      "attack_cost": {
+        "time": 0.28,
+        "resource": 0.22,
+        "knowledge": 0.20,
+        "risk": 0.24,
+        "detectability": 0.32
+      },
+      "base_cost": 0.35,
+      "base_reward": 0.82,
+      "target_criticality": 0.82,
+      "regulatory_beta": 0.18
+    },
+    {
+      "id": "A6_sen4_edge_to_cloud_probe",
+      "name": "Probe cloud reachability after sen4 Edge 2 pivot",
+      "scenario_id": "sen4_edge2_clouddb",
+      "entry_node": "sen4",
+      "path": ["sen4", "edge2_gw", "edge2_vm_s4", "cloud_db"],
+      "target_asset": "cloud_db",
+      "live_attack_type": "edge_to_cloud_probe",
+      "layer": "edge_cloud",
+      "executor": {
+        "type": "caldera_adversary",
+        "name": "edge_to_cloud",
+        "adversary_file": "integrations/caldera/adversaries/edge_to_cloud.yml",
+        "adversary_yaml_id": "7a0bcb0f-1ad5-494a-847d-75a746377a47",
+        "phase_hint": "discovery",
+        "env": {
+          "SCENARIO_ID": "sen4_edge2_clouddb",
+          "ENTRY_NODE": "edge2_vm_s4"
+        }
+      },
+      "preconditions": ["sen4 path plausible in MulVAL", "edge2_vm_s4 reachable", "cloud_db reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "blocked_flags": ["counters_stopped"],
+        "requires_mulval_path": true
+      },
+      "expected_effects": ["cloud_seen", "cloud_summary_rate_changes"],
+      "attack_cost": {
+        "time": 0.20,
+        "resource": 0.14,
+        "knowledge": 0.22,
+        "risk": 0.20,
+        "detectability": 0.22
+      },
+      "base_cost": 0.28,
+      "base_reward": 0.58,
+      "target_criticality": 0.82,
+      "regulatory_beta": 0.16
+    },
+    {
+      "id": "A3_dual_homed_http_abuse_sen6",
+      "name": "Dual-homed sen6 Edge 3 path abuse",
+      "scenario_id": "sen6_edge3_clouddb",
+      "entry_node": "sen6",
+      "path": ["sen6", "edge3_gw", "edge3_vm_s6", "cloud_db"],
+      "target_asset": "cloud_db",
+      "live_attack_type": "dual_homed_sensor_path_abuse",
+      "layer": "sensor_edge_cloud",
+      "executor": {
+        "type": "caldera_adversary",
+        "name": "dual_homed_sensor_path",
+        "adversary_file": "integrations/caldera/adversaries/dual_homed_sensor_path.yml",
+        "adversary_yaml_id": "588894b1-aa2c-4e7a-ad72-f46e319417a8",
+        "env": {
+          "ATTACK_SENSOR_ID": "sen6"
+        }
+      },
+      "preconditions": ["sen6 agent alive", "edge2_gw reachable", "edge3_gw reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "blocked_flags": ["counters_stopped"]
+      },
+      "expected_effects": ["gateway_seen", "worker_seen", "cloud_seen", "path_shift_pressure"],
+      "attack_cost": {
+        "time": 0.35,
+        "resource": 0.28,
+        "knowledge": 0.35,
+        "risk": 0.30,
+        "detectability": 0.36
+      },
+      "base_cost": 0.45,
+      "base_reward": 0.86,
+      "target_criticality": 0.82,
+      "regulatory_beta": 0.20
+    },
+    {
+      "id": "A7_edge3_path_pressure_sen6",
+      "name": "Increase pressure on sen6 Edge 3 path",
+      "scenario_id": "sen6_edge3_clouddb",
+      "entry_node": "sen6",
+      "path": ["sen6", "edge3_gw", "edge3_vm_s6", "cloud_db"],
+      "target_asset": "cloud_db",
+      "live_attack_type": "edge3_path_pressure",
+      "layer": "sensor_edge_cloud",
+      "executor": {
+        "type": "caldera_adversary",
+        "name": "dual_homed_sensor_path",
+        "adversary_file": "integrations/caldera/adversaries/dual_homed_sensor_path.yml",
+        "adversary_yaml_id": "588894b1-aa2c-4e7a-ad72-f46e319417a8",
+        "env": {
+          "ATTACK_SENSOR_ID": "sen6",
+          "TARGET_GATEWAYS": "http://10.0.3.1:8000/telemetry"
+        }
+      },
+      "preconditions": ["sen6 Edge 3 path plausible", "edge3_gw reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "blocked_flags": ["counters_stopped"],
+        "requires_mulval_path": true
+      },
+      "expected_effects": ["gateway_seen", "worker_seen", "path_shift_pressure"],
+      "attack_cost": {
+        "time": 0.30,
+        "resource": 0.26,
+        "knowledge": 0.32,
+        "risk": 0.28,
+        "detectability": 0.34
+      },
+      "base_cost": 0.40,
+      "base_reward": 0.78,
+      "target_criticality": 0.82,
+      "regulatory_beta": 0.20
+    },
+    {
+      "id": "A8_sen6_alternate_edge2_probe",
+      "name": "Probe sen6 alternate Edge 2 path",
+      "scenario_id": "sen6_edge3_clouddb",
+      "entry_node": "sen6",
+      "path": ["sen6", "edge2_gw", "edge2_vm_s6", "cloud_db"],
+      "target_asset": "cloud_db",
+      "live_attack_type": "dual_homed_alternate_path_probe",
+      "layer": "sensor_edge_cloud",
+      "executor": {
+        "type": "caldera_adversary",
+        "name": "dual_homed_sensor_path",
+        "adversary_file": "integrations/caldera/adversaries/dual_homed_sensor_path.yml",
+        "adversary_yaml_id": "588894b1-aa2c-4e7a-ad72-f46e319417a8",
+        "env": {
+          "ATTACK_SENSOR_ID": "sen6",
+          "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+        }
+      },
+      "preconditions": ["sen6 dual-homed alternative exists", "edge2_gw reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "blocked_flags": ["counters_stopped"],
+        "dual_homed_alternative": true
+      },
+      "expected_effects": ["gateway_seen", "alternate_path_viable"],
+      "attack_cost": {
+        "time": 0.22,
+        "resource": 0.18,
+        "knowledge": 0.26,
+        "risk": 0.20,
+        "detectability": 0.24
+      },
+      "base_cost": 0.32,
+      "base_reward": 0.62,
+      "target_criticality": 0.82,
+      "regulatory_beta": 0.16
+    },
+    {
+      "id": "A4_edge2_gateway_cloud_probe",
+      "name": "Probe cloud reachability from Edge 2 gateway path",
+      "scenario_id": "edge2_gateway_clouddb",
+      "entry_node": "edge2_gw",
+      "path": ["edge2_gw", "edge2_vm_s4", "cloud_db"],
+      "target_asset": "cloud_db",
+      "live_attack_type": "edge_gateway_service_probe",
+      "layer": "edge_cloud",
+      "executor": {
+        "type": "caldera_adversary",
+        "name": "edge_to_cloud",
+        "adversary_file": "integrations/caldera/adversaries/edge_to_cloud.yml",
+        "adversary_yaml_id": "7a0bcb0f-1ad5-494a-847d-75a746377a47",
+        "phase_hint": "discovery"
+      },
+      "preconditions": ["edge2 gateway-side agent alive", "cloud_db reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 2,
+        "blocked_flags": ["counters_stopped"]
+      },
+      "expected_effects": ["cloud_seen"],
+      "attack_cost": {
+        "time": 0.18,
+        "resource": 0.12,
+        "knowledge": 0.20,
+        "risk": 0.18,
+        "detectability": 0.20
+      },
+      "base_cost": 0.26,
+      "base_reward": 0.50,
+      "target_criticality": 0.82,
+      "regulatory_beta": 0.14
+    },
+    {
+      "id": "A5_edge2_gateway_service_abuse",
+      "name": "Abuse Edge 2 gateway service toward cloud",
+      "scenario_id": "edge2_gateway_clouddb",
+      "entry_node": "edge2_gw",
+      "path": ["edge2_gw", "edge2_vm_s4", "cloud_db"],
+      "target_asset": "cloud_db",
+      "live_attack_type": "edge_gateway_service_abuse",
+      "layer": "edge_cloud",
+      "executor": {
+        "type": "caldera_adversary",
+        "name": "edge_to_cloud",
+        "adversary_file": "integrations/caldera/adversaries/edge_to_cloud.yml",
+        "adversary_yaml_id": "7a0bcb0f-1ad5-494a-847d-75a746377a47"
+      },
+      "preconditions": ["edge2 gateway-side foothold", "edge2_vm_s4 reachable", "cloud_db reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "blocked_flags": ["counters_stopped"]
+      },
+      "expected_effects": ["worker_seen", "cloud_seen", "attack_effect_success"],
+      "attack_cost": {
+        "time": 0.35,
+        "resource": 0.30,
+        "knowledge": 0.36,
+        "risk": 0.32,
+        "detectability": 0.38
+      },
+      "base_cost": 0.55,
+      "base_reward": 0.78,
+      "target_criticality": 0.82,
+      "regulatory_beta": 0.22
+    },
+    {
+      "id": "A9_edge2_worker_request_pressure",
+      "name": "Increase worker requests on edge2_vm_s4",
+      "scenario_id": "edge2_gateway_clouddb",
+      "entry_node": "edge2_gw",
+      "path": ["edge2_gw", "edge2_vm_s4", "cloud_db"],
+      "target_asset": "cloud_db",
+      "live_attack_type": "worker_request_pressure",
+      "layer": "edge",
+      "executor": {
+        "type": "caldera_adversary",
+        "name": "edge_to_cloud",
+        "adversary_file": "integrations/caldera/adversaries/edge_to_cloud.yml",
+        "adversary_yaml_id": "7a0bcb0f-1ad5-494a-847d-75a746377a47"
+      },
+      "preconditions": ["edge2_gw foothold", "edge2_vm_s4 reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "blocked_flags": ["counters_stopped"],
+        "requires_mulval_path": true
+      },
+      "expected_effects": ["worker_seen", "worker_requests_increase"],
+      "attack_cost": {
+        "time": 0.28,
+        "resource": 0.24,
+        "knowledge": 0.30,
+        "risk": 0.26,
+        "detectability": 0.30
+      },
+      "base_cost": 0.38,
+      "base_reward": 0.66,
+      "target_criticality": 0.82,
+      "regulatory_beta": 0.18
+    }
+  ],
+  "defender_strategies": [
+    {
+      "id": "D0_observe",
+      "name": "Observe and log current strategy context",
+      "scenario_id": "*",
+      "action": "observe",
+      "target": "",
+      "layer": "controller_policy",
+      "executor": {
+        "type": "cloud_policy"
+      },
+      "preconditions": ["always available"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3
+      },
+      "expected_effects": ["strategy_context_recorded"],
+      "defense_cost": {
+        "attack_surface_shifting": 0.00,
+        "negative_service_impact": 0.00,
+        "attack_identification": 0.08
+      },
+      "action_payload": {
+        "action": "observe"
+      },
+      "base_cost": 0.02,
+      "base_reward": 0.05,
+      "incentive_reward": 0.04
+    },
+    {
+      "id": "D1_quarantine_sen4",
+      "name": "Quarantine sen4",
+      "scenario_id": "sen4_edge2_clouddb",
+      "action": "quarantine_sensor",
+      "target": "sen4",
+      "layer": "sensor_edge",
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "preconditions": ["sen4 seen in attack path", "Ryu controller reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "target_in_path": true,
+        "requires_controller": true
+      },
+      "expected_effects": ["drop_rules_active", "counters_stopped"],
+      "defense_cost": {
+        "attack_surface_shifting": 0.30,
+        "negative_service_impact": 0.32,
+        "attack_identification": 0.18
+      },
+      "action_payload": {
+        "action": "quarantine_sensor",
+        "target": "sen4"
+      },
+      "base_cost": 0.20,
+      "base_reward": 0.75,
+      "incentive_reward": 0.06
+    },
+    {
+      "id": "D2_rate_limit_sen4",
+      "name": "Rate-limit sen4",
+      "scenario_id": "sen4_edge2_clouddb",
+      "action": "rate_limit",
+      "target": "sen4",
+      "layer": "sensor_edge",
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "preconditions": ["sen4 traffic observed", "Ryu controller reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "target_in_path": true,
+        "requires_controller": true
+      },
+      "expected_effects": ["throttled_traffic", "lower_gateway_queue"],
+      "defense_cost": {
+        "attack_surface_shifting": 0.12,
+        "negative_service_impact": 0.18,
+        "attack_identification": 0.18
+      },
+      "action_payload": {
+        "action": "rate_limit",
+        "target": "sen4",
+        "kbps": 128
+      },
+      "base_cost": 0.13,
+      "base_reward": 0.55,
+      "incentive_reward": 0.04
+    },
+    {
+      "id": "D3_isolate_edge2_gw_for_sen4",
+      "name": "Isolate Edge 2 gateway for sen4 path",
+      "scenario_id": "sen4_edge2_clouddb",
+      "action": "isolate_sensor",
+      "target": "edge2_gw",
+      "layer": "edge",
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "preconditions": ["edge2_gw is in active path", "Ryu controller reachable"],
+      "activation": {
+        "min_path_stage": 1,
+        "max_path_stage": 3,
+        "target_in_path": true,
+        "requires_controller": true
+      },
+      "expected_effects": ["gateway_blocked", "path_broken"],
+      "defense_cost": {
+        "attack_surface_shifting": 0.46,
+        "negative_service_impact": 0.64,
+        "attack_identification": 0.24
+      },
+      "action_payload": {
+        "action": "isolate_sensor",
+        "target": "edge2_gw"
+      },
+      "base_cost": 0.42,
+      "base_reward": 0.82,
+      "incentive_reward": 0.05
+    },
+    {
+      "id": "D4_isolate_edge2_vm_s4",
+      "name": "Isolate Edge 2 worker for sen4",
+      "scenario_id": "sen4_edge2_clouddb",
+      "action": "isolate_sensor",
+      "target": "edge2_vm_s4",
+      "layer": "edge",
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "preconditions": ["edge2_vm_s4 is in active path", "Ryu controller reachable"],
+      "activation": {
+        "min_path_stage": 2,
+        "max_path_stage": 3,
+        "target_in_path": true,
+        "requires_controller": true
+      },
+      "expected_effects": ["worker_blocked", "cloud_progression_suppressed"],
+      "defense_cost": {
+        "attack_surface_shifting": 0.34,
+        "negative_service_impact": 0.42,
+        "attack_identification": 0.28
+      },
+      "action_payload": {
+        "action": "isolate_sensor",
+        "target": "edge2_vm_s4"
+      },
+      "base_cost": 0.32,
+      "base_reward": 0.74,
+      "incentive_reward": 0.05
+    },
+    {
+      "id": "D5_quarantine_sen6",
+      "name": "Quarantine dual-homed sen6",
+      "scenario_id": "sen6_edge3_clouddb",
+      "action": "quarantine_sensor",
+      "target": "sen6",
+      "layer": "sensor_edge",
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "preconditions": ["sen6 seen in attack path", "Ryu controller reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "target_in_path": true,
+        "requires_controller": true
+      },
+      "expected_effects": ["drop_rules_active", "counters_stopped"],
+      "defense_cost": {
+        "attack_surface_shifting": 0.38,
+        "negative_service_impact": 0.46,
+        "attack_identification": 0.20
+      },
+      "action_payload": {
+        "action": "quarantine_sensor",
+        "target": "sen6"
+      },
+      "base_cost": 0.28,
+      "base_reward": 0.78,
+      "incentive_reward": 0.06
+    },
+    {
+      "id": "D6_reroute_sen6_to_edge2",
+      "name": "Reroute sen6 away from Edge 3",
+      "scenario_id": "sen6_edge3_clouddb",
+      "action": "reroute_traffic",
+      "target": "sen6",
+      "layer": "sensor_edge",
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "preconditions": ["sen6 is dual-homed", "Ryu controller reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "target_in_path": true,
+        "requires_controller": true
+      },
+      "expected_effects": ["edge3_path_blocked", "traffic_prefers_edge2"],
+      "defense_cost": {
+        "attack_surface_shifting": 0.32,
+        "negative_service_impact": 0.22,
+        "attack_identification": 0.24
+      },
+      "action_payload": {
+        "action": "reroute_traffic",
+        "target": "sen6",
+        "via": "s_edge2"
+      },
+      "base_cost": 0.24,
+      "base_reward": 0.70,
+      "incentive_reward": 0.06
+    },
+    {
+      "id": "D7_rate_limit_sen6",
+      "name": "Rate-limit sen6",
+      "scenario_id": "sen6_edge3_clouddb",
+      "action": "rate_limit",
+      "target": "sen6",
+      "layer": "sensor_edge",
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "preconditions": ["sen6 traffic observed", "Ryu controller reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "target_in_path": true,
+        "requires_controller": true
+      },
+      "expected_effects": ["throttled_traffic", "lower_gateway_queue"],
+      "defense_cost": {
+        "attack_surface_shifting": 0.14,
+        "negative_service_impact": 0.20,
+        "attack_identification": 0.18
+      },
+      "action_payload": {
+        "action": "rate_limit",
+        "target": "sen6",
+        "kbps": 128
+      },
+      "base_cost": 0.15,
+      "base_reward": 0.56,
+      "incentive_reward": 0.04
+    },
+    {
+      "id": "D8_rate_limit_edge2_gw",
+      "name": "Rate-limit Edge 2 gateway",
+      "scenario_id": "edge2_gateway_clouddb",
+      "action": "rate_limit",
+      "target": "edge2_gw",
+      "layer": "edge",
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "preconditions": ["edge2_gw traffic observed", "Ryu controller reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "target_in_path": true,
+        "requires_controller": true
+      },
+      "expected_effects": ["throttled_gateway_traffic"],
+      "defense_cost": {
+        "attack_surface_shifting": 0.20,
+        "negative_service_impact": 0.34,
+        "attack_identification": 0.22
+      },
+      "action_payload": {
+        "action": "rate_limit",
+        "target": "edge2_gw",
+        "kbps": 256
+      },
+      "base_cost": 0.25,
+      "base_reward": 0.58,
+      "incentive_reward": 0.04
+    },
+    {
+      "id": "D9_isolate_edge2_gw",
+      "name": "Isolate Edge 2 gateway",
+      "scenario_id": "edge2_gateway_clouddb",
+      "action": "isolate_sensor",
+      "target": "edge2_gw",
+      "layer": "edge",
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "preconditions": ["edge2_gw is active attack foothold", "Ryu controller reachable"],
+      "activation": {
+        "min_path_stage": 0,
+        "max_path_stage": 3,
+        "target_in_path": true,
+        "requires_controller": true
+      },
+      "expected_effects": ["gateway_blocked", "path_broken"],
+      "defense_cost": {
+        "attack_surface_shifting": 0.48,
+        "negative_service_impact": 0.66,
+        "attack_identification": 0.26
+      },
+      "action_payload": {
+        "action": "isolate_sensor",
+        "target": "edge2_gw"
+      },
+      "base_cost": 0.45,
+      "base_reward": 0.80,
+      "incentive_reward": 0.05
+    }
+  ]
+}

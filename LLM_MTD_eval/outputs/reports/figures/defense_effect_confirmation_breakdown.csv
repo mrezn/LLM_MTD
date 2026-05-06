@@ -1,0 +1,3 @@
+method,defense_executed,defense_confirmed,defense_effects_confirmed,defense_success,method_label
+baseline_game,0.3076923076923077,0.0,0.0,0.15384615384615385,Baseline game
+llm_defender,0.7777777777777778,0.7777777777777778,0.4444444444444444,0.0,LLM defender

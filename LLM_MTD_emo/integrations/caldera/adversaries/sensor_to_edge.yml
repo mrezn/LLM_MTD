@@ -1,0 +1,8 @@
+id: c9bdece2-df3a-4c3f-bb70-31ff46bb7351
+name: LLM MTD sensor to edge
+description: Short manual adversary for sen4 -> edge2_gw -> edge2_vm_s4.
+phases:
+  1:
+    - 87b6de2e-fcb6-4f44-9a7e-79af476c7d41 # LLM MTD sensor probe
+  2:
+    - 62e7655e-dc3e-49e2-9564-220d7c15582e # controlled edge HTTP telemetry load

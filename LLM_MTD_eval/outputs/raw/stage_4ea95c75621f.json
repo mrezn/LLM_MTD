@@ -1,0 +1,1714 @@
+{
+  "active": {
+    "attacker_ids": [
+      "A1_sensor_probe_sen4",
+      "A2_sensor_http_abuse_sen4",
+      "A6_sen4_edge_to_cloud_probe"
+    ],
+    "attackers": [
+      {
+        "action": "sensor_to_edge_probe",
+        "base_cost": 0.14,
+        "base_reward": 0.35,
+        "expected_effects": [
+          "entry_node_present",
+          "gateway_seen"
+        ],
+        "id": "A1_sensor_probe_sen4",
+        "name": "Probe sen4 to Edge 2 path",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db"
+      },
+      {
+        "action": "sensor_to_edge_http_abuse",
+        "base_cost": 0.35,
+        "base_reward": 0.82,
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db"
+      },
+      {
+        "action": "edge_to_cloud_probe",
+        "base_cost": 0.28,
+        "base_reward": 0.58,
+        "expected_effects": [
+          "cloud_seen",
+          "cloud_summary_rate_changes"
+        ],
+        "id": "A6_sen4_edge_to_cloud_probe",
+        "name": "Probe cloud reachability after sen4 Edge 2 pivot",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db"
+      }
+    ],
+    "defender_ids": [
+      "D0_observe",
+      "D1_quarantine_sen4",
+      "D2_rate_limit_sen4"
+    ],
+    "defenders": [
+      {
+        "action": "observe",
+        "base_cost": 0.02,
+        "base_reward": 0.05,
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "name": "Observe and log current strategy context",
+        "scenario_id": "*",
+        "target": ""
+      },
+      {
+        "action": "quarantine_sensor",
+        "base_cost": 0.2,
+        "base_reward": 0.75,
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "name": "Quarantine sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4"
+      },
+      {
+        "action": "rate_limit",
+        "base_cost": 0.13,
+        "base_reward": 0.55,
+        "expected_effects": [
+          "throttled_traffic",
+          "lower_gateway_queue"
+        ],
+        "id": "D2_rate_limit_sen4",
+        "name": "Rate-limit sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4"
+      }
+    ]
+  },
+  "decision_source": "llm_defender",
+  "decision_trace": {
+    "average_utility": {
+      "attacker": 0.040709829419999954,
+      "defender": 0.05241648733734526
+    },
+    "baseline_game_prior": {
+      "attacker": {
+        "action": "sensor_to_edge_probe",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "name": "sensor_to_edge",
+          "phase_hint": "discovery",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "entry_node_present",
+          "gateway_seen"
+        ],
+        "id": "A1_sensor_probe_sen4",
+        "live_attack_type": "sensor_to_edge_probe",
+        "mode": "dominant",
+        "name": "Probe sen4 to Edge 2 path",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.3347695207773333,
+        "population_after_rank": 1,
+        "population_before": 0.3333333333333333,
+        "population_before_rank": 1,
+        "population_delta": 0.001436187443999981,
+        "probability": 0.3347695207773333,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.06464628681999994,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "observe",
+        "action_payload": {
+          "action": "observe"
+        },
+        "executor": {
+          "type": "cloud_policy"
+        },
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "live_attack_type": null,
+        "mode": "llm_defender_recovered",
+        "name": "Observe and log current strategy context",
+        "path": null,
+        "population_after": 0.3347057014814815,
+        "population_after_rank": 1,
+        "population_before": 0.3333333333333333,
+        "population_before_rank": 1,
+        "population_delta": 0.001372368148148173,
+        "probability": 0.3347057014814815,
+        "scenario_id": "*",
+        "target": null,
+        "utility": 0.07113059844845637,
+        "utility_rank": 1
+      }
+    },
+    "decision_source": "llm_defender",
+    "execution": {
+      "attacker": {
+        "attempted_path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "expected_effects": [
+          "entry_node_present",
+          "gateway_seen"
+        ],
+        "live_attack_type": "sensor_to_edge_probe",
+        "operation_id": "",
+        "status": "dry_run",
+        "strategy_id": "A1_sensor_probe_sen4",
+        "strategy_name": "Probe sen4 to Edge 2 path"
+      },
+      "defender": {
+        "action": "observe",
+        "cloud_policy": {
+          "accepted_keys": [
+            "caldera_result",
+            "selected_attacker_strategy",
+            "selected_defender_strategy",
+            "strategy_layer"
+          ],
+          "context_http_status": 202,
+          "context_ok": true,
+          "decision_http_status": 200,
+          "decision_ok": true,
+          "external_context": {
+            "attempted_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "caldera_success": null,
+            "defense_action": "",
+            "defense_success": null,
+            "entry_node": "sen4",
+            "first_mulval_path": [],
+            "mulval_path_count": 0,
+            "operation_id": "strategy-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb"
+          },
+          "observe_only": true,
+          "selected_action": {
+            "enforcement_owner": "ryu",
+            "ovs_direct_manipulation": false,
+            "reason": "strategy layer selected defender action",
+            "ryu_intent": {
+              "action": "observe",
+              "source": "cloud_policy",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "observe"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {},
+          "status": "skipped",
+          "url": ""
+        },
+        "ryu_response": {
+          "action": "observe",
+          "active_policy_actions": 0,
+          "apply_duration_ms": 0.0,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "http_status": 0,
+          "meters_added": 0,
+          "ok": false,
+          "rule": "",
+          "status": "",
+          "target": "sen4",
+          "target_ips": []
+        },
+        "status": "observe_only",
+        "target": "sen4"
+      }
+    },
+    "llm": {
+      "confidence": 0.0,
+      "expected_qos_impact": 0.0,
+      "expected_security_gain": 0.0,
+      "fallback_reason": "malformed_response_json:JSONDecodeError",
+      "fallback_used": true,
+      "model": "gpt-oss:20b",
+      "provider": "ollama",
+      "reasoning_summary": "We need to choose one defender strategy ID from active candidates."
+    },
+    "recorded_at": "2026-04-23T10:03:19.373193+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "schema_version": "llm-mtd-decision-trace-v1",
+    "selection": {
+      "attacker": {
+        "action": "sensor_to_edge_probe",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "name": "sensor_to_edge",
+          "phase_hint": "discovery",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "entry_node_present",
+          "gateway_seen"
+        ],
+        "id": "A1_sensor_probe_sen4",
+        "live_attack_type": "sensor_to_edge_probe",
+        "mode": "dominant",
+        "name": "Probe sen4 to Edge 2 path",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.3347695207773333,
+        "population_after_rank": 1,
+        "population_before": 0.3333333333333333,
+        "population_before_rank": 1,
+        "population_delta": 0.001436187443999981,
+        "probability": 0.3347695207773333,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.06464628681999994,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "observe",
+        "action_payload": {
+          "action": "observe"
+        },
+        "executor": {
+          "type": "cloud_policy"
+        },
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "live_attack_type": null,
+        "mode": "llm_defender_recovered",
+        "name": "Observe and log current strategy context",
+        "path": null,
+        "population_after": 0.3347057014814815,
+        "population_after_rank": 1,
+        "population_before": 0.3333333333333333,
+        "population_before_rank": 1,
+        "population_delta": 0.001372368148148173,
+        "probability": 0.3347057014814815,
+        "scenario_id": "*",
+        "target": null,
+        "utility": 0.07113059844845637,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 1,
+    "stage_summary": {
+      "attacker_strategy_id": "A1_sensor_probe_sen4",
+      "controller_delta": {
+        "active_policy_actions_delta": 0.0,
+        "flow_rules_installed_delta": 0.0,
+        "meters_added_delta": 0.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D0_observe",
+      "execution": {
+        "attacker_status": "dry_run",
+        "defender_action": "observe",
+        "defender_status": "observe_only",
+        "defender_target": "sen4"
+      },
+      "llm": {
+        "fallback_used": true,
+        "model": "gpt-oss:20b",
+        "provider": "ollama",
+        "reasoning_summary": "We need to choose one defender strategy ID from active candidates."
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms_delta": -0.003,
+        "loss_rate_delta": 0.0,
+        "sensor_to_edge_latency_ms_delta": -3.411091,
+        "throughput_bytes_per_second_delta": 0.0
+      },
+      "recorded_at": "2026-04-23T10:04:52.241733+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_effect_success": false,
+        "defense_success": false
+      },
+      "stage_id": 1,
+      "summary_text": "Stage 1 for sen4_edge2_clouddb: attacker A1_sensor_probe_sen4 met defender D0_observe. The defender choice focused on we need to choose one defender strategy id from active candidates. After execution the path stage was 0, and the observed outcome was attack pressure reduced."
+    },
+    "state_summary": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "attack_success": false,
+      "cloud_seen": false,
+      "controller_active_actions": 0,
+      "counters_stopped": false,
+      "defense_active": false,
+      "defense_success": false,
+      "drop_rules_active": false,
+      "flow_rules_installed": 0,
+      "gateway_seen": false,
+      "meters_added": 0,
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": false
+    },
+    "transition_id": "801419b9dbc2438cb62dcd287b9631e7"
+  },
+  "execution": {
+    "attacker": {
+      "plan": {
+        "bridge_logger_url": "http://127.0.0.1:32825/attack/event",
+        "bridge_policy_url": "http://127.0.0.1:32824/context",
+        "caldera_adversary": "sensor_to_edge",
+        "caldera_adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+        "caldera_adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+        "caldera_env": {
+          "ATTACK_SENSOR_ID": "sen4",
+          "ENTRY_NODE": "sen4",
+          "SCENARIO_ID": "sen4_edge2_clouddb"
+        },
+        "caldera_target_hosts": [
+          "sen4"
+        ],
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "name": "sensor_to_edge",
+          "phase_hint": "discovery",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "entry_node_present",
+          "gateway_seen"
+        ],
+        "live_attack_type": "sensor_to_edge_probe",
+        "mulval": {
+          "current_path_risk": 0.5,
+          "plausible_paths": [
+            [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ]
+          ]
+        },
+        "note": "Dispatch this plan to Caldera manually or through --attacker-dispatch-url. The first lab workflow still keeps Caldera operation launch outside this repo.",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "scenario_id": "sen4_edge2_clouddb",
+        "strategy_id": "A1_sensor_probe_sen4",
+        "strategy_name": "Probe sen4 to Edge 2 path"
+      },
+      "status": "dry_run"
+    },
+    "defender": {
+      "cloud_policy_context": {
+        "body": "{\"accepted_keys\": [\"caldera_result\", \"selected_attacker_strategy\", \"selected_defender_strategy\", \"strategy_layer\"], \"observe_only\": true, \"status\": \"accepted\"}",
+        "error": "",
+        "ok": true,
+        "status": 202,
+        "url": "http://127.0.0.1:32824/context"
+      },
+      "cloud_policy_decision": {
+        "body": "{\"external_context\": {\"attempted_path\": [\"sen4\", \"edge2_gw\", \"edge2_vm_s4\", \"cloud_db\"], \"caldera_success\": null, \"defense_action\": \"\", \"defense_success\": null, \"entry_node\": \"sen4\", \"first_mulval_path\": [], \"mulval_path_count\": 0, \"operation_id\": \"strategy-sen4_edge2_clouddb\", \"scenario_id\": \"sen4_edge2_clouddb\"}, \"llm_policy_provider\": \"disabled\", \"observe_only\": true, \"policy_mode\": \"game-baseline\", \"scores\": {\"max_drops\": 0.0, \"max_latency_ms\": 4.74790909090909, \"max_queue\": 0.0}, \"selected_action\": {\"enforcement_owner\": \"ryu\", \"ovs_direct_manipulation\": false, \"reason\": \"strategy layer selected defender action\", \"ryu_intent\": {\"action\": \"observe\", \"source\": \"cloud_policy\", \"target\": \"sen4\"}, \"target\": \"sen4\", \"type\": \"observe\"}, \"selected_at\": \"2026-04-23T10:03:19.330069+00:00\"}",
+        "error": "",
+        "json": {
+          "external_context": {
+            "attempted_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "caldera_success": null,
+            "defense_action": "",
+            "defense_success": null,
+            "entry_node": "sen4",
+            "first_mulval_path": [],
+            "mulval_path_count": 0,
+            "operation_id": "strategy-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb"
+          },
+          "llm_policy_provider": "disabled",
+          "observe_only": true,
+          "policy_mode": "game-baseline",
+          "scores": {
+            "max_drops": 0.0,
+            "max_latency_ms": 4.74790909090909,
+            "max_queue": 0.0
+          },
+          "selected_action": {
+            "enforcement_owner": "ryu",
+            "ovs_direct_manipulation": false,
+            "reason": "strategy layer selected defender action",
+            "ryu_intent": {
+              "action": "observe",
+              "source": "cloud_policy",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "observe"
+          },
+          "selected_at": "2026-04-23T10:03:19.330069+00:00"
+        },
+        "ok": true,
+        "status": 200,
+        "url": "http://127.0.0.1:32824/decide"
+      },
+      "defense_event": {
+        "reason": "defender action was not confirmed by Ryu/controller metrics",
+        "status": "skipped"
+      },
+      "payload": {
+        "action": "observe",
+        "source": "cloud_policy",
+        "target": "sen4"
+      },
+      "status": "observe_only"
+    }
+  },
+  "game": {
+    "attacker_average_utility": 0.040709829419999954,
+    "attacker_payoffs": {
+      "A1_sensor_probe_sen4": {
+        "D0_observe": 0.11584609575999995,
+        "D1_quarantine_sen4": 0.025279794717999942,
+        "D2_rate_limit_sen4": 0.05281296998199995
+      },
+      "A2_sensor_http_abuse_sen4": {
+        "D0_observe": 0.11160760160000001,
+        "D1_quarantine_sen4": -0.03273519112000002,
+        "D2_rate_limit_sen4": 0.011146643119999983
+      },
+      "A6_sen4_edge_to_cloud_probe": {
+        "D0_observe": 0.09355396031999995,
+        "D1_quarantine_sen4": -0.023328496224000062,
+        "D2_rate_limit_sen4": 0.01220508662399995
+      }
+    },
+    "attacker_population": {
+      "A1_sensor_probe_sen4": 0.3347695207773333,
+      "A2_sensor_http_abuse_sen4": 0.33269112464013334,
+      "A6_sen4_edge_to_cloud_probe": 0.3325393545825333
+    },
+    "attacker_population_before": {
+      "A1_sensor_probe_sen4": 0.3333333333333333,
+      "A2_sensor_http_abuse_sen4": 0.3333333333333333,
+      "A6_sen4_edge_to_cloud_probe": 0.3333333333333333
+    },
+    "attacker_utilities": {
+      "A1_sensor_probe_sen4": 0.06464628681999994,
+      "A2_sensor_http_abuse_sen4": 0.03000635119999999,
+      "A6_sen4_edge_to_cloud_probe": 0.02747685023999994
+    },
+    "defender_average_utility": 0.05241648733734526,
+    "defender_payoffs": {
+      "A1_sensor_probe_sen4": {
+        "D0_observe": 0.07113059844845639,
+        "D1_quarantine_sen4": 0.032217698448456386,
+        "D2_rate_limit_sen4": 0.05390116511512302
+      },
+      "A2_sensor_http_abuse_sen4": {
+        "D0_observe": 0.07113059844845639,
+        "D1_quarantine_sen4": 0.032217698448456386,
+        "D2_rate_limit_sen4": 0.05390116511512302
+      },
+      "A6_sen4_edge_to_cloud_probe": {
+        "D0_observe": 0.07113059844845639,
+        "D1_quarantine_sen4": 0.032217698448456386,
+        "D2_rate_limit_sen4": 0.05390116511512302
+      }
+    },
+    "defender_population": {
+      "D0_observe": 0.3347057014814815,
+      "D1_quarantine_sen4": 0.3318520888148148,
+      "D2_rate_limit_sen4": 0.3334422097037037
+    },
+    "defender_population_before": {
+      "D0_observe": 0.3333333333333333,
+      "D1_quarantine_sen4": 0.3333333333333333,
+      "D2_rate_limit_sen4": 0.3333333333333333
+    },
+    "defender_utilities": {
+      "D0_observe": 0.07113059844845637,
+      "D1_quarantine_sen4": 0.032217698448456386,
+      "D2_rate_limit_sen4": 0.05390116511512302
+    },
+    "parameters": {
+      "eta_attacker": 0.18,
+      "eta_defender": 0.22,
+      "omega_ac": 0.65,
+      "omega_dc": 0.7,
+      "omega_gp": 0.25,
+      "omega_r": 0.1,
+      "regulatory_beta": 0.18
+    }
+  },
+  "llm": {
+    "confidence": 0.0,
+    "expected_qos_impact": 0.0,
+    "expected_security_gain": 0.0,
+    "fallback_reason": "malformed_response_json:JSONDecodeError",
+    "fallback_used": true,
+    "latency_ms": 74041.2004020036,
+    "model": "gpt-oss:20b",
+    "prompt_preview": "Select one defender strategy ID from the active candidates.\n\nReturn JSON with keys:\n- selected_defender_strategy_id\n- confidence\n- reasoning_summary\n- expected_security_gain\n- expected_qos_impact\n\nLive state and candidates:\n{\n  \"active_defe",
+    "provider": "ollama",
+    "raw_response": {
+      "confidence": 0.0,
+      "expected_qos_impact": 0.0,
+      "expected_security_gain": 0.0,
+      "reasoning_summary": "We need to choose one defender strategy ID from active candidates.",
+      "selected_defender_strategy_id": "D0_observe"
+    },
+    "reasoning_summary": "We need to choose one defender strategy ID from active candidates.",
+    "retries_used": 0
+  },
+  "next_state": {
+    "attack_active": false,
+    "attack_effect_success": false,
+    "attack_success": false,
+    "attacker_observation": {
+      "estimated_containment": 0.0,
+      "estimated_risk": 0.12,
+      "estimated_success_probability": 0.1,
+      "foothold": "sen4",
+      "observed_blocking": false,
+      "observed_path_stage": 0
+    },
+    "built_at": "2026-04-23T10:03:19.372749+00:00",
+    "controller": {
+      "active_actions": []
+    },
+    "controller_reachable": true,
+    "counters_stopped": false,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {},
+      "cloud_seen": false,
+      "defense_metrics": {},
+      "gateway_seen": false,
+      "topology": {
+        "active_action_count": 0,
+        "active_actions": [],
+        "connected_switch_count": 5,
+        "known_host_count": 29,
+        "switch_count": 5
+      },
+      "worker_seen": false
+    },
+    "defense_active": false,
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": false,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.5,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "base_edge2_path",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "base_edge2_path",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/reza/LLM_MTD_emo/integrations/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "base_edge2_path"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 0,
+      "controller_apply_ms": 0.01032499858411029,
+      "flow_delete_commands": 0,
+      "flow_rules_installed": 0,
+      "meters_added": 0,
+      "total_cpu_seconds": 990.7858430620001,
+      "total_memory_kb": 435716.0
+    },
+    "path_stage": 0,
+    "path_stage_label": "none",
+    "qos": {
+      "edge_to_cloud_latency_ms": 1.019,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 1.336818181818182,
+      "throughput_bytes_per_second": 9551.586208403718
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 23803.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 10818.0,
+      "gateway_received": 10819.0,
+      "generated_total": 10824.0,
+      "worker_requests": 10819.0
+    }
+  },
+  "persistence": {
+    "decision_trace_logged": true,
+    "population_saved": true,
+    "reason": "",
+    "skipped": false,
+    "stage_logged": true,
+    "summary_logged": true
+  },
+  "recorded_at": "2026-04-23T10:04:52.243042+00:00",
+  "run_id": "stage_4ea95c75621f",
+  "schema_version": "llm-mtd-live-stage-result-v1",
+  "selection": {
+    "attacker": {
+      "action": "sensor_to_edge_probe",
+      "action_payload": null,
+      "executor": {
+        "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+        "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+        "name": "sensor_to_edge",
+        "phase_hint": "discovery",
+        "type": "caldera_adversary"
+      },
+      "expected_effects": [
+        "entry_node_present",
+        "gateway_seen"
+      ],
+      "id": "A1_sensor_probe_sen4",
+      "live_attack_type": "sensor_to_edge_probe",
+      "mode": "dominant",
+      "name": "Probe sen4 to Edge 2 path",
+      "path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "probability": 0.3347695207773333,
+      "scenario_id": "sen4_edge2_clouddb",
+      "target": "cloud_db",
+      "utility": 0.06464628681999994
+    },
+    "defender": {
+      "action": "observe",
+      "action_payload": {
+        "action": "observe"
+      },
+      "executor": {
+        "type": "cloud_policy"
+      },
+      "expected_effects": [
+        "strategy_context_recorded"
+      ],
+      "id": "D0_observe",
+      "live_attack_type": null,
+      "mode": "llm_defender_recovered",
+      "name": "Observe and log current strategy context",
+      "path": null,
+      "probability": 0.3347057014814815,
+      "scenario_id": "*",
+      "target": null,
+      "utility": 0.07113059844845637
+    }
+  },
+  "stage_summary": {
+    "attacker_strategy_id": "A1_sensor_probe_sen4",
+    "controller_delta": {
+      "active_policy_actions_delta": 0.0,
+      "flow_rules_installed_delta": 0.0,
+      "meters_added_delta": 0.0
+    },
+    "decision_source": "llm_defender",
+    "defender_strategy_id": "D0_observe",
+    "execution": {
+      "attacker_status": "dry_run",
+      "defender_action": "observe",
+      "defender_status": "observe_only",
+      "defender_target": "sen4"
+    },
+    "llm": {
+      "fallback_used": true,
+      "model": "gpt-oss:20b",
+      "provider": "ollama",
+      "reasoning_summary": "We need to choose one defender strategy ID from active candidates."
+    },
+    "qos_delta": {
+      "edge_to_cloud_latency_ms_delta": -0.003,
+      "loss_rate_delta": 0.0,
+      "sensor_to_edge_latency_ms_delta": -3.411091,
+      "throughput_bytes_per_second_delta": 0.0
+    },
+    "recorded_at": "2026-04-23T10:04:52.241733+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "security_outcome": {
+      "attack_effect_success": false,
+      "defense_success": false
+    },
+    "stage_id": 1,
+    "summary_text": "Stage 1 for sen4_edge2_clouddb: attacker A1_sensor_probe_sen4 met defender D0_observe. The defender choice focused on we need to choose one defender strategy id from active candidates. After execution the path stage was 0, and the observed outcome was attack pressure reduced."
+  },
+  "state": {
+    "attack_active": false,
+    "attack_effect_success": false,
+    "attack_success": false,
+    "attacker_observation": {
+      "estimated_containment": 0.0,
+      "estimated_risk": 0.12,
+      "estimated_success_probability": 0.1,
+      "foothold": "sen4",
+      "observed_blocking": false,
+      "observed_path_stage": 0
+    },
+    "built_at": "2026-04-23T10:02:05.262185+00:00",
+    "controller": {
+      "active_actions": []
+    },
+    "controller_reachable": true,
+    "counters_stopped": false,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {},
+      "cloud_seen": false,
+      "defense_metrics": {},
+      "gateway_seen": false,
+      "topology": {
+        "active_action_count": 0,
+        "active_actions": [],
+        "connected_switch_count": 5,
+        "known_host_count": 29,
+        "switch_count": 5
+      },
+      "worker_seen": false
+    },
+    "defense_active": false,
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": false,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.5,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "base_edge2_path",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "base_edge2_path",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/reza/LLM_MTD_emo/integrations/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "base_edge2_path"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 0,
+      "controller_apply_ms": 0.01032499858411029,
+      "flow_delete_commands": 0,
+      "flow_rules_installed": 0,
+      "meters_added": 0,
+      "total_cpu_seconds": 988.9798453409999,
+      "total_memory_kb": 435716.0
+    },
+    "path_stage": 0,
+    "path_stage_label": "none",
+    "qos": {
+      "edge_to_cloud_latency_ms": 1.0219999999999998,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 4.74790909090909,
+      "throughput_bytes_per_second": 9551.37522985953
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 23719.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 10781.0,
+      "gateway_received": 10781.0,
+      "generated_total": 10787.0,
+      "worker_requests": 10782.0
+    }
+  },
+  "transition": {
+    "average_utility": {
+      "attacker": 0.040709829419999954,
+      "defender": 0.05241648733734526
+    },
+    "baseline_game_prior": {
+      "attacker": {
+        "action": "sensor_to_edge_probe",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "name": "sensor_to_edge",
+          "phase_hint": "discovery",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "entry_node_present",
+          "gateway_seen"
+        ],
+        "id": "A1_sensor_probe_sen4",
+        "live_attack_type": "sensor_to_edge_probe",
+        "mode": "dominant",
+        "name": "Probe sen4 to Edge 2 path",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.3347695207773333,
+        "population_after_rank": 1,
+        "population_before": 0.3333333333333333,
+        "population_before_rank": 1,
+        "population_delta": 0.001436187443999981,
+        "probability": 0.3347695207773333,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.06464628681999994,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "observe",
+        "action_payload": {
+          "action": "observe"
+        },
+        "executor": {
+          "type": "cloud_policy"
+        },
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "live_attack_type": null,
+        "mode": "llm_defender_recovered",
+        "name": "Observe and log current strategy context",
+        "path": null,
+        "population_after": 0.3347057014814815,
+        "population_after_rank": 1,
+        "population_before": 0.3333333333333333,
+        "population_before_rank": 1,
+        "population_delta": 0.001372368148148173,
+        "probability": 0.3347057014814815,
+        "scenario_id": "*",
+        "target": null,
+        "utility": 0.07113059844845637,
+        "utility_rank": 1
+      }
+    },
+    "decision_source": "llm_defender",
+    "execution": {
+      "attacker": {
+        "plan": {
+          "bridge_logger_url": "http://127.0.0.1:32825/attack/event",
+          "bridge_policy_url": "http://127.0.0.1:32824/context",
+          "caldera_adversary": "sensor_to_edge",
+          "caldera_adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "caldera_adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "caldera_env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "ENTRY_NODE": "sen4",
+            "SCENARIO_ID": "sen4_edge2_clouddb"
+          },
+          "caldera_target_hosts": [
+            "sen4"
+          ],
+          "executor": {
+            "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+            "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+            "name": "sensor_to_edge",
+            "phase_hint": "discovery",
+            "type": "caldera_adversary"
+          },
+          "expected_effects": [
+            "entry_node_present",
+            "gateway_seen"
+          ],
+          "live_attack_type": "sensor_to_edge_probe",
+          "mulval": {
+            "current_path_risk": 0.5,
+            "plausible_paths": [
+              [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ]
+            ]
+          },
+          "note": "Dispatch this plan to Caldera manually or through --attacker-dispatch-url. The first lab workflow still keeps Caldera operation launch outside this repo.",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "scenario_id": "sen4_edge2_clouddb",
+          "strategy_id": "A1_sensor_probe_sen4",
+          "strategy_name": "Probe sen4 to Edge 2 path"
+        },
+        "status": "dry_run"
+      },
+      "defender": {
+        "cloud_policy_context": {
+          "body": "{\"accepted_keys\": [\"caldera_result\", \"selected_attacker_strategy\", \"selected_defender_strategy\", \"strategy_layer\"], \"observe_only\": true, \"status\": \"accepted\"}",
+          "error": "",
+          "ok": true,
+          "status": 202,
+          "url": "http://127.0.0.1:32824/context"
+        },
+        "cloud_policy_decision": {
+          "body": "{\"external_context\": {\"attempted_path\": [\"sen4\", \"edge2_gw\", \"edge2_vm_s4\", \"cloud_db\"], \"caldera_success\": null, \"defense_action\": \"\", \"defense_success\": null, \"entry_node\": \"sen4\", \"first_mulval_path\": [], \"mulval_path_count\": 0, \"operation_id\": \"strategy-sen4_edge2_clouddb\", \"scenario_id\": \"sen4_edge2_clouddb\"}, \"llm_policy_provider\": \"disabled\", \"observe_only\": true, \"policy_mode\": \"game-baseline\", \"scores\": {\"max_drops\": 0.0, \"max_latency_ms\": 4.74790909090909, \"max_queue\": 0.0}, \"selected_action\": {\"enforcement_owner\": \"ryu\", \"ovs_direct_manipulation\": false, \"reason\": \"strategy layer selected defender action\", \"ryu_intent\": {\"action\": \"observe\", \"source\": \"cloud_policy\", \"target\": \"sen4\"}, \"target\": \"sen4\", \"type\": \"observe\"}, \"selected_at\": \"2026-04-23T10:03:19.330069+00:00\"}",
+          "error": "",
+          "json": {
+            "external_context": {
+              "attempted_path": [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ],
+              "caldera_success": null,
+              "defense_action": "",
+              "defense_success": null,
+              "entry_node": "sen4",
+              "first_mulval_path": [],
+              "mulval_path_count": 0,
+              "operation_id": "strategy-sen4_edge2_clouddb",
+              "scenario_id": "sen4_edge2_clouddb"
+            },
+            "llm_policy_provider": "disabled",
+            "observe_only": true,
+            "policy_mode": "game-baseline",
+            "scores": {
+              "max_drops": 0.0,
+              "max_latency_ms": 4.74790909090909,
+              "max_queue": 0.0
+            },
+            "selected_action": {
+              "enforcement_owner": "ryu",
+              "ovs_direct_manipulation": false,
+              "reason": "strategy layer selected defender action",
+              "ryu_intent": {
+                "action": "observe",
+                "source": "cloud_policy",
+                "target": "sen4"
+              },
+              "target": "sen4",
+              "type": "observe"
+            },
+            "selected_at": "2026-04-23T10:03:19.330069+00:00"
+          },
+          "ok": true,
+          "status": 200,
+          "url": "http://127.0.0.1:32824/decide"
+        },
+        "defense_event": {
+          "reason": "defender action was not confirmed by Ryu/controller metrics",
+          "status": "skipped"
+        },
+        "payload": {
+          "action": "observe",
+          "source": "cloud_policy",
+          "target": "sen4"
+        },
+        "status": "observe_only"
+      }
+    },
+    "execution_summary": {
+      "attacker": {
+        "attempted_path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "expected_effects": [
+          "entry_node_present",
+          "gateway_seen"
+        ],
+        "live_attack_type": "sensor_to_edge_probe",
+        "operation_id": "",
+        "status": "dry_run",
+        "strategy_id": "A1_sensor_probe_sen4",
+        "strategy_name": "Probe sen4 to Edge 2 path"
+      },
+      "defender": {
+        "action": "observe",
+        "cloud_policy": {
+          "accepted_keys": [
+            "caldera_result",
+            "selected_attacker_strategy",
+            "selected_defender_strategy",
+            "strategy_layer"
+          ],
+          "context_http_status": 202,
+          "context_ok": true,
+          "decision_http_status": 200,
+          "decision_ok": true,
+          "external_context": {
+            "attempted_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "caldera_success": null,
+            "defense_action": "",
+            "defense_success": null,
+            "entry_node": "sen4",
+            "first_mulval_path": [],
+            "mulval_path_count": 0,
+            "operation_id": "strategy-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb"
+          },
+          "observe_only": true,
+          "selected_action": {
+            "enforcement_owner": "ryu",
+            "ovs_direct_manipulation": false,
+            "reason": "strategy layer selected defender action",
+            "ryu_intent": {
+              "action": "observe",
+              "source": "cloud_policy",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "observe"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {},
+          "status": "skipped",
+          "url": ""
+        },
+        "ryu_response": {
+          "action": "observe",
+          "active_policy_actions": 0,
+          "apply_duration_ms": 0.0,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "http_status": 0,
+          "meters_added": 0,
+          "ok": false,
+          "rule": "",
+          "status": "",
+          "target": "sen4",
+          "target_ips": []
+        },
+        "status": "observe_only",
+        "target": "sen4"
+      }
+    },
+    "inference": {
+      "attacker_execution_status": "dry_run",
+      "attacker_expected_effects": [
+        "entry_node_present",
+        "gateway_seen"
+      ],
+      "attacker_progressed": false,
+      "attacker_strategy_id": "A1_sensor_probe_sen4",
+      "defender_execution_status": "observe_only",
+      "defender_expected_effects": [
+        "strategy_context_recorded"
+      ],
+      "defender_strategy_id": "D0_observe",
+      "defense_applied": false,
+      "defense_containment_observed": false,
+      "defense_observed": true,
+      "path_frozen": false,
+      "path_stage_delta": 0
+    },
+    "llm": {
+      "confidence": 0.0,
+      "expected_qos_impact": 0.0,
+      "expected_security_gain": 0.0,
+      "fallback_reason": "malformed_response_json:JSONDecodeError",
+      "fallback_used": true,
+      "model": "gpt-oss:20b",
+      "provider": "ollama",
+      "reasoning_summary": "We need to choose one defender strategy ID from active candidates."
+    },
+    "next_state": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "built_at": "2026-04-23T10:03:19.372749+00:00",
+      "counters_stopped": false,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": false,
+      "defense_success": false,
+      "drop_rules_active": false,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.5,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 0,
+        "controller_apply_ms": 0.01032499858411029,
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 0,
+        "meters_added": 0,
+        "total_cpu_seconds": 990.7858430620001,
+        "total_memory_kb": 435716.0
+      },
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "qos": {
+        "edge_to_cloud_latency_ms": 1.019,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 1.336818181818182,
+        "throughput_bytes_per_second": 9551.586208403718
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 23803.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 10818.0,
+        "gateway_received": 10819.0,
+        "generated_total": 10824.0,
+        "worker_requests": 10819.0
+      }
+    },
+    "population_after": {
+      "attacker": {
+        "A1_sensor_probe_sen4": 0.3347695207773333,
+        "A2_sensor_http_abuse_sen4": 0.33269112464013334,
+        "A6_sen4_edge_to_cloud_probe": 0.3325393545825333
+      },
+      "defender": {
+        "D0_observe": 0.3347057014814815,
+        "D1_quarantine_sen4": 0.3318520888148148,
+        "D2_rate_limit_sen4": 0.3334422097037037
+      }
+    },
+    "population_before": {
+      "attacker": {
+        "A1_sensor_probe_sen4": 0.3333333333333333,
+        "A2_sensor_http_abuse_sen4": 0.3333333333333333,
+        "A6_sen4_edge_to_cloud_probe": 0.3333333333333333
+      },
+      "defender": {
+        "D0_observe": 0.3333333333333333,
+        "D1_quarantine_sen4": 0.3333333333333333,
+        "D2_rate_limit_sen4": 0.3333333333333333
+      }
+    },
+    "previous_state": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "built_at": "2026-04-23T10:02:05.262185+00:00",
+      "counters_stopped": false,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": false,
+      "defense_success": false,
+      "drop_rules_active": false,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.5,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 0,
+        "controller_apply_ms": 0.01032499858411029,
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 0,
+        "meters_added": 0,
+        "total_cpu_seconds": 988.9798453409999,
+        "total_memory_kb": 435716.0
+      },
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "qos": {
+        "edge_to_cloud_latency_ms": 1.0219999999999998,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 4.74790909090909,
+        "throughput_bytes_per_second": 9551.37522985953
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 23719.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 10781.0,
+        "gateway_received": 10781.0,
+        "generated_total": 10787.0,
+        "worker_requests": 10782.0
+      }
+    },
+    "recorded_at": "2026-04-23T10:03:19.373023+00:00",
+    "schema_version": "llm-mtd-stage-transition-v2",
+    "selection": {
+      "attacker": {
+        "action": "sensor_to_edge_probe",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "name": "sensor_to_edge",
+          "phase_hint": "discovery",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "entry_node_present",
+          "gateway_seen"
+        ],
+        "id": "A1_sensor_probe_sen4",
+        "live_attack_type": "sensor_to_edge_probe",
+        "mode": "dominant",
+        "name": "Probe sen4 to Edge 2 path",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.3347695207773333,
+        "population_after_rank": 1,
+        "population_before": 0.3333333333333333,
+        "population_before_rank": 1,
+        "population_delta": 0.001436187443999981,
+        "probability": 0.3347695207773333,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.06464628681999994,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "observe",
+        "action_payload": {
+          "action": "observe"
+        },
+        "executor": {
+          "type": "cloud_policy"
+        },
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "live_attack_type": null,
+        "mode": "llm_defender_recovered",
+        "name": "Observe and log current strategy context",
+        "path": null,
+        "population_after": 0.3347057014814815,
+        "population_after_rank": 1,
+        "population_before": 0.3333333333333333,
+        "population_before_rank": 1,
+        "population_delta": 0.001372368148148173,
+        "probability": 0.3347057014814815,
+        "scenario_id": "*",
+        "target": null,
+        "utility": 0.07113059844845637,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 1,
+    "stage_summary": {
+      "attacker_strategy_id": "A1_sensor_probe_sen4",
+      "controller_delta": {
+        "active_policy_actions_delta": 0.0,
+        "flow_rules_installed_delta": 0.0,
+        "meters_added_delta": 0.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D0_observe",
+      "execution": {
+        "attacker_status": "dry_run",
+        "defender_action": "observe",
+        "defender_status": "observe_only",
+        "defender_target": "sen4"
+      },
+      "llm": {
+        "fallback_used": true,
+        "model": "gpt-oss:20b",
+        "provider": "ollama",
+        "reasoning_summary": "We need to choose one defender strategy ID from active candidates."
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms_delta": -0.003,
+        "loss_rate_delta": 0.0,
+        "sensor_to_edge_latency_ms_delta": -3.411091,
+        "throughput_bytes_per_second_delta": 0.0
+      },
+      "recorded_at": "2026-04-23T10:04:52.241733+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_effect_success": false,
+        "defense_success": false
+      },
+      "stage_id": 1,
+      "summary_text": "Stage 1 for sen4_edge2_clouddb: attacker A1_sensor_probe_sen4 met defender D0_observe. The defender choice focused on we need to choose one defender strategy id from active candidates. After execution the path stage was 0, and the observed outcome was attack pressure reduced."
+    },
+    "state_summary": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "attack_success": false,
+      "cloud_seen": false,
+      "controller_active_actions": 0,
+      "counters_stopped": false,
+      "defense_active": false,
+      "defense_success": false,
+      "drop_rules_active": false,
+      "flow_rules_installed": 0,
+      "gateway_seen": false,
+      "meters_added": 0,
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": false
+    },
+    "transition_id": "801419b9dbc2438cb62dcd287b9631e7"
+  }
+}

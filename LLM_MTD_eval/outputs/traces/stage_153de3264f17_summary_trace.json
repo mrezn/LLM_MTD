@@ -1,0 +1,8 @@
+{
+  "latency_ms": 87533.36297400529,
+  "model_name": "llama3.1:latest",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\n  \"summary_text\": [\n    \"Attacker dispatched HTTP abuse attack on sen4.\",\n    \"Defender chose to quarantine sensor sen4 in dry run mode.\",\n    \"Expected QoS tradeoff: increased edge-to-cloud latency by 1.81ms.\"\n  ],\n  \"security_outcome\": {\n    \"attack_effect_success\": true,\n    \"defense_success\": false\n  },\n  \"qos_delta\": {\n    \"edge_to_cloud_latency_ms\": 1.8090000000000002,\n    \"loss_rate\": 0.0,\n    \"sensor_to_edge_latency_ms\": -4.041,\n    \"throughput_bytes_per_second\": 27.635\n  },\n  \"controller_delta\": {}\n}",
+  "retries_used": 0
+}

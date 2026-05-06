@@ -1,0 +1,8 @@
+{
+  "latency_ms": 0.06940006278455257,
+  "model_name": "mock-defender-v1",
+  "prompt_preview": "Scenario ID: sen4_edge2_clouddb\nTarget asset: cloud_db\nEntry node: sen4\n\nAttack context:\n{\n  \"caldera_result\": null,\n  \"mulval_path\": [\n    \"sen4\",\n    \"edge2_gw\",\n    \"edge2_vm_s4\",\n    \"cloud_db\"\n  ],\n  \"risk_score\": 0.82\n}\n\nQoS context:\n",
+  "provider": "mock",
+  "raw_text": "{\"active_pool_update\": {\"demote\": [], \"enabled\": false, \"promote\": []}, \"confidence\": 0.78, \"expected_qos_impact\": 0.03, \"expected_security_gain\": 0.12, \"parameters\": {}, \"reasoning_summary\": \"Current indicators do not justify an active intervention yet.\", \"selected_defender_strategy\": \"observe\", \"target\": \"\"}",
+  "retries_used": 0
+}

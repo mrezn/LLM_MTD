@@ -1,0 +1,35 @@
+% Hand-written first MulVAL scenario for LLM_MTD_emo.
+% scenario_id: base_edge2_path
+%
+% Keep this file small while validating the MulVAL workflow:
+% sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db.
+
+attackerLocated(sen4).
+attackGoal(execCode(cloud_db, root)).
+
+% Connectivity for the small path only.
+hacl(sen4, edge2_gw, tcp, 8000).
+hacl(edge2_gw, edge2_vm_s4, tcp, 8000).
+hacl(edge2_vm_s4, cloud_db, tcp, 8000).
+
+% Service exposure assumptions.
+networkServiceInfo(sen4, sensor_agent_api, tcp, 8000, user).
+networkServiceInfo(edge2_gw, edge_gateway_api, tcp, 8000, root).
+networkServiceInfo(edge2_vm_s4, edge_worker_api, tcp, 8000, root).
+networkServiceInfo(cloud_db, cloud_db_api, tcp, 8000, root).
+
+% Abstract weaknesses instead of CVEs for the first graph.
+vulExists(sen4, sensor_node_exposed, sensor_agent_api).
+vulExists(edge2_gw, weak_auth_on_gateway, edge_gateway_api).
+vulExists(edge2_vm_s4, worker_service_exposed, edge_worker_api).
+vulExists(cloud_db, cloud_api_reachable, cloud_db_api).
+
+vulProperty(sensor_node_exposed, remoteExploit, privEscalation).
+vulProperty(weak_auth_on_gateway, remoteExploit, privEscalation).
+vulProperty(worker_service_exposed, remoteExploit, privEscalation).
+vulProperty(cloud_api_reachable, remoteExploit, privEscalation).
+
+% Project-specific annotations consumed by integrations/mulval/assets/parser.py.
+entryPoint(external_compromise_sensor, sen4).
+criticalTarget(cloud_db).
+expectedAttackPath(base_edge2_path, sen4, edge2_gw, edge2_vm_s4, cloud_db).

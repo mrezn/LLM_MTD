@@ -1,0 +1,8 @@
+id: 588894b1-aa2c-4e7a-ad72-f46e319417a8
+name: LLM MTD dual homed sensor path
+description: Short manual adversary for sen6 testing both Edge 2 and Edge 3 paths.
+phases:
+  1:
+    - 87b6de2e-fcb6-4f44-9a7e-79af476c7d41 # probe both edge gateways from sen6
+  2:
+    - 62e7655e-dc3e-49e2-9564-220d7c15582e # controlled traffic; sen6 defaults to both gateways

@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NormalizedState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scenario_id",
+    "timestamp",
+    "target_asset",
+    "entry_node",
+    "attack_context",
+    "qos_context",
+    "security_context",
+    "controller_context",
+    "allowed_actions",
+    "active_pool"
+  ],
+  "properties": {
+    "scenario_id": { "type": "string" },
+    "timestamp": { "type": "string" },
+    "target_asset": { "type": "string" },
+    "entry_node": { "type": "string" },
+    "attack_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mulval_path", "risk_score", "caldera_result"],
+      "properties": {
+        "mulval_path": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "risk_score": { "type": "number" },
+        "caldera_result": {
+          "type": ["object", "null"]
+        }
+      }
+    },
+    "qos_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sensor_to_gateway_latency_ms",
+        "gateway_to_worker_latency_ms",
+        "edge_to_cloud_latency_ms",
+        "queue_length",
+        "throughput_bps",
+        "message_loss_rate"
+      ],
+      "properties": {
+        "sensor_to_gateway_latency_ms": { "type": "number" },
+        "gateway_to_worker_latency_ms": { "type": "number" },
+        "edge_to_cloud_latency_ms": { "type": "number" },
+        "queue_length": { "type": "integer" },
+        "throughput_bps": { "type": "number" },
+        "message_loss_rate": { "type": "number" }
+      }
+    },
+    "security_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gateway_seen",
+        "worker_seen",
+        "cloud_seen",
+        "attack_effect_success",
+        "defense_success"
+      ],
+      "properties": {
+        "gateway_seen": { "type": "boolean" },
+        "worker_seen": { "type": "boolean" },
+        "cloud_seen": { "type": "boolean" },
+        "attack_effect_success": { "type": "boolean" },
+        "defense_success": { "type": "boolean" }
+      }
+    },
+    "controller_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "active_policy_actions",
+        "flow_rules_installed",
+        "meters_added",
+        "ryu_apply_duration_ms"
+      ],
+      "properties": {
+        "active_policy_actions": { "type": "integer" },
+        "flow_rules_installed": { "type": "integer" },
+        "meters_added": { "type": "integer" },
+        "ryu_apply_duration_ms": { "type": "number" }
+      }
+    },
+    "allowed_actions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "active_pool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "active_strategies", "pool_strategies"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "active_strategies": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "pool_strategies": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

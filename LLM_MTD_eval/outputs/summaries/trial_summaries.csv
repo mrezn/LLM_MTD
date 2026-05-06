@@ -1,0 +1,9 @@
+trial_id,scenario_id,model_type,seed,recommended_strategy,executed_action,fallback_used,decision_latency_ms
+trial_43676d00ebbc,sen4_edge2_clouddb,llm_only,42,observe,observe,False,0.06940006278455257
+trial_0067a0899a08,sen4_edge2_clouddb,llm_only,42,observe,observe,False,0.013800105080008507
+trial_b94a2dee27e2,sen4_edge2_clouddb,llm_only,42,observe,observe,False,0.027325000701239333
+trial_3adabf9c01b6,sen4_edge2_clouddb,llm_only,42,observe,observe,False,28621.19231700126
+trial_f1afdf37f00b,sen4_edge2_clouddb,llm_only,42,observe,observe,False,75924.87877999883
+trial_ea6eeee5f7d8,sen4_edge2_clouddb,llm_only,42,observe,observe,False,0.02782400042633526
+trial_0da0e9ba3153,sen4_edge2_clouddb,llm_only,42,observe,observe,False,74805.15696599832
+trial_8f91f36a9353,sen4_edge2_clouddb,llm_only,42,observe,observe,False,82850.89714900096

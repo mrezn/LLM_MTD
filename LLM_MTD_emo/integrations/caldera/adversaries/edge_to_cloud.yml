@@ -1,0 +1,8 @@
+id: 7a0bcb0f-1ad5-494a-847d-75a746377a47
+name: LLM MTD edge to cloud
+description: Short manual adversary for worker or sensor cloud reachability checks.
+phases:
+  1:
+    - 87b6de2e-fcb6-4f44-9a7e-79af476c7d41 # LLM MTD sensor or worker probe
+  2:
+    - f6b91346-caa4-4046-9c7a-1b7376515b48 # cloud DB probe

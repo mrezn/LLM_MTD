@@ -1,0 +1,8 @@
+{
+  "latency_ms": 103603.86436100089,
+  "model_name": "gpt-oss:20b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "We need to produce strict JSON with keys summary_text, security_outcome, qos_delta, controller_delta. We have trial_result placeholder. We need to summarize evaluation trial in three short bullets: scenario and chosen action, expected security effect, expected QoS tradeoff. But we have actual trial result? The trial result is {trial_result} placeholder. We don't have actual trial result content. We need to produce JSON with summary_text, security_outcome, qos_delta, controller_delta. We need to compute qos_delta and controller_delta differences between next_state_summary and previous_state_summary. Let's compute differences: For qos: edge_to_cloud_latency_ms: 1.657 - 1.565 = 0.092 ms increase. loss_rate: 0.0 - 0.0 = 0.0. sensor_to_edge_latency_ms: 3.763363636363636 - 2.1762727272727274 = 1.587090909090909. throughput_bytes_per_second: 9557.034158697636 - 9556.579555211336 = 0.4546034863 approx 0.4546. So qos_delta object: { \": \" maybe keys same as qos? Provide numeric differences. For controller_delta: controller_active_actions: 0-0=0. controller_apply_ms: 0.01032499858411029 - 0.01032499858411029 = 0.0. flow_delete_commands: 0-0=0. flow_rules_installed: 0-0=0. meters_added: 0-0=0. total_cpu_seconds: 1154.198149781 - 1149.122947873 = 5.075201908. total_memory_kb: 435716.0 - 435716.0 = 0. So controller_delta: { \"  }",
+  "retries_used": 0
+}

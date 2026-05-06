@@ -1,0 +1,46 @@
+Scenario ID: {scenario_id}
+Target asset: {target_asset}
+Entry node: {entry_node}
+
+Attack context:
+{attack_context}
+
+QoS context:
+{qos_context}
+
+Security context:
+{security_context}
+
+Controller context:
+{controller_context}
+
+Allowed executable defender actions:
+{allowed_actions}
+
+Optional active/pool state:
+{active_pool_state}
+
+Return exactly one JSON object with this schema:
+{{
+  "selected_defender_strategy": "<one allowed action>",
+  "target": "<target node or empty string for observe>",
+  "parameters": {{}},
+  "confidence": 0.0,
+  "reasoning_summary": "<one short sentence>",
+  "expected_security_gain": 0.0,
+  "expected_qos_impact": 0.0,
+  "active_pool_update": {{
+    "enabled": false,
+    "promote": [],
+    "demote": []
+  }}
+}}
+
+Rules for field types:
+- confidence must be a number between 0.0 and 1.0
+- expected_security_gain must be a number between 0.0 and 1.0
+- expected_qos_impact must be a number between 0.0 and 1.0
+- active_pool_update must use exactly the keys enabled, promote, and demote
+- do not use active_strategies or pool_strategies
+- if selected_defender_strategy is observe, set target to "" and parameters to {{}}
+- do not wrap the JSON in markdown or code fences

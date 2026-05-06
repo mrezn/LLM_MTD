@@ -1,0 +1,88 @@
+from copy import deepcopy
+from pathlib import Path
+
+import yaml
+
+DEFAULT_CONFIG = {
+    "simulation": {
+        "seed": 42,
+        "episodes": 60,
+        "steps_per_episode": 2,
+        "z_max": 3,
+        "gamma": 0.6,
+    },
+    "evolutionary": {
+        "eta": 0.25,
+        "omega_A": 0.7,
+        "omega_D": 0.8,
+        "llm_lambda": 0.25,
+        "beta_softmax": 2.0,
+    },
+    "attacker": {
+        "eta_A": 0.20,
+        "omega_A": 0.70,
+        "tau_A": 8.0,
+        "eps_A": 0.05,
+        "rho_A": 0.30,
+        "tau_BR_A": 3.0,
+        "eta_P": 0.10,
+        "omega_P": 0.70,
+        "tau_P": 8.0,
+        "eps_P": 0.03,
+        "rho_P": 0.20,
+        "tau_BR_P": 3.0,
+        "C_switch": 1.0,
+        "fitness_transform": "exp",
+        "fitness_clip_min": 1e-12,
+    },
+    "active_pool": {
+        "max_active": 5,
+        "promote_every": 6,
+        "q_new_init": 0.01,
+        "demote_q_min": 0.05,
+        "demote_patience": 4,
+        "dc_max": 9.0,
+        "dc_window": 5,
+    },
+    "llm": {
+        "ollama_host": "http://127.0.0.1:11434",
+        "llm_macro_model": "llama3.2",
+        "llm_summary_model": "olmo-3:7b-think",
+        "llm_timeout_s": 60,
+    },
+    "costs": {
+        "attacker": {
+            "w_T": 1.0,
+            "w_H": 0.8,
+            "w_K": 0.9,
+            "w_R": 0.6,
+            "w_D": 0.7,
+        },
+        "beta_reg": 2.0,
+        "defender": {
+            "alpha_ass": 0.8,
+            "SQ": 10,
+            "k_s": 0.9,
+            "alpha_aic": 4.0,
+        },
+        "mu_y": 0.3,
+        "third_party": {"alpha_I": 0.5},
+    },
+}
+
+
+def _deep_update(base, updates):
+    for key, value in updates.items():
+        if isinstance(value, dict) and isinstance(base.get(key), dict):
+            _deep_update(base[key], value)
+        else:
+            base[key] = value
+    return base
+
+
+def load_config(path):
+    path = Path(path)
+    with path.open("r", encoding="utf-8") as f:
+        data = yaml.safe_load(f) or {}
+    cfg = _deep_update(deepcopy(DEFAULT_CONFIG), data)
+    return cfg

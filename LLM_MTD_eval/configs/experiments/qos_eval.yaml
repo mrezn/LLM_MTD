@@ -1,0 +1,16 @@
+name: qos_eval
+description: Evaluate QoS-focused scenarios in dry-run mode.
+models:
+  - llm_only
+  - rule_only
+scenarios:
+  - sen4_edge2_clouddb
+seeds: [42, 43, 44]
+repeats: 3
+metrics:
+  - sensor_to_gateway_latency_ms
+  - gateway_to_worker_latency_ms
+  - edge_to_cloud_latency_ms
+  - queue_length
+  - throughput_bps
+  - message_loss_rate

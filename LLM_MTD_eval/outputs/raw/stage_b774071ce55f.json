@@ -1,0 +1,2432 @@
+{
+  "active": {
+    "attacker_ids": [],
+    "attackers": [],
+    "defender_ids": [
+      "D0_observe",
+      "D3_isolate_edge2_gw_for_sen4",
+      "D4_isolate_edge2_vm_s4"
+    ],
+    "defenders": [
+      {
+        "action": "observe",
+        "base_cost": 0.02,
+        "base_reward": 0.05,
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "name": "Observe and log current strategy context",
+        "scenario_id": "*",
+        "target": ""
+      },
+      {
+        "action": "isolate_sensor",
+        "base_cost": 0.42,
+        "base_reward": 0.82,
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_gw"
+      },
+      {
+        "action": "isolate_sensor",
+        "base_cost": 0.32,
+        "base_reward": 0.74,
+        "expected_effects": [
+          "worker_blocked",
+          "cloud_progression_suppressed"
+        ],
+        "id": "D4_isolate_edge2_vm_s4",
+        "name": "Isolate Edge 2 worker for sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_vm_s4"
+      }
+    ]
+  },
+  "decision_source": "llm_defender",
+  "decision_trace": {
+    "average_utility": {
+      "attacker": 0.0,
+      "defender": 0.0
+    },
+    "baseline_game_prior": {
+      "attacker": {},
+      "defender": {
+        "action": "isolate_sensor",
+        "action_payload": {
+          "action": "isolate_sensor",
+          "target": "edge2_gw"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "path": null,
+        "population_after": 0.2768340653567785,
+        "population_after_rank": 3,
+        "population_before": 0.2768340653567785,
+        "population_before_rank": 3,
+        "population_delta": 0.0,
+        "probability": 0.2768340653567785,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_gw",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "decision_source": "llm_defender",
+    "execution": {
+      "attacker": {
+        "attempted_path": [],
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "expected_effects": [],
+        "live_attack_type": "",
+        "operation_id": "",
+        "status": "no_active_attacker_strategy",
+        "strategy_id": "",
+        "strategy_name": ""
+      },
+      "defender": {
+        "action": "isolate_sensor",
+        "cloud_policy": {
+          "accepted_keys": [
+            "caldera_result",
+            "defense_result",
+            "selected_attacker_strategy",
+            "selected_defender_strategy",
+            "strategy_layer"
+          ],
+          "context_http_status": 202,
+          "context_ok": true,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "isolate_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+              "source": "llm_defender",
+              "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+              "target": "edge2_gw"
+            },
+            "target": "edge2_gw",
+            "type": "isolate_sensor"
+          }
+        },
+        "defense_event": {
+          "http_status": 202,
+          "ok": true,
+          "signals": {
+            "active_policy_actions": 3,
+            "controller_action_duration_ms": 1.8802669364959002,
+            "counters_stopped": true,
+            "drop_rules_active": true,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rate_limit_active": false,
+            "target_ips_count": 1
+          },
+          "status": "posted",
+          "url": "http://127.0.0.1:32884/attack/event"
+        },
+        "ryu_response": {
+          "action": "isolate_sensor",
+          "active_policy_actions": 3,
+          "apply_duration_ms": 1.8802669364959002,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "http_status": 202,
+          "meters_added": 0,
+          "ok": true,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "status": "installed",
+          "target": "edge2_gw",
+          "target_ips": [
+            "10.0.2.1"
+          ]
+        },
+        "status": "executed",
+        "target": "edge2_gw"
+      }
+    },
+    "llm": {
+      "confidence": 0.2768340653567785,
+      "expected_qos_impact": 0.0,
+      "expected_security_gain": 0.42,
+      "fallback_reason": "",
+      "fallback_used": false,
+      "model": "llama3.1:latest",
+      "parse_success": true,
+      "provider": "ollama",
+      "reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true
+    },
+    "recorded_at": "2026-05-01T07:50:20.832555+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "schema_version": "llm-mtd-decision-trace-v1",
+    "selection": {
+      "attacker": {},
+      "defender": {
+        "action": "isolate_sensor",
+        "action_payload": {
+          "action": "isolate_sensor",
+          "target": "edge2_gw"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "path": null,
+        "population_after": 0.2768340653567785,
+        "population_after_rank": 3,
+        "population_before": 0.2768340653567785,
+        "population_before_rank": 3,
+        "population_delta": 0.0,
+        "probability": 0.2768340653567785,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_gw",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 10,
+    "stage_summary": {
+      "attacker_strategy_id": "",
+      "controller_delta": {
+        "active_policy_actions_delta": 1.0,
+        "controller_apply_ms_delta": 0.02738,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 20.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 3.876601,
+        "total_memory_kb_delta": 0.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "execution": {
+        "attacker_status": "no_active_attacker_strategy",
+        "defender_action": "isolate_sensor",
+        "defender_status": "executed",
+        "defender_target": "edge2_gw",
+        "defense_confirmed": true,
+        "defense_effects_confirmed": false,
+        "stage_kind": "experimental",
+        "stage_success": false,
+        "stage_valid": true
+      },
+      "llm": {
+        "fallback_used": false,
+        "model": "llama3.1:latest",
+        "provider": "ollama",
+        "reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression."
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms": 3.62,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 0.038,
+        "throughput_bytes_per_second": -42.597
+      },
+      "recorded_at": "2026-05-01T07:52:07.882153+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_effect_success": true,
+        "defense_success": false
+      },
+      "stage_id": 10,
+      "stage_validation": {
+        "comparable_stage": true,
+        "defender_execution_status": "executed",
+        "defense_applied": true,
+        "defense_confirmed": true,
+        "defense_effect_mismatch": true,
+        "defense_effects_confirmed": false,
+        "expected_defense_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_valid": true,
+        "missing_defense_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "observed_defense_effects": [],
+        "stage_kind": "experimental",
+        "stage_success": false
+      },
+      "summary_text": "Scenario: sen4 -> edge2_gw -> edge2_vm_s4 path, attacker chosen action: isolate_sensor Expected security effect: break the path and prevent further progression Expected QoS tradeoff: increased latency (edge_to_cloud_latency_ms: 5.889)"
+    },
+    "stage_validation": {
+      "comparable_stage": true,
+      "defender_execution_status": "executed",
+      "defense_applied": true,
+      "defense_confirmed": true,
+      "defense_effect_mismatch": true,
+      "defense_effects_confirmed": false,
+      "expected_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_valid": true,
+      "missing_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "observed_defense_effects": [],
+      "stage_kind": "experimental",
+      "stage_success": false
+    },
+    "state_summary": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "attack_success": true,
+      "cloud_seen": true,
+      "controller_active_actions": 3,
+      "counters_stopped": true,
+      "defense_active": true,
+      "defense_success": true,
+      "drop_rules_active": true,
+      "flow_rules_installed": 45,
+      "gateway_seen": true,
+      "meters_added": 5,
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": true
+    },
+    "transition_id": "2e2f921d8a42413a8100d974b9473cee"
+  },
+  "execution": {
+    "attacker": {
+      "status": "no_active_attacker_strategy"
+    },
+    "defender": {
+      "cloud_policy_context": {
+        "body": "{\"accepted_keys\": [\"caldera_result\", \"defense_result\", \"selected_attacker_strategy\", \"selected_defender_strategy\", \"strategy_layer\"], \"decision_source\": \"llm_defender\", \"observe_only\": false, \"policy_mode\": \"llm_context_only\", \"selected_action\": {\"reason\": \"LLM-selected defender strategy was sent directly to Ryu.\", \"ryu_intent\": {\"action\": \"isolate_sensor\", \"decision_source\": \"llm_defender\", \"llm_reasoning_summary\": \"The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.\", \"source\": \"llm_defender\", \"source_strategy_id\": \"D3_isolate_edge2_gw_for_sen4\", \"target\": \"edge2_gw\"}, \"target\": \"edge2_gw\", \"type\": \"isolate_sensor\"}, \"status\": \"accepted\"}",
+        "error": "",
+        "json": {
+          "accepted_keys": [
+            "caldera_result",
+            "defense_result",
+            "selected_attacker_strategy",
+            "selected_defender_strategy",
+            "strategy_layer"
+          ],
+          "decision_source": "llm_defender",
+          "observe_only": false,
+          "policy_mode": "llm_context_only",
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "isolate_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+              "source": "llm_defender",
+              "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+              "target": "edge2_gw"
+            },
+            "target": "edge2_gw",
+            "type": "isolate_sensor"
+          },
+          "status": "accepted"
+        },
+        "ok": true,
+        "raw_body": "{\"accepted_keys\": [\"caldera_result\", \"defense_result\", \"selected_attacker_strategy\", \"selected_defender_strategy\", \"strategy_layer\"], \"observe_only\": true, \"status\": \"accepted\"}",
+        "status": 202,
+        "url": "http://127.0.0.1:32883/context"
+      },
+      "cloud_policy_context_payload": {
+        "caldera_result": {
+          "attack_effect_success": true,
+          "attempted_path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "cloud_seen": true,
+          "entry_node": "sen4",
+          "event_type": "attack_result",
+          "gateway_seen": true,
+          "operation_id": "state-sen4_edge2_clouddb",
+          "scenario_id": "sen4_edge2_clouddb",
+          "signals": {
+            "ability_link_count": 2.0,
+            "attack_active": 0.0,
+            "attack_effect_success": 1.0,
+            "cleanup_link_count": 2.0,
+            "cloud_seen": 1.0,
+            "completed_link_count": 2.0,
+            "entry_node_present": 1.0,
+            "events_total": 2.0,
+            "failed_link_count": 0.0,
+            "gateway_seen": 1.0,
+            "link_count": 4.0,
+            "success": 1.0,
+            "successful_link_count": 2.0,
+            "worker_seen": 1.0
+          },
+          "success": true,
+          "target_asset": "cloud_db",
+          "timestamp": "2026-05-01T07:48:00.563874+00:00",
+          "tool": "strategy_state",
+          "worker_seen": true
+        },
+        "defense_result": {
+          "defense_action": "quarantine_sensor",
+          "defense_success": true,
+          "event_type": "defense_result",
+          "operation_id": "state-sen4_edge2_clouddb",
+          "scenario_id": "sen4_edge2_clouddb",
+          "signals": {
+            "active_policy_actions": 2,
+            "attack_active": 0.0,
+            "controller_action_duration_ms": 1.8528871005401015,
+            "counters_stopped": true,
+            "defense_success": 1.0,
+            "drop_rules_active": true,
+            "events_total": 1.0,
+            "flow_rules_installed": 25,
+            "meters_added": 5,
+            "rate_limit_active": 0.0,
+            "success": 1.0,
+            "target_ips_count": 1.0
+          },
+          "success": true,
+          "target": "sen4",
+          "timestamp": "2026-05-01T07:48:00.563874+00:00",
+          "tool": "strategy_state"
+        },
+        "llm_defender_selection": {
+          "attack_dispatch_status": "no_active_attacker_strategy",
+          "caldera_success": false,
+          "decision_source": "llm_defender",
+          "first_mulval_path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_model": "llama3.1:latest",
+          "llm_provider": "ollama",
+          "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+          "mulval_path_count": 1,
+          "operation_id": "",
+          "selected_attacker_path": [],
+          "selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+        },
+        "selected_attacker_strategy": null,
+        "selected_defender_strategy": {
+          "action": "isolate_sensor",
+          "action_payload": {
+            "action": "isolate_sensor",
+            "target": "edge2_gw"
+          },
+          "decision_source": "llm_defender",
+          "executor": {
+            "type": "ryu_rest"
+          },
+          "expected_effects": [
+            "gateway_blocked",
+            "path_broken"
+          ],
+          "id": "D3_isolate_edge2_gw_for_sen4",
+          "live_attack_type": null,
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+          "mode": "llm_defender",
+          "name": "Isolate Edge 2 gateway for sen4 path",
+          "path": null,
+          "probability": 0.2768340653567785,
+          "scenario_id": "sen4_edge2_clouddb",
+          "target": "edge2_gw",
+          "utility": 0.0
+        },
+        "strategy_layer": {
+          "selection": {
+            "attacker": null,
+            "defender": {
+              "action": "isolate_sensor",
+              "action_payload": {
+                "action": "isolate_sensor",
+                "target": "edge2_gw"
+              },
+              "executor": {
+                "type": "ryu_rest"
+              },
+              "expected_effects": [
+                "gateway_blocked",
+                "path_broken"
+              ],
+              "id": "D3_isolate_edge2_gw_for_sen4",
+              "live_attack_type": null,
+              "mode": "llm_defender",
+              "name": "Isolate Edge 2 gateway for sen4 path",
+              "path": null,
+              "probability": 0.2768340653567785,
+              "scenario_id": "sen4_edge2_clouddb",
+              "target": "edge2_gw",
+              "utility": 0.0
+            }
+          },
+          "state": {
+            "attack_active": true,
+            "current_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "defense_active": true,
+            "mulval": {
+              "current_path_risk": 0.5,
+              "path_candidates": [
+                {
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "base_edge2_path",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->cloud_db",
+                  "risk_score": 0.74,
+                  "scenario_id": "base_edge2_path",
+                  "source": "mulval_policy",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen6"
+                    },
+                    {
+                      "action": "reroute_traffic",
+                      "target": "sen6",
+                      "via": "s_edge2"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen6"
+                    }
+                  ],
+                  "entry_node": "sen6",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen6",
+                    "edge3_gw",
+                    "edge3_vm_s6",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen6_edge3_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "rate_limit",
+                      "kbps": 256,
+                      "target": "edge2_gw"
+                    },
+                    {
+                      "action": "isolate_sensor",
+                      "target": "edge2_gw"
+                    }
+                  ],
+                  "entry_node": "edge2_gw",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "edge2_gateway_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_candidates": [
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_paths": [
+                [
+                  "sen4",
+                  "edge2_gw",
+                  "edge2_vm_s4",
+                  "cloud_db"
+                ]
+              ],
+              "policy_path": "/home/reza/LLM_MTD_emo/integrations/mulval/outputs/base_edge2_policy.json",
+              "policy_scenario_id": "base_edge2_path"
+            },
+            "path_stage": 3,
+            "scenario_id": "sen4_edge2_clouddb"
+          }
+        }
+      },
+      "cloud_policy_decision": {
+        "json": {
+          "decision_source": "llm_defender",
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "isolate_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+              "source": "llm_defender",
+              "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+              "target": "edge2_gw"
+            },
+            "target": "edge2_gw",
+            "type": "isolate_sensor"
+          }
+        },
+        "reason": "llm_selected_direct_ryu_intent",
+        "status": "skipped"
+      },
+      "defense_event": {
+        "payload": {
+          "defense_action": "isolate_sensor",
+          "defense_success": true,
+          "event_type": "defense_result",
+          "operation_id": "strategy-sen4_edge2_clouddb",
+          "scenario_id": "sen4_edge2_clouddb",
+          "signals": {
+            "active_policy_actions": 3,
+            "controller_action_duration_ms": 1.8802669364959002,
+            "counters_stopped": true,
+            "drop_rules_active": true,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rate_limit_active": false,
+            "target_ips_count": 1
+          },
+          "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+          "success": true,
+          "target": "edge2_gw",
+          "timestamp": "2026-05-01T07:50:20.818945+00:00",
+          "tool": "ryu_mtd"
+        },
+        "post_result": {
+          "body": "{\"status\": \"logged\"}",
+          "error": "",
+          "ok": true,
+          "status": 202,
+          "url": "http://127.0.0.1:32884/attack/event"
+        },
+        "status": "posted"
+      },
+      "payload": {
+        "action": "isolate_sensor",
+        "decision_source": "llm_defender",
+        "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+        "source": "llm_defender",
+        "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "target": "edge2_gw"
+      },
+      "post_result": {
+        "body": "{\"action\": \"isolate_sensor\", \"active_policy_actions\": 3, \"cookie\": \"0xa11ceb1447111010\", \"flow_delete_commands\": 0, \"flow_rules_installed\": 20, \"meters_added\": 0, \"rule\": \"drop ipv4 and arp traffic to/from target on all switches\", \"ryu_apply_duration_ms\": 1.8802669364959002, \"ryu_flow_mods_enqueued_at\": \"2026-05-01T07:49:35.739572+00:00\", \"ryu_request_received_at\": \"2026-05-01T07:49:35.737681+00:00\", \"status\": \"installed\", \"target\": \"edge2_gw\", \"target_ips\": [\"10.0.2.1\"]}",
+        "error": "",
+        "ok": true,
+        "status": 202,
+        "url": "http://127.0.0.1:8080/mtd/action"
+      },
+      "status": "executed"
+    }
+  },
+  "game": {
+    "attacker_average_utility": 0.0,
+    "attacker_payoffs": {},
+    "attacker_population": {},
+    "attacker_population_before": {},
+    "attacker_utilities": {},
+    "defender_average_utility": 0.0,
+    "defender_payoffs": {},
+    "defender_population": {
+      "D0_observe": 0.43959917463908493,
+      "D3_isolate_edge2_gw_for_sen4": 0.2768340653567785,
+      "D4_isolate_edge2_vm_s4": 0.28356676000413644
+    },
+    "defender_population_before": {
+      "D0_observe": 0.43959917463908493,
+      "D3_isolate_edge2_gw_for_sen4": 0.2768340653567785,
+      "D4_isolate_edge2_vm_s4": 0.28356676000413644
+    },
+    "defender_utilities": {
+      "D0_observe": 0,
+      "D3_isolate_edge2_gw_for_sen4": 0,
+      "D4_isolate_edge2_vm_s4": 0
+    },
+    "parameters": {
+      "eta_attacker": 0.18,
+      "eta_defender": 0.22,
+      "omega_ac": 0.65,
+      "omega_dc": 0.7,
+      "omega_gp": 0.25,
+      "omega_r": 0.1,
+      "regulatory_beta": 0.18
+    }
+  },
+  "llm": {
+    "confidence": 0.2768340653567785,
+    "expected_qos_impact": 0.0,
+    "expected_security_gain": 0.42,
+    "fallback_reason": "",
+    "fallback_used": false,
+    "latency_ms": 95170.00128503423,
+    "model": "llama3.1:latest",
+    "parse_success": true,
+    "prompt_preview": "Select one defender strategy ID from the active candidates.\nAllowed defender IDs only: [\"D0_observe\", \"D3_isolate_edge2_gw_for_sen4\", \"D4_isolate_edge2_vm_s4\"]\n\nReturn exactly one compact JSON object with keys:\n- selected_defender_strategy_",
+    "provider": "ollama",
+    "raw_response": {
+      "confidence": 0.2768340653567785,
+      "expected_qos_impact": -0.42,
+      "expected_security_gain": 0.42,
+      "reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+      "selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+    },
+    "reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+    "recovery_used": false,
+    "request_error": "",
+    "request_success": true,
+    "retries_used": 0
+  },
+  "next_state": {
+    "attack_active": true,
+    "attack_effect_success": true,
+    "attack_success": true,
+    "attacker_observation": {
+      "estimated_containment": 0.9,
+      "estimated_risk": 0.67,
+      "estimated_success_probability": 0.64,
+      "foothold": "sen4",
+      "observed_blocking": true,
+      "observed_path_stage": 3
+    },
+    "built_at": "2026-05-01T07:50:20.818656+00:00",
+    "controller": {
+      "active_actions": [
+        {
+          "action": "isolate_sensor",
+          "active_policy_actions": 3,
+          "cookie": "0xa11ceb1447111010",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "meters_added": 0,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "ryu_apply_duration_ms": 1.8802669364959002,
+          "ryu_flow_mods_enqueued_at": "2026-05-01T07:49:35.739572+00:00",
+          "ryu_request_received_at": "2026-05-01T07:49:35.737681+00:00",
+          "status": "installed",
+          "target": "edge2_gw",
+          "target_ips": [
+            "10.0.2.1"
+          ]
+        },
+        {
+          "action": "quarantine_sensor",
+          "active_policy_actions": 2,
+          "cookie": "0xa11cec932f604ed8",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "meters_added": 0,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "ryu_apply_duration_ms": 1.8528871005401015,
+          "ryu_flow_mods_enqueued_at": "2026-05-01T07:45:17.831700+00:00",
+          "ryu_request_received_at": "2026-05-01T07:45:17.829834+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        },
+        {
+          "action": "rate_limit",
+          "active_policy_actions": 1,
+          "burst_size": 128,
+          "cookie": "0xa11cefe4692e7ff4",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 5,
+          "kbps": 128,
+          "meter_id": 3729,
+          "meters_added": 5,
+          "rule": "meter ipv4 source traffic, then continue to default forwarding",
+          "ryu_apply_duration_ms": 0.8986589964479208,
+          "ryu_flow_mods_enqueued_at": "2026-05-01T07:39:19.526713+00:00",
+          "ryu_request_received_at": "2026-05-01T07:39:19.525801+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        }
+      ]
+    },
+    "controller_reachable": true,
+    "counters_stopped": true,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {
+        "ability_link_count": 2.0,
+        "attack_active": 0.0,
+        "attack_effect_success": 1.0,
+        "cleanup_link_count": 2.0,
+        "cloud_seen": 1.0,
+        "completed_link_count": 2.0,
+        "entry_node_present": 1.0,
+        "events_total": 2.0,
+        "failed_link_count": 0.0,
+        "gateway_seen": 1.0,
+        "link_count": 4.0,
+        "success": 1.0,
+        "successful_link_count": 2.0,
+        "worker_seen": 1.0
+      },
+      "cloud_seen": true,
+      "defense_metrics": {
+        "active_policy_actions": 2.0,
+        "attack_active": 0.0,
+        "controller_action_duration_ms": 1.8528871005401015,
+        "counters_stopped": 1.0,
+        "defense_success": 1.0,
+        "drop_rules_active": 1.0,
+        "events_total": 1.0,
+        "flow_rules_installed": 20.0,
+        "meters_added": 0.0,
+        "rate_limit_active": 0.0,
+        "success": 1.0,
+        "target_ips_count": 1.0
+      },
+      "gateway_seen": true,
+      "topology": {
+        "active_action_count": 3,
+        "active_actions": [
+          {
+            "action": "isolate_sensor",
+            "active_policy_actions": 3,
+            "cookie": "0xa11ceb1447111010",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rule": "drop ipv4 and arp traffic to/from target on all switches",
+            "ryu_apply_duration_ms": 1.8802669364959002,
+            "ryu_flow_mods_enqueued_at": "2026-05-01T07:49:35.739572+00:00",
+            "ryu_request_received_at": "2026-05-01T07:49:35.737681+00:00",
+            "status": "installed",
+            "target": "edge2_gw",
+            "target_ips": [
+              "10.0.2.1"
+            ]
+          },
+          {
+            "action": "quarantine_sensor",
+            "active_policy_actions": 2,
+            "cookie": "0xa11cec932f604ed8",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rule": "drop ipv4 and arp traffic to/from target on all switches",
+            "ryu_apply_duration_ms": 1.8528871005401015,
+            "ryu_flow_mods_enqueued_at": "2026-05-01T07:45:17.831700+00:00",
+            "ryu_request_received_at": "2026-05-01T07:45:17.829834+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          },
+          {
+            "action": "rate_limit",
+            "active_policy_actions": 1,
+            "burst_size": 128,
+            "cookie": "0xa11cefe4692e7ff4",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 5,
+            "kbps": 128,
+            "meter_id": 3729,
+            "meters_added": 5,
+            "rule": "meter ipv4 source traffic, then continue to default forwarding",
+            "ryu_apply_duration_ms": 0.8986589964479208,
+            "ryu_flow_mods_enqueued_at": "2026-05-01T07:39:19.526713+00:00",
+            "ryu_request_received_at": "2026-05-01T07:39:19.525801+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          }
+        ],
+        "connected_switch_count": 5,
+        "known_host_count": 29,
+        "switch_count": 5
+      },
+      "worker_seen": true
+    },
+    "defense_active": true,
+    "defense_metrics_stale": false,
+    "defense_success": true,
+    "drop_rules_active": true,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.5,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "base_edge2_path",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "base_edge2_path",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/reza/LLM_MTD_emo/integrations/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "base_edge2_path"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 3,
+      "controller_apply_ms": 1.8802669364959002,
+      "flow_delete_commands": 0,
+      "flow_rules_installed": 45,
+      "meters_added": 5,
+      "total_cpu_seconds": 95.115096324,
+      "total_memory_kb": 440196.0
+    },
+    "path_stage": 3,
+    "path_stage_label": "cloud",
+    "qos": {
+      "edge_to_cloud_latency_ms": 5.889,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 3.945636363636363,
+      "throughput_bytes_per_second": 9350.238803661463
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 1646.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 618.0,
+      "gateway_received": 618.0,
+      "generated_total": 621.0,
+      "worker_requests": 618.0
+    }
+  },
+  "persistence": {
+    "decision_trace_logged": true,
+    "learning_eligible": false,
+    "learning_skipped_reason": "unsuccessful_outcome",
+    "population_saved": false,
+    "reason": "",
+    "skipped": false,
+    "stage_logged": true,
+    "summary_logged": true,
+    "valid_stage_for_learning": true
+  },
+  "recorded_at": "2026-05-01T07:52:07.883530+00:00",
+  "run_id": "stage_b774071ce55f",
+  "schema_version": "llm-mtd-live-stage-result-v1",
+  "selection": {
+    "attacker": null,
+    "defender": {
+      "action": "isolate_sensor",
+      "action_payload": {
+        "action": "isolate_sensor",
+        "target": "edge2_gw"
+      },
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "expected_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "id": "D3_isolate_edge2_gw_for_sen4",
+      "live_attack_type": null,
+      "mode": "llm_defender",
+      "name": "Isolate Edge 2 gateway for sen4 path",
+      "path": null,
+      "probability": 0.2768340653567785,
+      "scenario_id": "sen4_edge2_clouddb",
+      "target": "edge2_gw",
+      "utility": 0.0
+    }
+  },
+  "stage_summary": {
+    "attacker_strategy_id": "",
+    "controller_delta": {
+      "active_policy_actions_delta": 1.0,
+      "controller_apply_ms_delta": 0.02738,
+      "flow_delete_commands_delta": 0.0,
+      "flow_rules_installed_delta": 20.0,
+      "meters_added_delta": 0.0,
+      "total_cpu_seconds_delta": 3.876601,
+      "total_memory_kb_delta": 0.0
+    },
+    "decision_source": "llm_defender",
+    "defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "execution": {
+      "attacker_status": "no_active_attacker_strategy",
+      "defender_action": "isolate_sensor",
+      "defender_status": "executed",
+      "defender_target": "edge2_gw",
+      "defense_confirmed": true,
+      "defense_effects_confirmed": false,
+      "stage_kind": "experimental",
+      "stage_success": false,
+      "stage_valid": true
+    },
+    "llm": {
+      "fallback_used": false,
+      "model": "llama3.1:latest",
+      "provider": "ollama",
+      "reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression."
+    },
+    "qos_delta": {
+      "edge_to_cloud_latency_ms": 3.62,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 0.038,
+      "throughput_bytes_per_second": -42.597
+    },
+    "recorded_at": "2026-05-01T07:52:07.882153+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "security_outcome": {
+      "attack_effect_success": true,
+      "defense_success": false
+    },
+    "stage_id": 10,
+    "stage_validation": {
+      "comparable_stage": true,
+      "defender_execution_status": "executed",
+      "defense_applied": true,
+      "defense_confirmed": true,
+      "defense_effect_mismatch": true,
+      "defense_effects_confirmed": false,
+      "expected_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_valid": true,
+      "missing_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "observed_defense_effects": [],
+      "stage_kind": "experimental",
+      "stage_success": false
+    },
+    "summary_text": "Scenario: sen4 -> edge2_gw -> edge2_vm_s4 path, attacker chosen action: isolate_sensor Expected security effect: break the path and prevent further progression Expected QoS tradeoff: increased latency (edge_to_cloud_latency_ms: 5.889)"
+  },
+  "stage_validation": {
+    "comparable_stage": true,
+    "defender_execution_status": "executed",
+    "defense_applied": true,
+    "defense_confirmed": true,
+    "defense_effect_mismatch": true,
+    "defense_effects_confirmed": false,
+    "expected_defense_effects": [
+      "gateway_blocked",
+      "path_broken"
+    ],
+    "llm_parse_success": true,
+    "llm_recovery_used": false,
+    "llm_request_error": "",
+    "llm_request_success": true,
+    "llm_stage_valid": true,
+    "missing_defense_effects": [
+      "gateway_blocked",
+      "path_broken"
+    ],
+    "observed_defense_effects": [],
+    "stage_kind": "experimental",
+    "stage_success": false
+  },
+  "state": {
+    "attack_active": true,
+    "attack_effect_success": true,
+    "attack_success": true,
+    "attacker_observation": {
+      "estimated_containment": 0.9,
+      "estimated_risk": 0.67,
+      "estimated_success_probability": 0.64,
+      "foothold": "sen4",
+      "observed_blocking": true,
+      "observed_path_stage": 3
+    },
+    "built_at": "2026-05-01T07:48:00.563874+00:00",
+    "controller": {
+      "active_actions": [
+        {
+          "action": "quarantine_sensor",
+          "active_policy_actions": 2,
+          "cookie": "0xa11cec932f604ed8",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "meters_added": 0,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "ryu_apply_duration_ms": 1.8528871005401015,
+          "ryu_flow_mods_enqueued_at": "2026-05-01T07:45:17.831700+00:00",
+          "ryu_request_received_at": "2026-05-01T07:45:17.829834+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        },
+        {
+          "action": "rate_limit",
+          "active_policy_actions": 1,
+          "burst_size": 128,
+          "cookie": "0xa11cefe4692e7ff4",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 5,
+          "kbps": 128,
+          "meter_id": 3729,
+          "meters_added": 5,
+          "rule": "meter ipv4 source traffic, then continue to default forwarding",
+          "ryu_apply_duration_ms": 0.8986589964479208,
+          "ryu_flow_mods_enqueued_at": "2026-05-01T07:39:19.526713+00:00",
+          "ryu_request_received_at": "2026-05-01T07:39:19.525801+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        }
+      ]
+    },
+    "controller_reachable": true,
+    "counters_stopped": true,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {
+        "ability_link_count": 2.0,
+        "attack_active": 0.0,
+        "attack_effect_success": 1.0,
+        "cleanup_link_count": 2.0,
+        "cloud_seen": 1.0,
+        "completed_link_count": 2.0,
+        "entry_node_present": 1.0,
+        "events_total": 2.0,
+        "failed_link_count": 0.0,
+        "gateway_seen": 1.0,
+        "link_count": 4.0,
+        "success": 1.0,
+        "successful_link_count": 2.0,
+        "worker_seen": 1.0
+      },
+      "cloud_seen": true,
+      "defense_metrics": {
+        "active_policy_actions": 2.0,
+        "attack_active": 0.0,
+        "controller_action_duration_ms": 1.8528871005401015,
+        "counters_stopped": 1.0,
+        "defense_success": 1.0,
+        "drop_rules_active": 1.0,
+        "events_total": 1.0,
+        "flow_rules_installed": 20.0,
+        "meters_added": 0.0,
+        "rate_limit_active": 0.0,
+        "success": 1.0,
+        "target_ips_count": 1.0
+      },
+      "gateway_seen": true,
+      "topology": {
+        "active_action_count": 2,
+        "active_actions": [
+          {
+            "action": "quarantine_sensor",
+            "active_policy_actions": 2,
+            "cookie": "0xa11cec932f604ed8",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rule": "drop ipv4 and arp traffic to/from target on all switches",
+            "ryu_apply_duration_ms": 1.8528871005401015,
+            "ryu_flow_mods_enqueued_at": "2026-05-01T07:45:17.831700+00:00",
+            "ryu_request_received_at": "2026-05-01T07:45:17.829834+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          },
+          {
+            "action": "rate_limit",
+            "active_policy_actions": 1,
+            "burst_size": 128,
+            "cookie": "0xa11cefe4692e7ff4",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 5,
+            "kbps": 128,
+            "meter_id": 3729,
+            "meters_added": 5,
+            "rule": "meter ipv4 source traffic, then continue to default forwarding",
+            "ryu_apply_duration_ms": 0.8986589964479208,
+            "ryu_flow_mods_enqueued_at": "2026-05-01T07:39:19.526713+00:00",
+            "ryu_request_received_at": "2026-05-01T07:39:19.525801+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          }
+        ],
+        "connected_switch_count": 5,
+        "known_host_count": 29,
+        "switch_count": 5
+      },
+      "worker_seen": true
+    },
+    "defense_active": true,
+    "defense_metrics_stale": false,
+    "defense_success": true,
+    "drop_rules_active": true,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.5,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "base_edge2_path",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "base_edge2_path",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/reza/LLM_MTD_emo/integrations/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "base_edge2_path"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 2,
+      "controller_apply_ms": 1.8528871005401015,
+      "flow_delete_commands": 0,
+      "flow_rules_installed": 25,
+      "meters_added": 5,
+      "total_cpu_seconds": 91.23849576199999,
+      "total_memory_kb": 440196.0
+    },
+    "path_stage": 3,
+    "path_stage_label": "cloud",
+    "qos": {
+      "edge_to_cloud_latency_ms": 2.27,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 3.907363636363637,
+      "throughput_bytes_per_second": 9392.835412430164
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 1517.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 618.0,
+      "gateway_received": 618.0,
+      "generated_total": 621.0,
+      "worker_requests": 618.0
+    }
+  },
+  "transition": {
+    "average_utility": {
+      "attacker": 0.0,
+      "defender": 0.0
+    },
+    "baseline_game_prior": {
+      "attacker": {},
+      "defender": {
+        "action": "isolate_sensor",
+        "action_payload": {
+          "action": "isolate_sensor",
+          "target": "edge2_gw"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "path": null,
+        "population_after": 0.2768340653567785,
+        "population_after_rank": 3,
+        "population_before": 0.2768340653567785,
+        "population_before_rank": 3,
+        "population_delta": 0.0,
+        "probability": 0.2768340653567785,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_gw",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "decision_source": "llm_defender",
+    "execution": {
+      "attacker": {
+        "status": "no_active_attacker_strategy"
+      },
+      "defender": {
+        "cloud_policy_context": {
+          "body": "{\"accepted_keys\": [\"caldera_result\", \"defense_result\", \"selected_attacker_strategy\", \"selected_defender_strategy\", \"strategy_layer\"], \"decision_source\": \"llm_defender\", \"observe_only\": false, \"policy_mode\": \"llm_context_only\", \"selected_action\": {\"reason\": \"LLM-selected defender strategy was sent directly to Ryu.\", \"ryu_intent\": {\"action\": \"isolate_sensor\", \"decision_source\": \"llm_defender\", \"llm_reasoning_summary\": \"The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.\", \"source\": \"llm_defender\", \"source_strategy_id\": \"D3_isolate_edge2_gw_for_sen4\", \"target\": \"edge2_gw\"}, \"target\": \"edge2_gw\", \"type\": \"isolate_sensor\"}, \"status\": \"accepted\"}",
+          "error": "",
+          "json": {
+            "accepted_keys": [
+              "caldera_result",
+              "defense_result",
+              "selected_attacker_strategy",
+              "selected_defender_strategy",
+              "strategy_layer"
+            ],
+            "decision_source": "llm_defender",
+            "observe_only": false,
+            "policy_mode": "llm_context_only",
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "isolate_sensor",
+                "decision_source": "llm_defender",
+                "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+                "source": "llm_defender",
+                "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+                "target": "edge2_gw"
+              },
+              "target": "edge2_gw",
+              "type": "isolate_sensor"
+            },
+            "status": "accepted"
+          },
+          "ok": true,
+          "raw_body": "{\"accepted_keys\": [\"caldera_result\", \"defense_result\", \"selected_attacker_strategy\", \"selected_defender_strategy\", \"strategy_layer\"], \"observe_only\": true, \"status\": \"accepted\"}",
+          "status": 202,
+          "url": "http://127.0.0.1:32883/context"
+        },
+        "cloud_policy_context_payload": {
+          "caldera_result": {
+            "attack_effect_success": true,
+            "attempted_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "cloud_seen": true,
+            "entry_node": "sen4",
+            "event_type": "attack_result",
+            "gateway_seen": true,
+            "operation_id": "state-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb",
+            "signals": {
+              "ability_link_count": 2.0,
+              "attack_active": 0.0,
+              "attack_effect_success": 1.0,
+              "cleanup_link_count": 2.0,
+              "cloud_seen": 1.0,
+              "completed_link_count": 2.0,
+              "entry_node_present": 1.0,
+              "events_total": 2.0,
+              "failed_link_count": 0.0,
+              "gateway_seen": 1.0,
+              "link_count": 4.0,
+              "success": 1.0,
+              "successful_link_count": 2.0,
+              "worker_seen": 1.0
+            },
+            "success": true,
+            "target_asset": "cloud_db",
+            "timestamp": "2026-05-01T07:48:00.563874+00:00",
+            "tool": "strategy_state",
+            "worker_seen": true
+          },
+          "defense_result": {
+            "defense_action": "quarantine_sensor",
+            "defense_success": true,
+            "event_type": "defense_result",
+            "operation_id": "state-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb",
+            "signals": {
+              "active_policy_actions": 2,
+              "attack_active": 0.0,
+              "controller_action_duration_ms": 1.8528871005401015,
+              "counters_stopped": true,
+              "defense_success": 1.0,
+              "drop_rules_active": true,
+              "events_total": 1.0,
+              "flow_rules_installed": 25,
+              "meters_added": 5,
+              "rate_limit_active": 0.0,
+              "success": 1.0,
+              "target_ips_count": 1.0
+            },
+            "success": true,
+            "target": "sen4",
+            "timestamp": "2026-05-01T07:48:00.563874+00:00",
+            "tool": "strategy_state"
+          },
+          "llm_defender_selection": {
+            "attack_dispatch_status": "no_active_attacker_strategy",
+            "caldera_success": false,
+            "decision_source": "llm_defender",
+            "first_mulval_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_model": "llama3.1:latest",
+            "llm_provider": "ollama",
+            "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+            "mulval_path_count": 1,
+            "operation_id": "",
+            "selected_attacker_path": [],
+            "selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+          },
+          "selected_attacker_strategy": null,
+          "selected_defender_strategy": {
+            "action": "isolate_sensor",
+            "action_payload": {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            },
+            "decision_source": "llm_defender",
+            "executor": {
+              "type": "ryu_rest"
+            },
+            "expected_effects": [
+              "gateway_blocked",
+              "path_broken"
+            ],
+            "id": "D3_isolate_edge2_gw_for_sen4",
+            "live_attack_type": null,
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+            "mode": "llm_defender",
+            "name": "Isolate Edge 2 gateway for sen4 path",
+            "path": null,
+            "probability": 0.2768340653567785,
+            "scenario_id": "sen4_edge2_clouddb",
+            "target": "edge2_gw",
+            "utility": 0.0
+          },
+          "strategy_layer": {
+            "selection": {
+              "attacker": null,
+              "defender": {
+                "action": "isolate_sensor",
+                "action_payload": {
+                  "action": "isolate_sensor",
+                  "target": "edge2_gw"
+                },
+                "executor": {
+                  "type": "ryu_rest"
+                },
+                "expected_effects": [
+                  "gateway_blocked",
+                  "path_broken"
+                ],
+                "id": "D3_isolate_edge2_gw_for_sen4",
+                "live_attack_type": null,
+                "mode": "llm_defender",
+                "name": "Isolate Edge 2 gateway for sen4 path",
+                "path": null,
+                "probability": 0.2768340653567785,
+                "scenario_id": "sen4_edge2_clouddb",
+                "target": "edge2_gw",
+                "utility": 0.0
+              }
+            },
+            "state": {
+              "attack_active": true,
+              "current_path": [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ],
+              "defense_active": true,
+              "mulval": {
+                "current_path_risk": 0.5,
+                "path_candidates": [
+                  {
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "base_edge2_path",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->cloud_db",
+                    "risk_score": 0.74,
+                    "scenario_id": "base_edge2_path",
+                    "source": "mulval_policy",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen6"
+                      },
+                      {
+                        "action": "reroute_traffic",
+                        "target": "sen6",
+                        "via": "s_edge2"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen6"
+                      }
+                    ],
+                    "entry_node": "sen6",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen6",
+                      "edge3_gw",
+                      "edge3_vm_s6",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen6_edge3_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "rate_limit",
+                        "kbps": 256,
+                        "target": "edge2_gw"
+                      },
+                      {
+                        "action": "isolate_sensor",
+                        "target": "edge2_gw"
+                      }
+                    ],
+                    "entry_node": "edge2_gw",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "edge2_gateway_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_candidates": [
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_paths": [
+                  [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ]
+                ],
+                "policy_path": "/home/reza/LLM_MTD_emo/integrations/mulval/outputs/base_edge2_policy.json",
+                "policy_scenario_id": "base_edge2_path"
+              },
+              "path_stage": 3,
+              "scenario_id": "sen4_edge2_clouddb"
+            }
+          }
+        },
+        "cloud_policy_decision": {
+          "json": {
+            "decision_source": "llm_defender",
+            "observe_only": false,
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "isolate_sensor",
+                "decision_source": "llm_defender",
+                "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+                "source": "llm_defender",
+                "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+                "target": "edge2_gw"
+              },
+              "target": "edge2_gw",
+              "type": "isolate_sensor"
+            }
+          },
+          "reason": "llm_selected_direct_ryu_intent",
+          "status": "skipped"
+        },
+        "defense_event": {
+          "payload": {
+            "defense_action": "isolate_sensor",
+            "defense_success": true,
+            "event_type": "defense_result",
+            "operation_id": "strategy-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb",
+            "signals": {
+              "active_policy_actions": 3,
+              "controller_action_duration_ms": 1.8802669364959002,
+              "counters_stopped": true,
+              "drop_rules_active": true,
+              "flow_rules_installed": 20,
+              "meters_added": 0,
+              "rate_limit_active": false,
+              "target_ips_count": 1
+            },
+            "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+            "success": true,
+            "target": "edge2_gw",
+            "timestamp": "2026-05-01T07:50:20.818945+00:00",
+            "tool": "ryu_mtd"
+          },
+          "post_result": {
+            "body": "{\"status\": \"logged\"}",
+            "error": "",
+            "ok": true,
+            "status": 202,
+            "url": "http://127.0.0.1:32884/attack/event"
+          },
+          "status": "posted"
+        },
+        "payload": {
+          "action": "isolate_sensor",
+          "decision_source": "llm_defender",
+          "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+          "source": "llm_defender",
+          "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+          "target": "edge2_gw"
+        },
+        "post_result": {
+          "body": "{\"action\": \"isolate_sensor\", \"active_policy_actions\": 3, \"cookie\": \"0xa11ceb1447111010\", \"flow_delete_commands\": 0, \"flow_rules_installed\": 20, \"meters_added\": 0, \"rule\": \"drop ipv4 and arp traffic to/from target on all switches\", \"ryu_apply_duration_ms\": 1.8802669364959002, \"ryu_flow_mods_enqueued_at\": \"2026-05-01T07:49:35.739572+00:00\", \"ryu_request_received_at\": \"2026-05-01T07:49:35.737681+00:00\", \"status\": \"installed\", \"target\": \"edge2_gw\", \"target_ips\": [\"10.0.2.1\"]}",
+          "error": "",
+          "ok": true,
+          "status": 202,
+          "url": "http://127.0.0.1:8080/mtd/action"
+        },
+        "status": "executed"
+      }
+    },
+    "execution_summary": {
+      "attacker": {
+        "attempted_path": [],
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "expected_effects": [],
+        "live_attack_type": "",
+        "operation_id": "",
+        "status": "no_active_attacker_strategy",
+        "strategy_id": "",
+        "strategy_name": ""
+      },
+      "defender": {
+        "action": "isolate_sensor",
+        "cloud_policy": {
+          "accepted_keys": [
+            "caldera_result",
+            "defense_result",
+            "selected_attacker_strategy",
+            "selected_defender_strategy",
+            "strategy_layer"
+          ],
+          "context_http_status": 202,
+          "context_ok": true,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "isolate_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+              "source": "llm_defender",
+              "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+              "target": "edge2_gw"
+            },
+            "target": "edge2_gw",
+            "type": "isolate_sensor"
+          }
+        },
+        "defense_event": {
+          "http_status": 202,
+          "ok": true,
+          "signals": {
+            "active_policy_actions": 3,
+            "controller_action_duration_ms": 1.8802669364959002,
+            "counters_stopped": true,
+            "drop_rules_active": true,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rate_limit_active": false,
+            "target_ips_count": 1
+          },
+          "status": "posted",
+          "url": "http://127.0.0.1:32884/attack/event"
+        },
+        "ryu_response": {
+          "action": "isolate_sensor",
+          "active_policy_actions": 3,
+          "apply_duration_ms": 1.8802669364959002,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "http_status": 202,
+          "meters_added": 0,
+          "ok": true,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "status": "installed",
+          "target": "edge2_gw",
+          "target_ips": [
+            "10.0.2.1"
+          ]
+        },
+        "status": "executed",
+        "target": "edge2_gw"
+      }
+    },
+    "inference": {
+      "attacker_execution_status": "no_active_attacker_strategy",
+      "attacker_expected_effects": [],
+      "attacker_progressed": false,
+      "attacker_strategy_id": "",
+      "defender_execution_status": "executed",
+      "defender_expected_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "defense_applied": true,
+      "defense_containment_observed": true,
+      "defense_observed": false,
+      "path_frozen": true,
+      "path_stage_delta": 0
+    },
+    "llm": {
+      "confidence": 0.2768340653567785,
+      "expected_qos_impact": 0.0,
+      "expected_security_gain": 0.42,
+      "fallback_reason": "",
+      "fallback_used": false,
+      "model": "llama3.1:latest",
+      "parse_success": true,
+      "provider": "ollama",
+      "reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true
+    },
+    "next_state": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "built_at": "2026-05-01T07:50:20.818656+00:00",
+      "counters_stopped": true,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": true,
+      "defense_success": true,
+      "drop_rules_active": true,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.5,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 3,
+        "controller_apply_ms": 1.8802669364959002,
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 45,
+        "meters_added": 5,
+        "total_cpu_seconds": 95.115096324,
+        "total_memory_kb": 440196.0
+      },
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "qos": {
+        "edge_to_cloud_latency_ms": 5.889,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 3.945636363636363,
+        "throughput_bytes_per_second": 9350.238803661463
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 1646.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 618.0,
+        "gateway_received": 618.0,
+        "generated_total": 621.0,
+        "worker_requests": 618.0
+      }
+    },
+    "population_after": {
+      "attacker": {},
+      "defender": {
+        "D0_observe": 0.43959917463908493,
+        "D3_isolate_edge2_gw_for_sen4": 0.2768340653567785,
+        "D4_isolate_edge2_vm_s4": 0.28356676000413644
+      }
+    },
+    "population_before": {
+      "attacker": {},
+      "defender": {
+        "D0_observe": 0.43959917463908493,
+        "D3_isolate_edge2_gw_for_sen4": 0.2768340653567785,
+        "D4_isolate_edge2_vm_s4": 0.28356676000413644
+      }
+    },
+    "previous_state": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "built_at": "2026-05-01T07:48:00.563874+00:00",
+      "counters_stopped": true,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": true,
+      "defense_success": true,
+      "drop_rules_active": true,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.5,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 2,
+        "controller_apply_ms": 1.8528871005401015,
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 25,
+        "meters_added": 5,
+        "total_cpu_seconds": 91.23849576199999,
+        "total_memory_kb": 440196.0
+      },
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "qos": {
+        "edge_to_cloud_latency_ms": 2.27,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 3.907363636363637,
+        "throughput_bytes_per_second": 9392.835412430164
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 1517.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 618.0,
+        "gateway_received": 618.0,
+        "generated_total": 621.0,
+        "worker_requests": 618.0
+      }
+    },
+    "recorded_at": "2026-05-01T07:50:20.832327+00:00",
+    "schema_version": "llm-mtd-stage-transition-v2",
+    "selection": {
+      "attacker": {},
+      "defender": {
+        "action": "isolate_sensor",
+        "action_payload": {
+          "action": "isolate_sensor",
+          "target": "edge2_gw"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "path": null,
+        "population_after": 0.2768340653567785,
+        "population_after_rank": 3,
+        "population_before": 0.2768340653567785,
+        "population_before_rank": 3,
+        "population_delta": 0.0,
+        "probability": 0.2768340653567785,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_gw",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 10,
+    "stage_summary": {
+      "attacker_strategy_id": "",
+      "controller_delta": {
+        "active_policy_actions_delta": 1.0,
+        "controller_apply_ms_delta": 0.02738,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 20.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 3.876601,
+        "total_memory_kb_delta": 0.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "execution": {
+        "attacker_status": "no_active_attacker_strategy",
+        "defender_action": "isolate_sensor",
+        "defender_status": "executed",
+        "defender_target": "edge2_gw",
+        "defense_confirmed": true,
+        "defense_effects_confirmed": false,
+        "stage_kind": "experimental",
+        "stage_success": false,
+        "stage_valid": true
+      },
+      "llm": {
+        "fallback_used": false,
+        "model": "llama3.1:latest",
+        "provider": "ollama",
+        "reasoning_summary": "The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression."
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms": 3.62,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 0.038,
+        "throughput_bytes_per_second": -42.597
+      },
+      "recorded_at": "2026-05-01T07:52:07.882153+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_effect_success": true,
+        "defense_success": false
+      },
+      "stage_id": 10,
+      "stage_validation": {
+        "comparable_stage": true,
+        "defender_execution_status": "executed",
+        "defense_applied": true,
+        "defense_confirmed": true,
+        "defense_effect_mismatch": true,
+        "defense_effects_confirmed": false,
+        "expected_defense_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_valid": true,
+        "missing_defense_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "observed_defense_effects": [],
+        "stage_kind": "experimental",
+        "stage_success": false
+      },
+      "summary_text": "Scenario: sen4 -> edge2_gw -> edge2_vm_s4 path, attacker chosen action: isolate_sensor Expected security effect: break the path and prevent further progression Expected QoS tradeoff: increased latency (edge_to_cloud_latency_ms: 5.889)"
+    },
+    "stage_validation": {
+      "comparable_stage": true,
+      "defender_execution_status": "executed",
+      "defense_applied": true,
+      "defense_confirmed": true,
+      "defense_effect_mismatch": true,
+      "defense_effects_confirmed": false,
+      "expected_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_valid": true,
+      "missing_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "observed_defense_effects": [],
+      "stage_kind": "experimental",
+      "stage_success": false
+    },
+    "state_summary": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "attack_success": true,
+      "cloud_seen": true,
+      "controller_active_actions": 3,
+      "counters_stopped": true,
+      "defense_active": true,
+      "defense_success": true,
+      "drop_rules_active": true,
+      "flow_rules_installed": 45,
+      "gateway_seen": true,
+      "meters_added": 5,
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": true
+    },
+    "transition_id": "2e2f921d8a42413a8100d974b9473cee"
+  }
+}

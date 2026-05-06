@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TrialResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "trial_id",
+    "scenario_id",
+    "model_type",
+    "seed",
+    "timestamps",
+    "decision",
+    "qos_metrics",
+    "security_metrics",
+    "overhead_metrics",
+    "llm_quality_metrics",
+    "raw_state_before",
+    "raw_state_after",
+    "notes"
+  ],
+  "properties": {
+    "trial_id": { "type": "string" },
+    "scenario_id": { "type": "string" },
+    "model_type": { "type": "string" },
+    "seed": { "type": "integer" },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["started_at", "decision_at", "executed_at", "observed_at"],
+      "properties": {
+        "started_at": { "type": "string" },
+        "decision_at": { "type": "string" },
+        "executed_at": { "type": "string" },
+        "observed_at": { "type": "string" }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recommended_strategy",
+        "executed_action",
+        "fallback_used",
+        "unsupported_strategy"
+      ],
+      "properties": {
+        "recommended_strategy": { "type": "string" },
+        "executed_action": { "type": "string" },
+        "fallback_used": { "type": "boolean" },
+        "unsupported_strategy": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "qos_metrics": { "type": "object" },
+    "security_metrics": { "type": "object" },
+    "overhead_metrics": { "type": "object" },
+    "llm_quality_metrics": { "type": "object" },
+    "raw_state_before": { "type": "object" },
+    "raw_state_after": { "type": "object" },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

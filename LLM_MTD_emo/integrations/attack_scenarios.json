@@ -1,0 +1,165 @@
+[
+  {
+    "scenario_id": "sen4_edge2_clouddb",
+    "entry_node": "sen4",
+    "mulval_path": ["sen4", "edge2_gw", "edge2_vm_s4", "cloud_db"],
+    "target_asset": "cloud_db",
+    "live_attack_type": "sensor_to_edge_http_abuse",
+    "success_criteria": {
+      "gateway_seen": true,
+      "worker_requests_increase": true,
+      "cloud_summary_rate_changes": true,
+      "attack_effect_thresholds": {
+        "gateway_queue_length_min": 1,
+        "worker_request_delta_min": 1,
+        "cloud_storage_confirmation_delta_min": 1,
+        "latency_or_error_delta_required": true
+      },
+      "checklist": [
+        {
+          "id": "hop1_gateway_seen",
+          "description": "Gateway receives traffic from the attacker source.",
+          "source": "edge2_gw",
+          "metric": "sensors.sen4.received"
+        },
+        {
+          "id": "hop2_worker_seen",
+          "description": "Worker request count increases.",
+          "source": "edge2_vm_s4",
+          "metric": "requests_total"
+        },
+        {
+          "id": "hop3_cloud_seen",
+          "description": "Cloud summary or storage counters change.",
+          "source": "cloud_db",
+          "metric": "storage_confirmations_total"
+        },
+        {
+          "id": "attack_effect_success",
+          "description": "Latency, queue length, drop count, or error counters cross the scenario threshold.",
+          "source": "edge2_gw",
+          "metric": "sensors.sen4.last_ingestion_latency_ms"
+        },
+        {
+          "id": "defense_success",
+          "description": "Attacker counters stop increasing or controller drop rules become active.",
+          "source": "ryu_controller",
+          "metric": "ryu_controller_active_policy_actions"
+        }
+      ]
+    },
+    "candidate_defender_actions": [
+      {"action": "quarantine_sensor", "target": "sen4"},
+      {"action": "rate_limit", "target": "sen4", "kbps": 128}
+    ]
+  },
+  {
+    "scenario_id": "sen6_edge3_clouddb",
+    "entry_node": "sen6",
+    "mulval_path": ["sen6", "edge3_gw", "edge3_vm_s6", "cloud_db"],
+    "target_asset": "cloud_db",
+    "live_attack_type": "dual_homed_sensor_path_abuse",
+    "success_criteria": {
+      "gateway_seen": true,
+      "worker_requests_increase": true,
+      "cloud_summary_rate_changes": true,
+      "attack_effect_thresholds": {
+        "gateway_queue_length_min": 1,
+        "worker_request_delta_min": 1,
+        "cloud_storage_confirmation_delta_min": 1,
+        "latency_or_error_delta_required": true
+      },
+      "checklist": [
+        {
+          "id": "hop1_gateway_seen",
+          "description": "Edge 3 gateway receives traffic from sen6.",
+          "source": "edge3_gw",
+          "metric": "sensors.sen6.received"
+        },
+        {
+          "id": "hop2_worker_seen",
+          "description": "Edge 3 sen6 worker request count increases.",
+          "source": "edge3_vm_s6",
+          "metric": "requests_total"
+        },
+        {
+          "id": "hop3_cloud_seen",
+          "description": "Cloud summary or storage counters change.",
+          "source": "cloud_db",
+          "metric": "storage_confirmations_total"
+        },
+        {
+          "id": "attack_effect_success",
+          "description": "Latency, queue length, drop count, or error counters cross the scenario threshold.",
+          "source": "edge3_gw",
+          "metric": "sensors.sen6.last_ingestion_latency_ms"
+        },
+        {
+          "id": "defense_success",
+          "description": "Reroute or quarantine policy becomes active and the Edge 3 path stops receiving sen6 traffic.",
+          "source": "ryu_controller",
+          "metric": "ryu_controller_active_policy_actions"
+        }
+      ]
+    },
+    "candidate_defender_actions": [
+      {"action": "quarantine_sensor", "target": "sen6"},
+      {"action": "reroute_traffic", "target": "sen6", "via": "s_edge2"},
+      {"action": "rate_limit", "target": "sen6", "kbps": 128}
+    ]
+  },
+  {
+    "scenario_id": "edge2_gateway_clouddb",
+    "entry_node": "edge2_gw",
+    "mulval_path": ["edge2_gw", "edge2_vm_s4", "cloud_db"],
+    "target_asset": "cloud_db",
+    "live_attack_type": "edge_gateway_service_abuse",
+    "success_criteria": {
+      "gateway_seen": true,
+      "worker_requests_increase": true,
+      "cloud_summary_rate_changes": true,
+      "attack_effect_thresholds": {
+        "gateway_forward_error_delta_min": 1,
+        "worker_request_delta_min": 1,
+        "cloud_storage_confirmation_delta_min": 1,
+        "latency_or_error_delta_required": true
+      },
+      "checklist": [
+        {
+          "id": "hop1_gateway_seen",
+          "description": "Edge gateway receives or forwards attack-driven traffic.",
+          "source": "edge2_gw",
+          "metric": "sensors.sen4.forwarded"
+        },
+        {
+          "id": "hop2_worker_seen",
+          "description": "Worker request count increases.",
+          "source": "edge2_vm_s4",
+          "metric": "requests_total"
+        },
+        {
+          "id": "hop3_cloud_seen",
+          "description": "Cloud summary or storage counters change.",
+          "source": "cloud_db",
+          "metric": "storage_confirmations_total"
+        },
+        {
+          "id": "attack_effect_success",
+          "description": "Forward errors, latency, or cloud counters cross the scenario threshold.",
+          "source": "edge2_gw",
+          "metric": "sensors.sen4.forward_errors"
+        },
+        {
+          "id": "defense_success",
+          "description": "Controller policy becomes active and attack-driven forwarding stops increasing.",
+          "source": "ryu_controller",
+          "metric": "ryu_controller_active_policy_actions"
+        }
+      ]
+    },
+    "candidate_defender_actions": [
+      {"action": "rate_limit", "target": "edge2_gw", "kbps": 256},
+      {"action": "isolate_sensor", "target": "edge2_gw"}
+    ]
+  }
+]

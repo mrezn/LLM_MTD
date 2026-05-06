@@ -1,0 +1,2 @@
+method,scenario_id,SR,SAL_cum_mean,SAP_cum_mean,TTC_mean,NCR,Coverage_mean,DC_cum_mean,AC_cum_mean
+LLM-Full,S1,0.0,3.1397243099121352,-0.6732583463185866,1.0,0.5,0.0,9.192844239440829,28.525

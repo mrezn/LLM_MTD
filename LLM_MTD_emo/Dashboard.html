@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLM-MTD Edge-Cloud Dashboard</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a30;
+      --panel-2: #17213d;
+      --muted: #8ea0c6;
+      --text: #edf3ff;
+      --line: #2a3966;
+      --accent: #6ea8fe;
+      --accent-2: #6ee7b7;
+      --warn: #fbbf24;
+      --danger: #fb7185;
+      --ok: #34d399;
+      --shadow: 0 10px 30px rgba(0,0,0,.22);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(110,168,254,.14), transparent 28%),
+        radial-gradient(circle at top left, rgba(110,231,183,.10), transparent 24%),
+        var(--bg);
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)), var(--panel);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 20px 22px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .controls {
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .controls label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .controls input {
+      width: 100%;
+      border-radius: 12px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 12px 14px;
+      outline: none;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: var(--accent);
+      color: #071020;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .statusRow {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
+    .statusDot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-right: 6px;
+      background: var(--warn);
+      box-shadow: 0 0 0 6px rgba(251,191,36,.08);
+    }
+
+    .statusDot.ok { background: var(--ok); box-shadow: 0 0 0 6px rgba(52,211,153,.08); }
+    .statusDot.bad { background: var(--danger); box-shadow: 0 0 0 6px rgba(251,113,133,.08); }
+
+    .statusDot.attack { background: var(--danger); box-shadow: 0 0 0 6px rgba(251,113,133,.10); }
+    .statusDot.defense { background: var(--accent-2); box-shadow: 0 0 0 6px rgba(110,231,183,.10); }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .kpis.secondary {
+      margin-top: -4px;
+    }
+
+    .kpi {
+      padding: 16px;
+    }
+
+    .kpi .label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .kpi .value {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .kpi .value.small {
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .scenarioPanel {
+      margin-bottom: 16px;
+    }
+
+    .scenarioSummary,
+    .perfGrid,
+    .nodeCards {
+      display: grid;
+      gap: 10px;
+    }
+
+    .scenarioSummary {
+      grid-template-columns: 1.2fr 2fr;
+      align-items: stretch;
+    }
+
+    .scenarioHero {
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .scenarioHero strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 16px;
+    }
+
+    .chipGrid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .stateChip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.035);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .stateChip::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--muted);
+    }
+
+    .stateChip.ok { color: #d8fff1; border-color: rgba(52,211,153,.35); background: rgba(52,211,153,.08); }
+    .stateChip.ok::before { background: var(--ok); }
+    .stateChip.warn { color: #fff2c6; border-color: rgba(251,191,36,.35); background: rgba(251,191,36,.08); }
+    .stateChip.warn::before { background: var(--warn); }
+    .stateChip.bad { color: #ffe0e6; border-color: rgba(251,113,133,.40); background: rgba(251,113,133,.10); }
+    .stateChip.bad::before { background: var(--danger); }
+    .stateChip.info { color: #d9e7ff; border-color: rgba(110,168,254,.35); background: rgba(110,168,254,.08); }
+    .stateChip.info::before { background: var(--accent); }
+    .stateChip.off { color: var(--muted); }
+
+    .analysisGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+      align-items: start;
+    }
+
+    .perfGrid {
+      grid-template-columns: 1fr;
+    }
+
+    .metricCard {
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .metricCardTop {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      align-items: baseline;
+    }
+
+    .metricCardTop strong {
+      font-size: 13px;
+    }
+
+    .metricCardTop span {
+      color: #d9e6ff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+    }
+
+    .bar.attack { background: linear-gradient(90deg, #fb923c, var(--danger)); }
+    .bar.defense { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+    .bar.warn { background: linear-gradient(90deg, var(--warn), #fb923c); }
+
+    .timeline {
+      display: grid;
+      gap: 9px;
+    }
+
+    .timelineItem {
+      display: grid;
+      grid-template-columns: 18px 1fr auto;
+      gap: 9px;
+      align-items: center;
+      padding: 9px 10px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.06);
+      font-size: 13px;
+    }
+
+    .timelineDot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--muted);
+      box-shadow: 0 0 0 5px rgba(142,160,198,.08);
+    }
+
+    .timelineItem.done .timelineDot { background: var(--ok); box-shadow: 0 0 0 5px rgba(52,211,153,.08); }
+    .timelineItem.warn .timelineDot { background: var(--warn); box-shadow: 0 0 0 5px rgba(251,191,36,.08); }
+    .timelineItem.bad .timelineDot { background: var(--danger); box-shadow: 0 0 0 5px rgba(251,113,133,.08); }
+    .timelineItem small { color: var(--muted); }
+
+    .nodeCards {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .nodeStatusCard {
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.06);
+      min-height: 116px;
+    }
+
+    .nodeStatusCard.attack { border-color: rgba(251,113,133,.42); box-shadow: inset 0 0 0 1px rgba(251,113,133,.10); }
+    .nodeStatusCard.defended { border-color: rgba(110,231,183,.42); box-shadow: inset 0 0 0 1px rgba(110,231,183,.10); }
+    .nodeStatusCard.degraded { border-color: rgba(251,191,36,.42); box-shadow: inset 0 0 0 1px rgba(251,191,36,.10); }
+    .nodeStatusCard.info { border-color: rgba(110,168,254,.35); box-shadow: inset 0 0 0 1px rgba(110,168,254,.08); }
+    .nodeStatusCard strong { display: block; margin-bottom: 6px; }
+
+    .svgLegend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .legendSwatch {
+      width: 20px;
+      height: 3px;
+      border-radius: 999px;
+      display: inline-block;
+      background: #36508d;
+    }
+
+    .legendSwatch.attack { background: #fb923c; }
+    .legendSwatch.defense { background: var(--accent-2); }
+    .legendSwatch.blocked { background: var(--danger); border-top: 2px dashed var(--accent-2); height: 5px; }
+
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.35fr .95fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .diagram {
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .diagramHeader,
+    .sideHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 10px;
+    }
+
+    .diagramHeader h2,
+    .sideHeader h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .mini {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .edgeLine {
+      stroke: #36508d;
+      stroke-width: 2.3;
+      stroke-dasharray: 10 7;
+      opacity: .85;
+      transition: stroke .35s ease, stroke-width .35s ease, opacity .35s ease;
+    }
+
+    .edgeLine.attackPath {
+      stroke: #fb923c;
+      stroke-width: 5;
+      stroke-dasharray: none;
+      opacity: 1;
+      filter: drop-shadow(0 0 7px rgba(251,146,60,.7));
+    }
+
+    .edgeLine.defensePath {
+      stroke: var(--accent-2);
+      stroke-width: 5;
+      stroke-dasharray: none;
+      opacity: 1;
+      filter: drop-shadow(0 0 7px rgba(110,231,183,.7));
+    }
+
+    .edgeLine.blockedPath {
+      stroke: var(--accent-2);
+      stroke-width: 5;
+      stroke-dasharray: 11 7;
+      opacity: 1;
+      filter: drop-shadow(0 0 7px rgba(110,231,183,.7));
+    }
+
+    .node {
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,.18));
+    }
+
+    .cardRect {
+      fill: #11192f;
+      stroke: #2b3b66;
+      stroke-width: 1.2;
+      rx: 18;
+      ry: 18;
+      transition: stroke .35s ease, stroke-width .35s ease, fill .35s ease;
+    }
+
+    .node.underAttack .cardRect {
+      stroke: var(--danger);
+      stroke-width: 3;
+      fill: #18172a;
+      filter: drop-shadow(0 0 12px rgba(251,113,133,.45));
+    }
+
+    .node.defended .cardRect {
+      stroke: var(--accent-2);
+      stroke-width: 3;
+      fill: #102236;
+      filter: drop-shadow(0 0 12px rgba(110,231,183,.38));
+    }
+
+    .node.degraded .cardRect {
+      stroke: var(--warn);
+      stroke-width: 3;
+      fill: #1c1b2c;
+      filter: drop-shadow(0 0 12px rgba(251,191,36,.38));
+    }
+
+    .node.critical .cardRect {
+      stroke: var(--danger);
+      stroke-width: 4;
+      animation: svgPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes svgPulse {
+      0%, 100% { stroke-opacity: .75; }
+      50% { stroke-opacity: 1; }
+    }
+
+    .layerTitle {
+      fill: #edf3ff;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .nodeTitle {
+      fill: #edf3ff;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .nodeSub {
+      fill: #9bb0da;
+      font-size: 11px;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .05em;
+    }
+
+    .metricPill {
+      fill: #182443;
+      stroke: #2e4579;
+      stroke-width: 1;
+      rx: 12;
+      ry: 12;
+    }
+
+    .metricText {
+      fill: #d9e6ff;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .statusBadge {
+      fill: #edf3ff;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .side {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      padding: 16px;
+    }
+
+    .sectionTitle {
+      font-size: 14px;
+      font-weight: 800;
+      margin: 0 0 12px;
+      letter-spacing: .02em;
+    }
+
+    .rows {
+      display: grid;
+      gap: 10px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1.2fr .9fr .9fr;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.05);
+      font-size: 13px;
+    }
+
+    .row small { color: var(--muted); display:block; margin-top:2px; }
+
+    .barWrap {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: #13203d;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.05);
+    }
+
+    .bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 999px;
+      width: 0%;
+      transition: width .4s ease;
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #cfe0ff;
+      font-size: 12px;
+      word-break: break-word;
+    }
+
+    .twoCols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .foot {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 1180px) {
+      .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .grid { grid-template-columns: 1fr; }
+      .header { grid-template-columns: 1fr; }
+      .analysisGrid { grid-template-columns: 1fr; }
+      .nodeCards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .scenarioSummary { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .controls { grid-template-columns: 1fr; }
+      .twoCols { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
+      .nodeCards { grid-template-columns: 1fr; }
+      .timelineItem { grid-template-columns: 16px 1fr; }
+      .timelineItem small { grid-column: 2; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="panel hero">
+        <h1>LLM-MTD Edge–Cloud Live Dashboard</h1>
+        <p>
+          Four-layer visual view of your sensor, edge, controller, and cloud services.
+          The page polls the core measurement block and the Ryu controller metrics every <strong>10 seconds</strong>
+          and renders the latest performance, throughput, latency, resource use, path-effect, and action-overhead metrics.
+        </p>
+        <div class="statusRow">
+          <span><span id="liveDot" class="statusDot"></span><span id="liveText">Waiting for first sample</span></span>
+          <span>Last update: <span id="lastUpdate">—</span></span>
+          <span>Core endpoint: <span class="mono" id="endpointEcho">/core</span></span>
+          <span>Controller endpoint: <span class="mono" id="controllerEndpointEcho">/mtd/metrics</span></span>
+        </div>
+      </div>
+
+      <div class="panel controls">
+        <div>
+          <label for="coreUrl">Core metrics endpoint</label>
+          <input id="coreUrl" value="/core" />
+        </div>
+        <div>
+          <label for="controllerUrl">Controller metrics endpoint</label>
+          <input id="controllerUrl" value="/mtd/metrics" />
+        </div>
+        <button id="applyBtn" class="btn">Connect</button>
+        <button id="refreshBtn" class="btn secondary">Refresh now</button>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="panel kpi"><div class="label">Sample Count</div><div class="value" id="kpiSample">—</div></div>
+      <div class="panel kpi"><div class="label">Sensor → Edge Latency</div><div class="value" id="kpiS2E">—</div></div>
+      <div class="panel kpi"><div class="label">Edge → Cloud Latency</div><div class="value" id="kpiE2C">—</div></div>
+      <div class="panel kpi"><div class="label">Storage Confirmations</div><div class="value" id="kpiStored">—</div></div>
+      <div class="panel kpi"><div class="label">Total Generated</div><div class="value" id="kpiGen">—</div></div>
+      <div class="panel kpi"><div class="label">Overall Loss Rate</div><div class="value" id="kpiLoss">—</div></div>
+    </div>
+
+    <div class="kpis secondary">
+      <div class="panel kpi"><div class="label">Active Scenario</div><div class="value small" id="kpiScenario">none</div></div>
+      <div class="panel kpi"><div class="label">Attack Reach Depth</div><div class="value" id="kpiAttackDepth">0/3</div></div>
+      <div class="panel kpi"><div class="label">Defense Success</div><div class="value small" id="kpiDefenseSuccess">unknown</div></div>
+      <div class="panel kpi"><div class="label">Controller Apply Time</div><div class="value" id="kpiControllerTime">—</div></div>
+      <div class="panel kpi"><div class="label">Attack Cost Proxy</div><div class="value" id="kpiAttackCost">0</div></div>
+      <div class="panel kpi"><div class="label">Defense Cost Proxy</div><div class="value" id="kpiDefenseCost">0</div></div>
+    </div>
+
+    <div class="panel card scenarioPanel">
+      <div class="sideHeader">
+        <h2>Current Attack Scenario</h2>
+        <span class="mini">MulVAL path observations + live Caldera/MTD signals</span>
+      </div>
+      <div id="scenarioSummary" class="scenarioSummary">
+        <div class="mini">No active attack scenario observed.</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="panel diagram">
+        <div class="diagramHeader">
+          <h2>System Model + Live Service View</h2>
+          <span class="mini">Sensors 1–3 → Edge 1, Sensors 4–5 → Edge 2, Sensor 6 dual-homed, Sensors 7–10 → Edge 3</span>
+        </div>
+
+        <svg viewBox="0 0 1200 760" aria-label="System Model Diagram">
+          <line id="pathSensors13Edge1" class="edgeLine" x1="200" y1="620" x2="350" y2="440" />
+          <line id="pathSensors46Edge2" class="edgeLine" x1="500" y1="620" x2="500" y2="440" />
+          <line id="pathSensors46Edge3" class="edgeLine" x1="640" y1="620" x2="720" y2="440" />
+          <line id="pathSensors710Edge3" class="edgeLine" x1="820" y1="620" x2="650" y2="440" />
+          <line id="pathEdgeCore" class="edgeLine" x1="500" y1="420" x2="500" y2="265" />
+          <line id="pathCoreCloud" class="edgeLine" x1="500" y1="225" x2="500" y2="85" />
+
+          <g id="nodeSensors13" class="node" transform="translate(70,560)">
+            <rect class="cardRect" width="260" height="140" />
+            <text class="layerTitle" x="18" y="28">Sensor Layer</text>
+            <text class="nodeTitle" x="18" y="58">Sensors 1–3</text>
+            <text class="nodeSub" x="18" y="78">Heterogeneous sensor clients → Edge 1</text>
+            <rect class="metricPill" x="18" y="94" width="224" height="28" />
+            <text class="metricText" x="30" y="112" id="svgSensors13">generated — | sent —</text>
+            <text class="statusBadge" x="18" y="134" id="badgeSensors13">normal</text>
+          </g>
+
+          <g id="nodeSensors46" class="node" transform="translate(350,560)">
+            <rect class="cardRect" width="300" height="140" />
+            <text class="layerTitle" x="18" y="28">Sensor Layer</text>
+            <text class="nodeTitle" x="18" y="58">Sensors 4–6</text>
+            <text class="nodeSub" x="18" y="78">Sensors 4–5 → Edge 2, Sensor 6 dual-homed</text>
+            <rect class="metricPill" x="18" y="94" width="262" height="28" />
+            <text class="metricText" x="30" y="112" id="svgSensors46">generated — | sen6 split —</text>
+            <text class="statusBadge" x="18" y="134" id="badgeSensors46">normal</text>
+          </g>
+
+          <g id="nodeSensors710" class="node" transform="translate(710,560)">
+            <rect class="cardRect" width="300" height="140" />
+            <text class="layerTitle" x="18" y="28">Sensor Layer</text>
+            <text class="nodeTitle" x="18" y="58">Sensors 7–10</text>
+            <text class="nodeSub" x="18" y="78">Sensor clients → Edge 3</text>
+            <rect class="metricPill" x="18" y="94" width="260" height="28" />
+            <text class="metricText" x="30" y="112" id="svgSensors710">generated — | sent —</text>
+            <text class="statusBadge" x="18" y="134" id="badgeSensors710">normal</text>
+          </g>
+
+          <g id="nodeEdge1" class="node" transform="translate(190,330)">
+            <rect class="cardRect" width="220" height="130" />
+            <text class="layerTitle" x="18" y="28">Edge 1</text>
+            <text class="nodeTitle" x="18" y="57">edge1_gw + workers</text>
+            <text class="nodeSub" x="18" y="78">edge1_vm_s1 / s2 / s3</text>
+            <rect class="metricPill" x="18" y="92" width="184" height="26" />
+            <text class="metricText" x="28" y="109" id="svgEdge1">rx — | fwd —</text>
+            <text class="statusBadge" x="18" y="126" id="badgeEdge1">normal</text>
+          </g>
+
+          <g id="nodeEdge2" class="node" transform="translate(390,330)">
+            <rect class="cardRect" width="220" height="130" />
+            <text class="layerTitle" x="18" y="28">Edge 2</text>
+            <text class="nodeTitle" x="18" y="57">edge2_gw + workers</text>
+            <text class="nodeSub" x="18" y="78">edge2_vm_s4 / s5 / s6</text>
+            <rect class="metricPill" x="18" y="92" width="184" height="26" />
+            <text class="metricText" x="28" y="109" id="svgEdge2">rx — | fwd —</text>
+            <text class="statusBadge" x="18" y="126" id="badgeEdge2">normal</text>
+          </g>
+
+          <g id="nodeEdge3" class="node" transform="translate(620,330)">
+            <rect class="cardRect" width="220" height="130" />
+            <text class="layerTitle" x="18" y="28">Edge 3</text>
+            <text class="nodeTitle" x="18" y="57">edge3_gw + workers</text>
+            <text class="nodeSub" x="18" y="78">edge3_vm_s6 / s7 / s8 / s9 / s10</text>
+            <rect class="metricPill" x="18" y="92" width="184" height="26" />
+            <text class="metricText" x="28" y="109" id="svgEdge3">rx — | fwd —</text>
+            <text class="statusBadge" x="18" y="126" id="badgeEdge3">normal</text>
+          </g>
+
+          <g id="nodeController" class="node" transform="translate(375,155)">
+            <rect class="cardRect" width="250" height="100" />
+            <text class="layerTitle" x="18" y="28">Controller Layer</text>
+            <text class="nodeTitle" x="18" y="57">Ryu + OVS policy fabric</text>
+            <rect class="metricPill" x="18" y="68" width="208" height="22" />
+            <text class="metricText" x="28" y="83" id="svgController">active rules — | action time —</text>
+            <text class="statusBadge" x="18" y="99" id="badgeController">normal</text>
+          </g>
+
+          <g id="nodeCloud" class="node" transform="translate(290,20)">
+            <rect class="cardRect" width="420" height="110" />
+            <text class="layerTitle" x="18" y="28">Cloud Layer</text>
+            <text class="nodeTitle" x="18" y="57">cloud_db · cloud_object · cloud_metrics · cloud_policy · cloud_logger</text>
+            <rect class="metricPill" x="18" y="70" width="380" height="24" />
+            <text class="metricText" x="28" y="86" id="svgCloud">stored — | edge→cloud — | policy cpu —</text>
+            <text class="statusBadge" x="18" y="104" id="badgeCloud">normal</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="side">
+        <div class="panel card">
+          <div class="sideHeader">
+            <h2>Edge/Gateway Comparison</h2>
+            <span class="mini">Live gateway flow view</span>
+          </div>
+          <div class="rows" id="gatewayRows"></div>
+        </div>
+
+        <div class="panel card">
+          <div class="sideHeader">
+            <h2>Resource Use</h2>
+            <span class="mini">CPU seconds + memory footprint</span>
+          </div>
+          <div class="rows" id="resourceRows"></div>
+        </div>
+
+        <div class="panel card">
+          <div class="sideHeader">
+            <h2>Downtime / Output Gaps</h2>
+            <span class="mini">Worker continuity indicators</span>
+          </div>
+          <div class="rows" id="downtimeRows"></div>
+        </div>
+
+        <div class="panel card">
+          <div class="sideHeader">
+            <h2>Controller Overhead</h2>
+            <span class="mini">Ryu action timing + flow changes</span>
+          </div>
+          <div class="rows" id="controllerRows"></div>
+        </div>
+
+        <div class="panel card">
+          <div class="sideHeader">
+            <h2>Notes</h2>
+            <span class="mini">What the page is reading</span>
+          </div>
+          <div class="twoCols">
+            <div>
+              <p class="sectionTitle">Polled every 10 seconds</p>
+              <div class="chip">/core → performance + service metrics</div>
+              <div class="chip">/mtd/metrics → controller overhead</div>
+              <div class="chip">/decision-trace → selected attacker/defender</div>
+              <div class="chip">/stage-history → full stage distributions</div>
+            </div>
+            <div>
+              <p class="sectionTitle">Best served from the same origin</p>
+              <div class="chip">Use the page with <span class="mono">/core</span> and <span class="mono">/mtd/metrics</span> or enable CORS</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="analysisGrid">
+      <div class="panel card">
+        <div class="sideHeader">
+          <h2>Attack Performance & Cost</h2>
+          <span class="mini">Reach, impact, persistence, and observed cost proxy</span>
+        </div>
+        <div class="perfGrid" id="attackPerformanceRows"></div>
+      </div>
+
+      <div class="panel card">
+        <div class="sideHeader">
+          <h2>Defender Performance & Cost</h2>
+          <span class="mini">Containment, controller overhead, and disruption proxy</span>
+        </div>
+        <div class="perfGrid" id="defenderPerformanceRows"></div>
+      </div>
+
+      <div class="panel card">
+        <div class="sideHeader">
+          <h2>Game Decisions &amp; Strategy Probabilities</h2>
+          <span class="mini">Selected attacker/defender per stage + population shares</span>
+        </div>
+
+        <div id="gameDecisionSummary" class="scenarioSummary">
+          <div class="mini">No strategy decision data yet.</div>
+        </div>
+
+        <div id="gameDecisionExplanation" class="scenarioSummary" style="margin-top:14px">
+          <div class="mini">No LLM stage summary yet.</div>
+        </div>
+
+        <div style="margin-top:14px">
+          <p class="sectionTitle">Attacker Strategy Probabilities</p>
+          <div class="rows" id="attackerStrategyRows"></div>
+        </div>
+
+        <div style="margin-top:14px">
+          <p class="sectionTitle">Defender Strategy Probabilities</p>
+          <div class="rows" id="defenderStrategyRows"></div>
+        </div>
+
+        <div style="margin-top:14px">
+          <p class="sectionTitle">Stage History</p>
+          <div class="rows" id="gameStageRows"></div>
+        </div>
+      </div>
+
+      <div class="panel card">
+        <div class="sideHeader">
+          <h2>Attack vs Defense Timeline</h2>
+          <span class="mini">Pseudo-timeline from the current /core sample</span>
+        </div>
+        <div class="timeline" id="attackDefenseTimeline"></div>
+      </div>
+
+      <div class="panel card">
+        <div class="sideHeader">
+          <h2>Critical Node Status</h2>
+          <span class="mini">Scenario involvement, protection, and recent local signals</span>
+        </div>
+        <div class="nodeCards" id="nodeStatusCards"></div>
+      </div>
+    </div>
+
+    <div class="foot">Tip: use <span class="mono">python3 dashboard_server.py</span> instead of a plain static file server, because the dashboard needs <span class="mono">/core</span> and <span class="mono">/mtd/metrics</span> to be proxied to live services.</div>
+  </div>
+
+  <script>
+    const state = {
+      coreUrl: '/core',
+      controllerUrl: '/mtd/metrics',
+      decisionUrl: '/decision-trace',
+      stageUrl: '/stage-history',
+      timer: null,
+      latest: null,
+      latestController: null,
+      latestDecision: null,
+      latestStage: null,
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const fmt = (v, digits = 2) => (v === undefined || v === null || Number.isNaN(Number(v))) ? '—' : Number(v).toFixed(digits);
+    const fmtInt = (v) => (v === undefined || v === null || Number.isNaN(Number(v))) ? '—' : Intl.NumberFormat().format(Number(v));
+    const safe = (v, d = 0) => (v === undefined || v === null || Number.isNaN(Number(v))) ? d : Number(v);
+    const esc = (v) => String(v ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    const clamp = (v, min = 0, max = 100) => Math.max(min, Math.min(max, safe(v)));
+    const pct = (v) => clamp(v, 0, 100);
+
+    const SCENARIOS = {
+      sen4_edge2_clouddb: {
+        label: 'sen4 -> edge2 -> cloud_db',
+        entry: 'sen4',
+        path: ['sen4', 'edge2_gw', 'edge2_vm_s4', 'cloud_db'],
+        sensorNode: 'nodeSensors46',
+        edgeNode: 'nodeEdge2',
+        workerNode: 'nodeEdge2',
+        cloudNode: 'nodeCloud',
+        attackPaths: ['pathSensors46Edge2', 'pathEdgeCore', 'pathCoreCloud'],
+      },
+      sen6_edge3_clouddb: {
+        label: 'sen6 -> edge3 -> cloud_db',
+        entry: 'sen6',
+        path: ['sen6', 'edge3_gw', 'edge3_vm_s6', 'cloud_db'],
+        sensorNode: 'nodeSensors46',
+        edgeNode: 'nodeEdge3',
+        workerNode: 'nodeEdge3',
+        cloudNode: 'nodeCloud',
+        attackPaths: ['pathSensors46Edge3', 'pathEdgeCore', 'pathCoreCloud'],
+      },
+      edge2_gateway_clouddb: {
+        label: 'edge2_gw -> edge2_worker -> cloud_db',
+        entry: 'edge2_gw',
+        path: ['edge2_gw', 'edge2_vm_s4', 'cloud_db'],
+        sensorNode: 'nodeSensors46',
+        edgeNode: 'nodeEdge2',
+        workerNode: 'nodeEdge2',
+        cloudNode: 'nodeCloud',
+        attackPaths: ['pathEdgeCore', 'pathCoreCloud'],
+      },
+    };
+
+    const SVG_NODE_IDS = [
+      'nodeSensors13', 'nodeSensors46', 'nodeSensors710',
+      'nodeEdge1', 'nodeEdge2', 'nodeEdge3', 'nodeController', 'nodeCloud'
+    ];
+    const SVG_PATH_IDS = [
+      'pathSensors13Edge1', 'pathSensors46Edge2', 'pathSensors46Edge3',
+      'pathSensors710Edge3', 'pathEdgeCore', 'pathCoreCloud'
+    ];
+    const SVG_BADGES = {
+      nodeSensors13: 'badgeSensors13',
+      nodeSensors46: 'badgeSensors46',
+      nodeSensors710: 'badgeSensors710',
+      nodeEdge1: 'badgeEdge1',
+      nodeEdge2: 'badgeEdge2',
+      nodeEdge3: 'badgeEdge3',
+      nodeController: 'badgeController',
+      nodeCloud: 'badgeCloud',
+    };
+    const CRITICAL_NODES = [
+      'sen4', 'edge2_gw', 'edge2_vm_s4', 'cloud_db',
+      'sen6', 'edge3_gw', 'edge3_vm_s6', 'cloud_policy'
+    ];
+
+    function metricValue(list, source, metric, role = null) {
+      if (!Array.isArray(list)) return null;
+      const item = list.find(x => x.source === source && x.metric === metric && (role ? x.role === role : true));
+      return item ? item.value : null;
+    }
+
+    function sumMetrics(list, predicate) {
+      return (Array.isArray(list) ? list : []).filter(predicate).reduce((acc, x) => acc + safe(x.value), 0);
+    }
+
+    function avgMetrics(list, predicate) {
+      const items = (Array.isArray(list) ? list : []).filter(predicate);
+      if (!items.length) return null;
+      return items.reduce((acc, x) => acc + safe(x.value), 0) / items.length;
+    }
+
+    function parsePrometheusText(text) {
+      const metrics = {};
+      const series = [];
+      const metricLine = /^([a-zA-Z_:][\w:]*)(?:\{([^}]*)\})?\s+(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)$/;
+      const labelPattern = /([a-zA-Z_][\w]*)="((?:\\.|[^"\\])*)"/g;
+
+      for (const rawLine of text.split(/\r?\n/)) {
+        const line = rawLine.trim();
+        if (!line || line.startsWith('#')) continue;
+
+        const match = line.match(metricLine);
+        if (!match) continue;
+
+        const [, name, labelText, rawValue] = match;
+        const labels = {};
+        let labelMatch;
+        labelPattern.lastIndex = 0;
+        while ((labelMatch = labelPattern.exec(labelText || '')) !== null) {
+          labels[labelMatch[1]] = labelMatch[2]
+            .replace(/\\"/g, '"')
+            .replace(/\\n/g, '\n')
+            .replace(/\\\\/g, '\\');
+        }
+
+        const value = Number(rawValue);
+        const point = { name, labels, value };
+        series.push(point);
+        if (!labelText) metrics[name] = value;
+      }
+
+      return { metrics, series, raw: text };
+    }
+
+    function controllerMetric(controllerData, name) {
+      return controllerData && controllerData.metrics
+        ? controllerData.metrics[name]
+        : null;
+    }
+
+    function boolMetric(v) {
+      if (v === true) return true;
+      if (v === false || v === null || v === undefined) return false;
+      if (typeof v === 'string') return ['1', 'true', 'yes', 'ok', 'success'].includes(v.trim().toLowerCase());
+      return safe(v) > 0;
+    }
+
+    function rowsForScenario(rows, scenarioId) {
+      return (Array.isArray(rows) ? rows : []).filter(row => row.source === scenarioId);
+    }
+
+    function metricMap(rows) {
+      const out = {};
+      for (const row of Array.isArray(rows) ? rows : []) {
+        if (!row || !row.metric) continue;
+        out[row.metric] = safe(row.value);
+      }
+      return out;
+    }
+
+    function chooseScenarioId(data) {
+      const rows = [...(data.attack_events || []), ...(data.defense_events || [])];
+      const scores = {};
+      for (const row of rows) {
+        if (!row || !row.source || row.source === 'unknown') continue;
+        scores[row.source] = (scores[row.source] || 0) + safe(row.value);
+        if (row.metric === 'attack_active' && boolMetric(row.value)) scores[row.source] += 1000;
+        if (row.metric === 'success' && boolMetric(row.value)) scores[row.source] += 80;
+        if (row.metric === 'defense_success' && boolMetric(row.value)) scores[row.source] += 60;
+      }
+      const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      return ranked.length ? ranked[0][0] : '';
+    }
+
+    function scenarioDef(scenarioId) {
+      return SCENARIOS[scenarioId] || {
+        label: scenarioId || 'unknown scenario',
+        entry: '',
+        path: [],
+        sensorNode: 'nodeSensors46',
+        edgeNode: 'nodeEdge2',
+        workerNode: 'nodeEdge2',
+        cloudNode: 'nodeCloud',
+        attackPaths: ['pathEdgeCore', 'pathCoreCloud'],
+      };
+    }
+
+    function parseAttackMetrics(data, scenarioId = null) {
+      const selected = scenarioId || chooseScenarioId(data);
+      const rows = rowsForScenario(data.attack_events, selected);
+      const metrics = metricMap(rows);
+      const def = scenarioDef(selected);
+      const gatewaySeen = boolMetric(metrics.gateway_seen);
+      const workerSeen = boolMetric(metrics.worker_seen) || boolMetric(metrics.worker_requests_increase);
+      const cloudSeen = boolMetric(metrics.cloud_seen) || boolMetric(metrics.cloud_summary_rate_changes);
+      const reachDepth = [gatewaySeen, workerSeen, cloudSeen].filter(Boolean).length;
+
+      return {
+        hasData: rows.length > 0,
+        scenarioId: selected,
+        scenarioLabel: def.label,
+        entryNode: def.entry,
+        path: def.path,
+        rows,
+        metrics,
+        eventsTotal: safe(metrics.events_total),
+        attackActive: boolMetric(metrics.attack_active),
+        entryNodePresent: boolMetric(metrics.entry_node_present),
+        gatewaySeen,
+        workerSeen,
+        cloudSeen,
+        gatewayQueueSpike: boolMetric(metrics.gateway_queue_spike),
+        attackEffectSuccess: boolMetric(metrics.attack_effect_success),
+        success: boolMetric(metrics.success),
+        reachDepth,
+        progressScore: (reachDepth / 3) * 100,
+        gatewayReceivedDelta: safe(metrics.gateway_received_delta),
+        workerRequestDelta: safe(metrics.worker_request_delta),
+        cloudSummaryDelta: safe(metrics.cloud_summary_delta),
+      };
+    }
+
+    function parseDefenseMetrics(data, scenarioId = null) {
+      const selected = scenarioId || chooseScenarioId(data);
+      const rows = rowsForScenario(data.defense_events, selected);
+      const metrics = metricMap(rows);
+
+      return {
+        hasData: rows.length > 0,
+        scenarioId: selected,
+        rows,
+        metrics,
+        eventsTotal: safe(metrics.events_total),
+        defenseSuccess: boolMetric(metrics.defense_success) || boolMetric(metrics.success),
+        dropRulesActive: boolMetric(metrics.drop_rules_active),
+        countersStopped: boolMetric(metrics.counters_stopped),
+        ovsDropCounterDelta: safe(metrics.ovs_drop_counter_delta),
+        controllerActionDurationMs: safe(metrics.controller_action_duration_ms),
+      };
+    }
+
+    function parseControllerMetrics(controllerData) {
+      return {
+        actions: safe(controllerMetric(controllerData, 'ryu_controller_actions_total')),
+        durationMs: safe(controllerMetric(controllerData, 'ryu_controller_last_action_duration_ms')),
+        flows: safe(controllerMetric(controllerData, 'ryu_controller_flow_rules_installed_total')),
+        deletes: safe(controllerMetric(controllerData, 'ryu_controller_flow_delete_commands_total')),
+        meters: safe(controllerMetric(controllerData, 'ryu_controller_meters_added_total')),
+        activePolicies: safe(controllerMetric(controllerData, 'ryu_controller_active_policy_actions')),
+      };
+    }
+
+    function computeAttackCostProxy(attack, data) {
+      const avgS2E = avgMetrics(data.sensor_to_edge_latency_ms, x => x.metric.endsWith('last_ingestion_latency_ms') && !x.metric.includes('unmapped')) || 0;
+      const avgE2C = avgMetrics(data.edge_to_cloud_latency_ms, _ => true) || 0;
+      const latencyImpact = clamp((avgS2E + avgE2C) / 15, 0, 20);
+      const progression = attack.reachDepth * 18;
+      const eventCost = clamp(attack.eventsTotal * 4, 0, 25);
+      const queueCost = attack.gatewayQueueSpike ? 10 : 0;
+      const impactCost = attack.attackEffectSuccess ? 22 : 0;
+      const total = eventCost + progression + latencyImpact + queueCost + impactCost;
+
+      return {
+        effortScore: pct(attack.reachDepth * 33.3),
+        persistenceScore: attack.attackActive ? 100 : 0,
+        impactScore: attack.attackEffectSuccess ? 100 : (attack.gatewayQueueSpike ? 50 : 0),
+        pathPenetrationScore: pct(attack.progressScore),
+        costProxy: pct(total),
+      };
+    }
+
+    function computeDefenseCostProxy(defense, controller, data) {
+      const policyCpu = safe(metricValue(data.resource_use, 'cloud_policy', 'cpu_seconds', 'cloud_policy') ?? metricValue(data.resource_use, 'cloud_policy', 'service.cpu_seconds'));
+      const edgeCpu = ['edge2_gw', 'edge3_gw', 'edge2_vm_s4', 'edge3_vm_s6']
+        .reduce((acc, name) => acc + safe(metricValue(data.resource_use, name, 'cpu_seconds') ?? metricValue(data.resource_use, name, 'service.cpu_seconds')), 0);
+      const avgS2E = avgMetrics(data.sensor_to_edge_latency_ms, x => x.metric.endsWith('last_ingestion_latency_ms') && !x.metric.includes('unmapped')) || 0;
+      const controlPlane = pct((controller.durationMs * 3) + (controller.flows * 2) + controller.deletes + (controller.meters * 2) + (controller.activePolicies * 5));
+      const serviceOverhead = pct((policyCpu + edgeCpu) * 5);
+      const disruption = pct(avgS2E / 5);
+      const containment = pct(
+        (defense.defenseSuccess ? 45 : 0) +
+        (defense.dropRulesActive ? 30 : 0) +
+        (defense.countersStopped ? 25 : 0)
+      );
+      const costProxy = pct((controlPlane * .55) + (serviceOverhead * .25) + (disruption * .20));
+
+      return {
+        containmentEffectiveness: containment,
+        controlPlaneCost: controlPlane,
+        serviceOverhead,
+        disruptionCost: disruption,
+        costProxy,
+      };
+    }
+
+    function buildExperimentState(data, controllerData) {
+      const scenarioId = chooseScenarioId(data);
+      const attack = parseAttackMetrics(data, scenarioId);
+      const defense = parseDefenseMetrics(data, scenarioId);
+      const controller = parseControllerMetrics(controllerData);
+      return {
+        scenarioId,
+        attack,
+        defense,
+        controller,
+        attackCost: computeAttackCostProxy(attack, data),
+        defenseCost: computeDefenseCostProxy(defense, controller, data),
+      };
+    }
+
+    function sensorGen(data, sensorIds) {
+      return sensorIds.reduce((acc, id) => acc + safe(metricValue(data.message_loss_counters, id, 'generated_total', 'sensor')), 0);
+    }
+
+    function gatewayForwards(data, gateway, sensorIds) {
+      return sensorIds.reduce((acc, id) => acc + safe(metricValue(data.message_loss_counters, gateway, `sensors.${id}.forwarded`, 'edge_gateway')), 0);
+    }
+
+    function gatewayReceives(data, gateway, sensorIds) {
+      return sensorIds.reduce((acc, id) => acc + safe(metricValue(data.message_loss_counters, gateway, `sensors.${id}.received`, 'edge_gateway')), 0);
+    }
+
+    function sensorSent(data, sensorIds) {
+      return sensorIds.reduce((acc, id) => acc + safe(metricValue(data.throughput, id, 'sent_per_second', 'sensor')), 0);
+    }
+
+    function buildGatewayRows(data) {
+      const specs = [
+        { name: 'Edge 1 Gateway', key: 'edge1_gw', sensors: ['sen1', 'sen2', 'sen3'] },
+        { name: 'Edge 2 Gateway', key: 'edge2_gw', sensors: ['sen4', 'sen5', 'sen6'] },
+        { name: 'Edge 3 Gateway', key: 'edge3_gw', sensors: ['sen6', 'sen7', 'sen8', 'sen9', 'sen10'] },
+      ];
+
+      const maxFwd = Math.max(1, ...specs.map(s => gatewayForwards(data, s.key, s.sensors)));
+      const rows = specs.map(spec => {
+        const rx = gatewayReceives(data, spec.key, spec.sensors);
+        const fwd = gatewayForwards(data, spec.key, spec.sensors);
+        const drop = spec.sensors.reduce((acc, sid) => acc + safe(metricValue(data.message_loss_counters, spec.key, `sensors.${sid}.dropped`, 'edge_gateway')), 0);
+        const delay = avgMetrics(data.message_loss_counters, x => x.source === spec.key && x.metric.endsWith('last_forwarding_delay_ms'));
+        const pct = Math.min(100, (fwd / maxFwd) * 100);
+        return `
+          <div class="row">
+            <div>
+              <strong>${spec.name}</strong>
+              <small>rx ${fmtInt(rx)} · fwd ${fmtInt(fwd)} · drop ${fmtInt(drop)}</small>
+            </div>
+            <div>
+              <div class="barWrap"><div class="bar" style="width:${pct}%"></div></div>
+              <small>${fmt(delay)} ms avg forwarding delay</small>
+            </div>
+            <div class="mono">${spec.sensors.join(', ')}</div>
+          </div>
+        `;
+      }).join('');
+      $('gatewayRows').innerHTML = rows;
+    }
+
+    function buildResourceRows(data) {
+      const items = [
+        'edge1_gw','edge2_gw','edge3_gw','edge1_vm_s1','edge2_vm_s6','edge3_vm_s6','cloud_policy'
+      ].map(name => {
+        const cpu = metricValue(data.resource_use, name, 'cpu_seconds') ?? metricValue(data.resource_use, name, 'service.cpu_seconds');
+        const mem = metricValue(data.resource_use, name, 'memory_kb') ?? metricValue(data.resource_use, name, 'service.memory_kb');
+        return { name, cpu: safe(cpu), mem: safe(mem) };
+      });
+
+      const maxCpu = Math.max(1, ...items.map(i => i.cpu));
+      $('resourceRows').innerHTML = items.map(item => `
+        <div class="row">
+          <div><strong>${item.name}</strong><small>memory ${fmt(item.mem, 0)} KB</small></div>
+          <div><div class="barWrap"><div class="bar" style="width:${Math.min(100, (item.cpu / maxCpu) * 100)}%"></div></div><small>${fmt(item.cpu, 3)} CPU sec</small></div>
+          <div class="mono">${item.mem > 0 ? (item.mem/1024).toFixed(1) + ' MB' : '—'}</div>
+        </div>
+      `).join('');
+    }
+
+    function buildDowntimeRows(data) {
+      const items = (data.service_downtime_ms || []).filter(x => x.metric === 'max_success_gap_ms').sort((a,b) => safe(b.value) - safe(a.value)).slice(0,6);
+      const maxGap = Math.max(1, ...items.map(i => safe(i.value)));
+      $('downtimeRows').innerHTML = items.map(item => `
+        <div class="row">
+          <div><strong>${item.source}</strong><small>${item.role}</small></div>
+          <div><div class="barWrap"><div class="bar" style="width:${Math.min(100, (safe(item.value) / maxGap) * 100)}%"></div></div><small>${fmt(item.value, 1)} ms max gap</small></div>
+          <div class="mono">${(safe(item.value)/1000).toFixed(2)} s</div>
+        </div>
+      `).join('') || '<div class="mini">No downtime metrics yet.</div>';
+    }
+
+    function buildControllerRows(controllerData, error = null) {
+      if (error) {
+        $('controllerRows').innerHTML = `<div class="mini">Controller metrics fetch failed: ${esc(error)}</div>`;
+        return;
+      }
+
+      if (!controllerData) {
+        $('controllerRows').innerHTML = '<div class="mini">No controller metrics yet.</div>';
+        return;
+      }
+
+      const actions = safe(controllerMetric(controllerData, 'ryu_controller_actions_total'));
+      const duration = safe(controllerMetric(controllerData, 'ryu_controller_last_action_duration_ms'));
+      const flows = safe(controllerMetric(controllerData, 'ryu_controller_flow_rules_installed_total'));
+      const deletes = safe(controllerMetric(controllerData, 'ryu_controller_flow_delete_commands_total'));
+      const meters = safe(controllerMetric(controllerData, 'ryu_controller_meters_added_total'));
+      const active = safe(controllerMetric(controllerData, 'ryu_controller_active_policy_actions'));
+      const activeEntries = (controllerData.series || []).filter(x => x.name === 'ryu_controller_active_policy_entry');
+
+      const summaryRows = [
+        { label: 'Actions applied', value: fmtInt(actions), detail: 'successful REST actions', bar: actions },
+        { label: 'Last apply time', value: `${fmt(duration, 3)} ms`, detail: 'Ryu request to flow-mod enqueue', bar: duration },
+        { label: 'Flow rules installed', value: fmtInt(flows), detail: 'cumulative flow mods', bar: flows },
+        { label: 'Deletes + meters', value: `${fmtInt(deletes)} / ${fmtInt(meters)}`, detail: 'clear commands / meter adds', bar: deletes + meters },
+        { label: 'Active policies', value: fmtInt(active), detail: 'currently tracked actions', bar: active },
+      ];
+      const maxBar = Math.max(1, ...summaryRows.map(row => safe(row.bar)));
+
+      const summaryHtml = summaryRows.map(row => `
+        <div class="row">
+          <div><strong>${row.label}</strong><small>${row.detail}</small></div>
+          <div><div class="barWrap"><div class="bar" style="width:${Math.min(100, (safe(row.bar) / maxBar) * 100)}%"></div></div></div>
+          <div class="mono">${row.value}</div>
+        </div>
+      `).join('');
+
+      const activeHtml = activeEntries.length
+        ? activeEntries.map(item => `
+            <div class="row">
+              <div><strong>${esc(item.labels.action || 'active policy')}</strong><small>${esc(item.labels.target || 'target unknown')}</small></div>
+              <div class="mono">${esc(item.labels.action_id || 'action id unavailable')}</div>
+              <div class="mono">active</div>
+            </div>
+          `).join('')
+        : '<div class="mini">No active controller policy entries.</div>';
+
+      $('controllerRows').innerHTML = summaryHtml + activeHtml;
+    }
+
+    function chip(label, value, cls = null) {
+      const resolvedClass = cls || (value === null || value === undefined ? 'off' : (boolMetric(value) ? 'ok' : 'off'));
+      const rendered = value === null || value === undefined ? 'unknown' : (typeof value === 'boolean' ? (value ? 'yes' : 'no') : value);
+      return `<span class="stateChip ${resolvedClass}">${esc(label)}: ${esc(rendered)}</span>`;
+    }
+
+    function barCard(label, value, detail, cls = '') {
+      return `
+        <div class="metricCard">
+          <div class="metricCardTop"><strong>${esc(label)}</strong><span>${fmt(value, 0)} / 100</span></div>
+          <div class="barWrap"><div class="bar ${cls}" style="width:${pct(value)}%"></div></div>
+          <div class="mini" style="margin-top:7px">${esc(detail)}</div>
+        </div>
+      `;
+    }
+
+    function renderScenarioPanel(experiment) {
+      const { attack, defense, controller } = experiment;
+      if (!attack.hasData && !defense.hasData) {
+        $('scenarioSummary').innerHTML = '<div class="mini">No active attack scenario observed.</div>';
+        return;
+      }
+
+      const containment = defense.defenseSuccess || defense.countersStopped || defense.dropRulesActive;
+      $('scenarioSummary').innerHTML = `
+        <div class="scenarioHero">
+          <strong>${esc(attack.scenarioLabel || attack.scenarioId || 'observed scenario')}</strong>
+          <div class="mono">${esc((attack.path || []).join(' -> ') || 'path unavailable')}</div>
+          <div class="mini" style="margin-top:8px">Entry node: ${esc(attack.entryNode || 'unknown')}</div>
+        </div>
+        <div class="chipGrid">
+          ${chip('attack success', attack.success, attack.success ? 'bad' : 'off')}
+          ${chip('defense success', defense.defenseSuccess, defense.defenseSuccess ? 'ok' : 'off')}
+          ${chip('gateway seen', attack.gatewaySeen, attack.gatewaySeen ? 'bad' : 'off')}
+          ${chip('worker seen', attack.workerSeen, attack.workerSeen ? 'bad' : 'off')}
+          ${chip('cloud seen', attack.cloudSeen, attack.cloudSeen ? 'bad' : 'off')}
+          ${chip('attack effect', attack.attackEffectSuccess, attack.attackEffectSuccess ? 'bad' : 'off')}
+          ${chip('counters stopped', defense.countersStopped, defense.countersStopped ? 'ok' : 'off')}
+          ${chip('drop rules active', defense.dropRulesActive, defense.dropRulesActive ? 'ok' : 'off')}
+          ${chip('ovs drop delta', fmtInt(defense.ovsDropCounterDelta), defense.ovsDropCounterDelta > 0 ? 'info' : 'off')}
+          ${chip('containment', containment ? 'contained' : 'not contained', containment ? 'ok' : 'warn')}
+        </div>
+      `;
+    }
+
+    function renderAttackPerformance(experiment) {
+      const { attack, attackCost } = experiment;
+      if (!attack.hasData) {
+        $('attackPerformanceRows').innerHTML = '<div class="mini">No attack data yet.</div>';
+        return;
+      }
+
+      $('attackPerformanceRows').innerHTML = `
+        <div class="chipGrid">
+          ${chip('Attack Success', attack.success, attack.success ? 'bad' : 'off')}
+          ${chip('Gateway', attack.gatewaySeen, attack.gatewaySeen ? 'bad' : 'off')}
+          ${chip('Worker', attack.workerSeen, attack.workerSeen ? 'bad' : 'off')}
+          ${chip('Cloud', attack.cloudSeen, attack.cloudSeen ? 'bad' : 'off')}
+          ${chip('Events Total', fmtInt(attack.eventsTotal), attack.eventsTotal > 0 ? 'info' : 'off')}
+          ${chip('Entry Present', attack.entryNodePresent, attack.entryNodePresent ? 'info' : 'off')}
+        </div>
+        ${barCard('Attack Reach', attackCost.pathPenetrationScore, `${attack.reachDepth}/3 stages observed`, 'attack')}
+        ${barCard('Attack Impact', attackCost.impactScore, attack.attackEffectSuccess ? 'attack effect was observed' : 'no attack effect flag yet', 'attack')}
+        ${barCard('Attacker Effort', attackCost.effortScore, 'derived from reached stages', 'warn')}
+        ${barCard('Persistence', attackCost.persistenceScore, attack.attackActive ? 'attack_active is set' : 'attack is not currently flagged active', 'attack')}
+        ${barCard('Attack Cost Proxy', attackCost.costProxy, 'events + reach depth + latency/queue/impact signals', 'attack')}
+      `;
+    }
+
+    function renderDefenderPerformance(experiment) {
+      const { defense, controller, defenseCost } = experiment;
+      if (!defense.hasData && !controller.actions && !controller.activePolicies) {
+        $('defenderPerformanceRows').innerHTML = '<div class="mini">No defense or controller action data yet.</div>';
+        return;
+      }
+
+      const actionTime = defense.controllerActionDurationMs || controller.durationMs;
+      $('defenderPerformanceRows').innerHTML = `
+        <div class="chipGrid">
+          ${chip('Defense Success', defense.defenseSuccess, defense.defenseSuccess ? 'ok' : 'off')}
+          ${chip('Drop Rules Active', defense.dropRulesActive, defense.dropRulesActive ? 'ok' : 'off')}
+          ${chip('Counters Stopped', defense.countersStopped, defense.countersStopped ? 'ok' : 'off')}
+          ${chip('OVS Drop Delta', fmtInt(defense.ovsDropCounterDelta), defense.ovsDropCounterDelta > 0 ? 'info' : 'off')}
+          ${chip('Flow Rules', fmtInt(controller.flows), controller.flows > 0 ? 'info' : 'off')}
+          ${chip('Deletes/Meters', `${fmtInt(controller.deletes)} / ${fmtInt(controller.meters)}`, (controller.deletes + controller.meters) > 0 ? 'info' : 'off')}
+          ${chip('Active Policies', fmtInt(controller.activePolicies), controller.activePolicies > 0 ? 'ok' : 'off')}
+          ${chip('Apply Time', `${fmt(actionTime, 3)} ms`, actionTime > 0 ? 'info' : 'off')}
+        </div>
+        ${barCard('Containment Effectiveness', defenseCost.containmentEffectiveness, 'defense success + active drops + stopped counters', 'defense')}
+        ${barCard('Control-Plane Cost', defenseCost.controlPlaneCost, 'action time + flow mods + deletes + meters', 'defense')}
+        ${barCard('Service Overhead', defenseCost.serviceOverhead, 'cloud_policy + relevant edge CPU proxy', 'warn')}
+        ${barCard('Disruption Cost', defenseCost.disruptionCost, 'latency-based proxy from current sample', 'warn')}
+        ${barCard('Defense Cost Proxy', defenseCost.costProxy, 'control-plane + service overhead + disruption', 'defense')}
+      `;
+    }
+
+    function timelineItem(label, detail, active, cls = null) {
+      const resolved = active ? (cls || 'done') : '';
+      return `
+        <div class="timelineItem ${resolved}">
+          <span class="timelineDot"></span>
+          <strong>${esc(label)}</strong>
+          <small>${esc(detail)}</small>
+        </div>
+      `;
+    }
+
+    function renderTimeline(experiment) {
+      const { attack, defense, controller } = experiment;
+      if (!attack.hasData && !defense.hasData) {
+        $('attackDefenseTimeline').innerHTML = '<div class="mini">No attack or defense event data yet.</div>';
+        return;
+      }
+
+      $('attackDefenseTimeline').innerHTML = [
+        timelineItem('Attack observed', `${fmtInt(attack.eventsTotal)} attack event samples`, attack.hasData, 'warn'),
+        timelineItem('Gateway reached', 'gateway_seen from /core attack_events', attack.gatewaySeen, 'bad'),
+        timelineItem('Worker reached', 'worker_seen or worker_requests_increase observed', attack.workerSeen, 'bad'),
+        timelineItem('Cloud reached', 'cloud_seen or cloud_summary_rate_changes observed', attack.cloudSeen, 'bad'),
+        timelineItem('Attack effect observed', 'latency, queue, or error effect flag', attack.attackEffectSuccess, 'bad'),
+        timelineItem('Defense applied', `${fmtInt(defense.eventsTotal)} defense event samples`, defense.hasData, 'done'),
+        timelineItem('Drop rules active', `ovs drop counter delta ${fmtInt(defense.ovsDropCounterDelta)}`, defense.dropRulesActive, 'done'),
+        timelineItem('Counters stopped', 'post-defense counters stopped increasing', defense.countersStopped, 'done'),
+        timelineItem('Defense successful', 'defense_success from /core defense_events', defense.defenseSuccess, 'done'),
+        timelineItem('Policy outcome', `${fmtInt(controller.activePolicies)} active policy actions`, controller.activePolicies > 0, 'done'),
+      ].join('');
+    }
+
+    function nodeSignals(node, data) {
+      if (node.startsWith('sen')) {
+        const generated = metricValue(data.message_loss_counters, node, 'generated_total', 'sensor');
+        const sent = metricValue(data.throughput, node, 'sent_per_second', 'sensor');
+        return `generated ${fmtInt(generated)} | sent ${fmt(sent)}/s`;
+      }
+      if (node.endsWith('_gw')) {
+        const sensors = node === 'edge2_gw' ? ['sen4', 'sen5', 'sen6'] : ['sen6', 'sen7', 'sen8', 'sen9', 'sen10'];
+        const rx = gatewayReceives(data, node, sensors);
+        const fwd = gatewayForwards(data, node, sensors);
+        const delay = avgMetrics(data.message_loss_counters, x => x.source === node && x.metric.endsWith('last_forwarding_delay_ms'));
+        return `rx ${fmtInt(rx)} | fwd ${fmtInt(fwd)} | delay ${fmt(delay)} ms`;
+      }
+      if (node.includes('_vm_')) {
+        const req = metricValue(data.message_loss_counters, node, 'requests_total', 'edge_worker');
+        const gap = metricValue(data.service_downtime_ms, node, 'max_success_gap_ms', 'edge_worker');
+        const cpu = metricValue(data.resource_use, node, 'cpu_seconds') ?? metricValue(data.resource_use, node, 'service.cpu_seconds');
+        return `requests ${fmtInt(req)} | gap ${fmt(gap)} ms | cpu ${fmt(cpu, 3)}`;
+      }
+      if (node === 'cloud_db') {
+        const stored = metricValue(data.message_loss_counters, 'cloud_db', 'storage_confirmations_total', 'cloud_db');
+        const e2c = avgMetrics(data.edge_to_cloud_latency_ms, _ => true);
+        return `stored ${fmtInt(stored)} | edge-cloud ${fmt(e2c)} ms`;
+      }
+      if (node === 'cloud_policy') {
+        const cpu = metricValue(data.resource_use, 'cloud_policy', 'cpu_seconds', 'cloud_policy') ?? metricValue(data.resource_use, 'cloud_policy', 'service.cpu_seconds');
+        const mem = metricValue(data.resource_use, 'cloud_policy', 'memory_kb', 'cloud_policy') ?? metricValue(data.resource_use, 'cloud_policy', 'service.memory_kb');
+        return `cpu ${fmt(cpu, 3)} | memory ${fmt(mem, 0)} KB`;
+      }
+      return 'no recent node metric';
+    }
+
+    function nodeState(node, experiment, data) {
+      const { attack, defense } = experiment;
+      const inPath = (attack.path || []).includes(node);
+      const isEntry = node === attack.entryNode;
+      const gatewayHit = node.endsWith('_gw') && inPath && attack.gatewaySeen;
+      const workerHit = node.includes('_vm_') && inPath && attack.workerSeen;
+      const cloudHit = node === 'cloud_db' && attack.cloudSeen;
+      const attacked = attack.hasData && (isEntry || gatewayHit || workerHit || cloudHit);
+      const defended = defense.hasData && inPath && (defense.defenseSuccess || defense.dropRulesActive || defense.countersStopped);
+      const gap = metricValue(data.service_downtime_ms, node, 'max_success_gap_ms', 'edge_worker');
+      const degraded = safe(gap) > 500 || (node === 'cloud_db' && attack.attackEffectSuccess && !defended);
+
+      if (defended) return { cls: 'defended', label: defense.countersStopped ? 'contained' : 'defended' };
+      if (attacked && (attack.attackEffectSuccess || attack.cloudSeen)) return { cls: 'attack', label: 'critical' };
+      if (attacked) return { cls: 'attack', label: 'under attack' };
+      if (degraded) return { cls: 'degraded', label: 'degraded' };
+      if (inPath) return { cls: 'info', label: 'in scenario path' };
+      return { cls: '', label: 'normal' };
+    }
+
+    function renderNodeStatusCards(experiment, data) {
+      $('nodeStatusCards').innerHTML = CRITICAL_NODES.map(node => {
+        const status = nodeState(node, experiment, data);
+        const chipClass = status.cls === 'attack' ? 'bad' : (status.cls === 'defended' ? 'ok' : (status.cls === 'degraded' ? 'warn' : (status.cls === 'info' ? 'info' : 'off')));
+        return `
+          <div class="nodeStatusCard ${status.cls}">
+            <strong>${esc(node)}</strong>
+            ${chip('status', status.label, chipClass)}
+            <div class="mini" style="margin-top:9px">${esc(nodeSignals(node, data))}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setSvgNodeState(nodeId, className, label) {
+      const node = $(nodeId);
+      if (!node) return;
+      node.classList.remove('underAttack', 'defended', 'degraded', 'critical');
+      if (className) node.classList.add(className);
+      const badgeId = SVG_BADGES[nodeId];
+      if (badgeId && $(badgeId)) $(badgeId).textContent = label || 'normal';
+    }
+
+    function setSvgPathState(pathId, className) {
+      const path = $(pathId);
+      if (!path) return;
+      path.classList.remove('attackPath', 'defensePath', 'blockedPath');
+      if (className) path.classList.add(className);
+    }
+
+    function mapCurrentScenarioToVisualState(experiment) {
+      const { attack, defense, controller } = experiment;
+      const def = scenarioDef(attack.scenarioId);
+      const nodes = {};
+      const paths = {};
+
+      for (const nodeId of SVG_NODE_IDS) nodes[nodeId] = { cls: '', label: 'normal' };
+      for (const pathId of SVG_PATH_IDS) paths[pathId] = '';
+
+      if (!attack.hasData && !defense.hasData) {
+        if (controller.activePolicies > 0) nodes.nodeController = { cls: 'defended', label: 'active policy' };
+        return { nodes, paths };
+      }
+
+      if (attack.hasData) {
+        nodes[def.sensorNode] = { cls: 'underAttack', label: 'entry active' };
+        if (attack.attackActive) {
+          for (const pathId of def.attackPaths) paths[pathId] = 'attackPath';
+        }
+        if (attack.gatewaySeen) nodes[def.edgeNode] = { cls: 'underAttack', label: 'gateway hit' };
+        if (attack.workerSeen) nodes[def.workerNode] = { cls: 'underAttack', label: 'worker hit' };
+        if (attack.cloudSeen) nodes[def.cloudNode] = { cls: 'critical', label: 'cloud reached' };
+        if (attack.attackEffectSuccess) nodes[def.edgeNode] = { cls: 'critical', label: 'impact' };
+
+        if (attack.gatewaySeen) paths[def.attackPaths[0]] = 'attackPath';
+        if (attack.workerSeen) paths.pathEdgeCore = 'attackPath';
+        if (attack.cloudSeen) paths.pathCoreCloud = 'attackPath';
+      }
+
+      if (controller.activePolicies > 0 || defense.hasData) {
+        nodes.nodeController = { cls: 'defended', label: 'defense active' };
+      }
+
+      if (defense.dropRulesActive || defense.defenseSuccess || defense.countersStopped) {
+        nodes[def.sensorNode] = { cls: 'defended', label: defense.countersStopped ? 'contained' : 'blocked' };
+        nodes[def.edgeNode] = { cls: 'defended', label: defense.countersStopped ? 'contained' : 'blocked' };
+        paths[def.attackPaths[0]] = 'blockedPath';
+        if (defense.defenseSuccess) paths.pathEdgeCore = 'defensePath';
+      }
+
+      return { nodes, paths };
+    }
+
+    function applySvgAttackDefenseState(experiment) {
+      const visual = mapCurrentScenarioToVisualState(experiment);
+      for (const nodeId of SVG_NODE_IDS) {
+        const item = visual.nodes[nodeId] || { cls: '', label: 'normal' };
+        setSvgNodeState(nodeId, item.cls, item.label);
+      }
+      for (const pathId of SVG_PATH_IDS) {
+        setSvgPathState(pathId, visual.paths[pathId] || '');
+      }
+    }
+
+    function updateSvg(data, controllerData = null, experiment = null) {
+      const gen13 = sensorGen(data, ['sen1','sen2','sen3']);
+      const gen46 = sensorGen(data, ['sen4','sen5','sen6']);
+      const gen710 = sensorGen(data, ['sen7','sen8','sen9','sen10']);
+
+      $('svgSensors13').textContent = `generated ${fmtInt(gen13)} | sent ${fmt(sensorSent(data, ['sen1','sen2','sen3']))}/s`;
+      $('svgSensors46').textContent = `generated ${fmtInt(gen46)} | sen6 edge2 ${fmtInt(metricValue(data.message_loss_counters,'edge2_gw','sensors.sen6.received','edge_gateway'))}, edge3 ${fmtInt(metricValue(data.message_loss_counters,'edge3_gw','sensors.sen6.received','edge_gateway'))}`;
+      $('svgSensors710').textContent = `generated ${fmtInt(gen710)} | sent ${fmt(sensorSent(data, ['sen7','sen8','sen9','sen10']))}/s`;
+
+      $('svgEdge1').textContent = `rx ${fmtInt(gatewayReceives(data,'edge1_gw',['sen1','sen2','sen3']))} | fwd ${fmtInt(gatewayForwards(data,'edge1_gw',['sen1','sen2','sen3']))}`;
+      $('svgEdge2').textContent = `rx ${fmtInt(gatewayReceives(data,'edge2_gw',['sen4','sen5','sen6']))} | fwd ${fmtInt(gatewayForwards(data,'edge2_gw',['sen4','sen5','sen6']))}`;
+      $('svgEdge3').textContent = `rx ${fmtInt(gatewayReceives(data,'edge3_gw',['sen6','sen7','sen8','sen9','sen10']))} | fwd ${fmtInt(gatewayForwards(data,'edge3_gw',['sen6','sen7','sen8','sen9','sen10']))}`;
+
+      const policyCpu = metricValue(data.resource_use, 'cloud_policy', 'cpu_seconds', 'cloud_policy');
+      const stored = metricValue(data.message_loss_counters, 'cloud_db', 'storage_confirmations_total', 'cloud_db');
+      const e2c = avgMetrics(data.edge_to_cloud_latency_ms, _ => true);
+      $('svgCloud').textContent = `stored ${fmtInt(stored)} | edge→cloud ${fmt(e2c)} ms | policy cpu ${fmt(policyCpu, 3)}`;
+
+      const actionTime = controllerMetric(controllerData, 'ryu_controller_last_action_duration_ms');
+      const activePolicies = controllerMetric(controllerData, 'ryu_controller_active_policy_actions');
+      const flowRules = controllerMetric(controllerData, 'ryu_controller_flow_rules_installed_total');
+      $('svgController').textContent = `active ${fmtInt(activePolicies)} | action ${fmt(actionTime, 3)} ms | flows ${fmtInt(flowRules)}`;
+
+      if (experiment) applySvgAttackDefenseState(experiment);
+    }
+
+    function updateKpis(data, experiment = null) {
+      const sampleCount = data.sample_count;
+      const avgS2E = avgMetrics(data.sensor_to_edge_latency_ms, x => x.metric.endsWith('last_ingestion_latency_ms') && !x.metric.includes('unmapped'));
+      const avgE2C = avgMetrics(data.edge_to_cloud_latency_ms, _ => true);
+      const stored = metricValue(data.message_loss_counters, 'cloud_db', 'storage_confirmations_total', 'cloud_db');
+      const generated = sumMetrics(data.message_loss_counters, x => x.role === 'sensor' && x.metric === 'generated_total');
+      const forwarded = sumMetrics(data.message_loss_counters, x => x.role === 'edge_gateway' && x.metric.endsWith('.forwarded'));
+      const lossRate = generated > 0 ? Math.max(0, ((generated - stored) / generated) * 100) : 0;
+
+      $('kpiSample').textContent = fmtInt(sampleCount);
+      $('kpiS2E').textContent = `${fmt(avgS2E)} ms`;
+      $('kpiE2C').textContent = `${fmt(avgE2C)} ms`;
+      $('kpiStored').textContent = fmtInt(stored);
+      $('kpiGen').textContent = fmtInt(generated);
+      $('kpiLoss').textContent = `${fmt(lossRate)}%`;
+
+      if (!experiment) return;
+      $('kpiScenario').textContent = (experiment.attack.hasData || experiment.defense.hasData) ? (experiment.scenarioId || 'observed') : 'none';
+      $('kpiAttackDepth').textContent = `${experiment.attack.reachDepth}/3`;
+      $('kpiDefenseSuccess').textContent = experiment.defense.hasData ? (experiment.defense.defenseSuccess ? 'yes' : 'no') : 'unknown';
+      $('kpiControllerTime').textContent = `${fmt(experiment.controller.durationMs, 3)} ms`;
+      $('kpiAttackCost').textContent = fmt(experiment.attackCost.costProxy, 0);
+      $('kpiDefenseCost').textContent = fmt(experiment.defenseCost.costProxy, 0);
+    }
+
+    function setStatus(ok, message) {
+      const dot = $('liveDot');
+      dot.className = 'statusDot ' + (ok ? 'ok' : 'bad');
+      $('liveText').textContent = message;
+      $('lastUpdate').textContent = new Date().toLocaleTimeString();
+    }
+
+    async function responseError(prefix, response) {
+      let body = '';
+      try {
+        body = await response.text();
+      } catch (_err) {
+        body = '';
+      }
+      const detail = body ? `: ${body.slice(0, 360)}` : '';
+      return new Error(`${prefix} HTTP ${response.status}${detail}`);
+    }
+
+    async function fetchJson(url) {
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) throw await responseError(url, response);
+      return response.json();
+    }
+
+    function latestRow(rows) {
+      return Array.isArray(rows) && rows.length ? rows[rows.length - 1] : null;
+    }
+
+    function stageScenarioId(row) {
+      if (!row) return 'unknown scenario';
+      return row.scenario_id || row?.state_summary?.scenario_id || row?.next_state?.scenario_id || row?.previous_state?.scenario_id || 'unknown scenario';
+    }
+
+    function matchingStageRow(stageRows, decisionRow) {
+      if (!Array.isArray(stageRows) || !stageRows.length) return null;
+      if (!decisionRow) return latestRow(stageRows);
+      return stageRows.find(row => Number(row?.stage_id) === Number(decisionRow?.stage_id)) || latestRow(stageRows);
+    }
+
+    function stagePopulation(row, role) {
+      if (!row) return {};
+      const game = row.game && typeof row.game === 'object' ? row.game : {};
+      const normalized = game[`${role}_population`];
+      if (normalized && typeof normalized === 'object') return normalized;
+      const populationAfter = row.population_after && typeof row.population_after === 'object' ? row.population_after : {};
+      const fallback = populationAfter[role];
+      return fallback && typeof fallback === 'object' ? fallback : {};
+    }
+
+    function strategyRowHtml(id, probability, selectedId, selectedClass = '') {
+      const isSelected = id === selectedId;
+      const width = Math.max(2, Math.min(100, Number(probability || 0) * 100));
+      return `
+        <div class="row">
+          <div>
+            <strong>${esc(id)}</strong>
+            <small>${isSelected ? 'selected this stage' : 'active strategy'}</small>
+          </div>
+          <div>
+            <div class="barWrap">
+              <div class="bar ${isSelected ? selectedClass : ''}" style="width:${width}%"></div>
+            </div>
+            <small>${(Number(probability || 0) * 100).toFixed(2)}%</small>
+          </div>
+          <div class="mono">${isSelected ? 'winner' : '—'}</div>
+        </div>
+      `;
+    }
+
+    function renderGameDecisionPanel(decisionRows, stageRows) {
+      const latestDecision = latestRow(decisionRows);
+      const latestStage = matchingStageRow(stageRows, latestDecision);
+      const attacker = latestDecision?.selection?.attacker || {};
+      const defender = latestDecision?.selection?.defender || {};
+      const attackerExec = latestDecision?.execution?.attacker || {};
+      const defenderExec = latestDecision?.execution?.defender || {};
+      const llm = latestDecision?.llm || latestStage?.llm || {};
+      const stageSummary = latestDecision?.stage_summary || latestStage?.stage_summary || {};
+      const decisionSource = latestDecision?.decision_source || latestStage?.decision_source || 'game_baseline';
+      const stageValidation = latestDecision?.stage_validation || latestStage?.stage_validation || stageSummary?.stage_validation || {};
+      const attackerPop = stagePopulation(latestStage, 'attacker');
+      const defenderPop = stagePopulation(latestStage, 'defender');
+
+      if (!latestDecision && !latestStage) {
+        $('gameDecisionSummary').innerHTML = '<div class="mini">No strategy decision data yet.</div>';
+        $('gameDecisionExplanation').innerHTML = '<div class="mini">No LLM stage summary yet.</div>';
+        $('attackerStrategyRows').innerHTML = '<div class="mini">No attacker probabilities yet.</div>';
+        $('defenderStrategyRows').innerHTML = '<div class="mini">No defender probabilities yet.</div>';
+        $('gameStageRows').innerHTML = '<div class="mini">No stage history yet.</div>';
+        return;
+      }
+
+      if (!latestDecision) {
+        $('gameDecisionSummary').innerHTML = `
+          <div class="scenarioHero">
+            <strong>Latest Stage ${esc(latestStage?.stage_id ?? '—')}</strong>
+            <div class="mini">Scenario: ${esc(stageScenarioId(latestStage))}</div>
+            <div class="mini">Recorded: ${esc(latestStage?.recorded_at || '—')}</div>
+          </div>
+          <div class="chipGrid">
+            ${chip('selected attacker', 'not available yet', 'warn')}
+            ${chip('selected defender', 'not available yet', 'warn')}
+            ${chip('decision source', decisionSource, decisionSource === 'llm_defender' ? 'info' : 'warn')}
+          </div>
+        `;
+      } else {
+        $('gameDecisionSummary').innerHTML = `
+          <div class="scenarioHero">
+            <strong>Latest Stage ${esc(latestDecision.stage_id ?? latestStage?.stage_id ?? '—')}</strong>
+            <div class="mini">Scenario: ${esc(latestDecision.scenario_id || stageScenarioId(latestStage))}</div>
+            <div class="mini">Recorded: ${esc(latestDecision.recorded_at || latestStage?.recorded_at || '—')}</div>
+          </div>
+          <div class="chipGrid">
+            ${chip('attacker selected', attacker.id || '—', 'bad')}
+            ${chip('defender selected', defender.id || '—', 'ok')}
+            ${chip('decision source', decisionSource, decisionSource === 'llm_defender' ? 'info' : 'warn')}
+            ${chip('attacker exec', attackerExec.status || '—', attackerExec.status === 'dispatched' ? 'bad' : (attackerExec.status ? 'warn' : 'off'))}
+            ${chip('defender exec', defenderExec.status || '—', defenderExec.status === 'executed' ? 'ok' : (defenderExec.status === 'observe_only' ? 'warn' : (defenderExec.status ? 'info' : 'off')))}
+            ${chip('operation id', attackerExec.operation_id || '—', 'info')}
+            ${chip('attacker probability', `${(Number(attacker.probability || 0) * 100).toFixed(2)}%`, 'info')}
+            ${chip('defender probability', `${(Number(defender.probability || 0) * 100).toFixed(2)}%`, 'info')}
+            ${llm.model ? chip('llm model', llm.model, 'info') : ''}
+            ${typeof llm.fallback_used === 'boolean' ? chip('llm fallback', llm.fallback_used ? 'yes' : 'no', llm.fallback_used ? 'warn' : 'ok') : ''}
+            ${stageValidation.stage_kind ? chip('stage kind', stageValidation.stage_kind, stageValidation.stage_kind === 'experimental' ? 'ok' : 'warn') : ''}
+            ${typeof stageValidation.llm_parse_success === 'boolean' ? chip('parse success', stageValidation.llm_parse_success ? 'yes' : 'no', stageValidation.llm_parse_success ? 'ok' : 'warn') : ''}
+            ${typeof stageValidation.defense_confirmed === 'boolean' ? chip('defense confirmed', stageValidation.defense_confirmed ? 'yes' : 'no', stageValidation.defense_confirmed ? 'ok' : 'warn') : ''}
+            ${typeof stageValidation.defense_effects_confirmed === 'boolean' ? chip('effects observed', stageValidation.defense_effects_confirmed ? 'yes' : 'no', stageValidation.defense_effects_confirmed ? 'ok' : 'warn') : ''}
+            ${typeof stageValidation.llm_stage_valid === 'boolean' ? chip('llm stage valid', stageValidation.llm_stage_valid ? 'yes' : 'no', stageValidation.llm_stage_valid ? 'ok' : 'warn') : ''}
+            ${typeof stageValidation.stage_success === 'boolean' ? chip('stage success', stageValidation.stage_success ? 'yes' : 'no', stageValidation.stage_success ? 'ok' : 'warn') : ''}
+          </div>
+        `;
+      }
+
+      $('gameDecisionExplanation').innerHTML = `
+        <div>
+          <p class="sectionTitle">Reasoning</p>
+          <div class="mini">${esc(llm.reasoning_summary || defender.reasoning_summary || 'No explicit LLM reasoning recorded for this stage.')}</div>
+        </div>
+        <div style="margin-top:10px">
+          <p class="sectionTitle">Stage Summary</p>
+          <div class="mini">${esc(stageSummary.summary_text || 'No stage summary text recorded yet.')}</div>
+        </div>
+        <div class="chipGrid" style="margin-top:10px">
+          ${stageSummary.security_outcome ? chip('attack effect', stageSummary.security_outcome.attack_effect_success ? 'active' : 'reduced', stageSummary.security_outcome.attack_effect_success ? 'bad' : 'ok') : ''}
+          ${stageSummary.security_outcome ? chip('defense success', stageSummary.security_outcome.defense_success ? 'true' : 'false', stageSummary.security_outcome.defense_success ? 'ok' : 'warn') : ''}
+          ${typeof stageValidation.comparable_stage === 'boolean' ? chip('comparable stage', stageValidation.comparable_stage ? 'yes' : 'no', stageValidation.comparable_stage ? 'ok' : 'warn') : ''}
+          ${Array.isArray(stageValidation.missing_defense_effects) && stageValidation.missing_defense_effects.length ? chip('missing effects', stageValidation.missing_defense_effects.join(', '), 'warn') : ''}
+          ${stageSummary.qos_delta ? chip('sensor-edge delta', fmt(stageSummary.qos_delta.sensor_to_edge_latency_ms_delta), 'info') : ''}
+          ${stageSummary.qos_delta ? chip('throughput delta', fmt(stageSummary.qos_delta.throughput_bytes_per_second_delta), 'info') : ''}
+          ${stageSummary.controller_delta ? chip('policy actions delta', fmtInt(stageSummary.controller_delta.active_policy_actions_delta), 'info') : ''}
+          ${stageSummary.controller_delta ? chip('flow delta', fmtInt(stageSummary.controller_delta.flow_rules_installed_delta), 'info') : ''}
+          ${stageSummary.controller_delta ? chip('apply ms delta', fmt(stageSummary.controller_delta.controller_apply_ms_delta), 'info') : ''}
+        </div>
+      `;
+
+      $('attackerStrategyRows').innerHTML =
+        Object.entries(attackerPop)
+          .sort((a, b) => Number(b[1] || 0) - Number(a[1] || 0))
+          .map(([id, prob]) => strategyRowHtml(id, prob, attacker.id, 'attack'))
+          .join('') || '<div class="mini">No attacker distribution in stage log.</div>';
+
+      $('defenderStrategyRows').innerHTML =
+        Object.entries(defenderPop)
+          .sort((a, b) => Number(b[1] || 0) - Number(a[1] || 0))
+          .map(([id, prob]) => strategyRowHtml(id, prob, defender.id, 'defense'))
+          .join('') || '<div class="mini">No defender distribution in stage log.</div>';
+
+      const lastStages = (Array.isArray(decisionRows) ? decisionRows.slice(-8).reverse() : []);
+      $('gameStageRows').innerHTML = lastStages.map(row => {
+        const selectedAttacker = row?.selection?.attacker || {};
+        const selectedDefender = row?.selection?.defender || {};
+        const llmInfo = row?.llm || {};
+        const validation = row?.stage_validation || row?.stage_summary?.stage_validation || {};
+        return `
+          <div class="row">
+            <div>
+              <strong>Stage ${esc(row?.stage_id ?? '—')}</strong>
+              <small>${esc(row?.scenario_id || 'unknown scenario')}</small>
+            </div>
+            <div>
+              <small>Attacker</small>
+              <div class="mono">${esc(selectedAttacker.id || '—')} (${(Number(selectedAttacker.probability || 0) * 100).toFixed(1)}%)</div>
+              <small>Defender</small>
+              <div class="mono">${esc(selectedDefender.id || '—')} (${(Number(selectedDefender.probability || 0) * 100).toFixed(1)}%)</div>
+            </div>
+            <div class="mono">
+              A:${esc(row?.execution?.attacker?.status || '—')}<br/>
+              D:${esc(row?.execution?.defender?.status || '—')}<br/>
+              ${esc(row?.decision_source || 'game_baseline')}${llmInfo.fallback_used ? ' fallback' : ''}<br/>
+              ${esc(validation.stage_kind || '')}
+            </div>
+          </div>
+        `;
+      }).join('') || '<div class="mini">No stage history yet.</div>';
+    }
+
+    function render(data, controllerData, decisionData, stageData, controllerError = null) {
+      const experiment = buildExperimentState(data, controllerData);
+      updateKpis(data, experiment);
+      updateSvg(data, controllerData, experiment);
+      buildGatewayRows(data);
+      buildResourceRows(data);
+      buildDowntimeRows(data);
+      buildControllerRows(controllerData, controllerError);
+      renderScenarioPanel(experiment);
+      renderAttackPerformance(experiment);
+      renderDefenderPerformance(experiment);
+      renderGameDecisionPanel(decisionData?.rows || [], stageData?.rows || []);
+      renderTimeline(experiment);
+      renderNodeStatusCards(experiment, data);
+      return experiment;
+    }
+
+    async function fetchAll() {
+      const url = $('coreUrl').value.trim() || '/core';
+      const controllerUrl = $('controllerUrl').value.trim() || '/mtd/metrics';
+      state.coreUrl = url;
+      state.controllerUrl = controllerUrl;
+      $('endpointEcho').textContent = url;
+      $('controllerEndpointEcho').textContent = controllerUrl;
+      let controllerData = state.latestController;
+      let controllerError = null;
+
+      try {
+        const [coreResult, controllerResult, decisionResult, stageResult] = await Promise.allSettled([
+          fetchJson(url),
+          fetch(controllerUrl, { cache: 'no-store' }),
+          fetchJson(state.decisionUrl),
+          fetchJson(state.stageUrl),
+        ]);
+
+        if (controllerResult.status === 'fulfilled' && controllerResult.value.ok) {
+          controllerData = parsePrometheusText(await controllerResult.value.text());
+          state.latestController = controllerData;
+        } else if (controllerResult.status === 'fulfilled') {
+          controllerError = (await responseError('Controller', controllerResult.value)).message;
+        } else {
+          controllerError = controllerResult.reason.message;
+        }
+
+        if (coreResult.status !== 'fulfilled') throw coreResult.reason;
+        if (decisionResult.status !== 'fulfilled') throw decisionResult.reason;
+        if (stageResult.status !== 'fulfilled') throw stageResult.reason;
+
+        const data = coreResult.value;
+        const decisionData = decisionResult.value;
+        const stageData = stageResult.value;
+
+        state.latest = data;
+        state.latestDecision = decisionData;
+        state.latestStage = stageData;
+        render(data, controllerData, decisionData, stageData, controllerError);
+        setStatus(
+          !controllerError,
+          controllerError
+            ? `Core + strategy live, controller failed: ${controllerError}`
+            : 'Live strategy + metrics feed connected'
+        );
+      } catch (err) {
+        buildControllerRows(controllerData, controllerError);
+        renderGameDecisionPanel(state.latestDecision?.rows || [], state.latestStage?.rows || []);
+        setStatus(false, `Fetch failed: ${err.message}`);
+      }
+    }
+
+    function startPolling() {
+      if (state.timer) clearInterval(state.timer);
+      fetchAll();
+      state.timer = setInterval(fetchAll, 10000);
+    }
+
+    $('applyBtn').addEventListener('click', startPolling);
+    $('refreshBtn').addEventListener('click', fetchAll);
+    $('coreUrl').addEventListener('keydown', (e) => { if (e.key === 'Enter') startPolling(); });
+    $('controllerUrl').addEventListener('keydown', (e) => { if (e.key === 'Enter') startPolling(); });
+
+    startPolling();
+  </script>
+</body>
+</html>

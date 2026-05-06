@@ -1,0 +1,37 @@
+- id: 87b6de2e-fcb6-4f44-9a7e-79af476c7d41
+  name: LLM MTD sensor probe
+  description: Safe discovery from a sensor or edge container in the LLM_MTD_emo lab.
+  tactic: discovery
+  technique:
+    attack_id: T1016
+    name: System Network Configuration Discovery
+  platforms:
+    linux:
+      sh:
+        command: |
+          SCENARIO_ID="${SCENARIO_ID:-sen4_edge2_clouddb}"
+          ENTRY_NODE="${ENTRY_NODE:-${SENSOR_ID:-$(hostname)}}"
+          LOGGER_URL="${LOGGER_URL:-http://10.0.10.14:8000/attack/event}"
+          EDGE2_GW_URL="${EDGE2_GW_URL:-http://10.0.2.1:8000/health}"
+          EDGE3_GW_URL="${EDGE3_GW_URL:-http://10.0.3.1:8000/health}"
+
+          echo "[sensor_probe] scenario=${SCENARIO_ID} entry=${ENTRY_NODE}"
+          curl -sS -m 2 -X POST "${LOGGER_URL}" \
+            -H 'Content-Type: application/json' \
+            -d "{\"event_type\":\"attack_start\",\"scenario_id\":\"${SCENARIO_ID}\",\"entry_node\":\"${ENTRY_NODE}\",\"tool\":\"caldera\",\"adversary_id\":\"sensor_probe\"}" \
+            >/dev/null || true
+
+          echo "[sensor_probe] hostname"
+          hostname || true
+          echo "[sensor_probe] interfaces"
+          ip -br addr || true
+          echo "[sensor_probe] routes"
+          ip route || true
+          echo "[sensor_probe] edge2 gateway health"
+          curl -sS -m 3 "${EDGE2_GW_URL}" || true
+          echo
+          echo "[sensor_probe] edge3 gateway health"
+          curl -sS -m 3 "${EDGE3_GW_URL}" || true
+          echo
+        cleanup: |
+          true

@@ -1,0 +1,8 @@
+{
+  "latency_ms": 112659.47254899947,
+  "model_name": "gpt-oss:20b",
+  "prompt_preview": "Select one defender strategy ID from the active candidates.\n\nReturn JSON with keys:\n- selected_defender_strategy_id\n- confidence\n- reasoning_summary\n- expected_security_gain\n- expected_qos_impact\n\nLive state and candidates:\n{\n  \"active_defe",
+  "provider": "ollama",
+  "raw_text": "We need to choose a defender strategy ID from active candidates. Attack_active is false, attack_effect_success false. So no active attack. But we can still choose a defensive action. We prefer smallest effective action that can contain attacker. Since attack not active, maybe observe? But we might want to preemptively mitigate. The attack is sensor_to_edge_probe, which is discovery. The path is sen4->edge2_gw->edge2_vm_s4->cloud_db. The defender candidates: observe (D0_observe), quarantine sen4 (D1_quarantine_sen4), rate_limit sen4 (D2_rate_limit_sen4). Attack is at sen4. Quarantine sen4 would drop rules and stop counters. Rate limit sen4 would throttle traffic. Observe is minimal cost. Since attack not active, maybe observe to log context. But we might want to preemptively quarantine sen4 to block future attacks. But risk: quarantine may affect legitimate traffic. Rate limit also. The question: \": 2.1                               ",
+  "retries_used": 0
+}

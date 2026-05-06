@@ -1,0 +1,8 @@
+{
+  "latency_ms": 103012.77723700332,
+  "model_name": "llama3.1:latest",
+  "prompt_preview": "Select one defender strategy ID from the active candidates.\nAllowed defender IDs only: [\"D0_observe\", \"D1_quarantine_sen4\", \"D2_rate_limit_sen4\"]\n\nReturn exactly one compact JSON object with keys:\n- selected_defender_strategy_id\n- confidenc",
+  "provider": "ollama",
+  "raw_text": "{\n  \"selected_defender_strategy_id\": \"D1_quarantine_sen4\",\n  \"confidence\": 0.34885534726837325,\n  \"reasoning_summary\": \"Quarantining sen4 is the most effective action to contain the attacker, as it has a high population and can prevent further traffic from reaching edge2_gw.\",\n  \"expected_security_gain\": 0.03263243333333335,\n  \"expected_qos_impact\": -0.02\n}",
+  "retries_used": 0
+}

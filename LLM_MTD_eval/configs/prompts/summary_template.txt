@@ -1,0 +1,8 @@
+Summarize this evaluation trial in three short bullets:
+
+- scenario and chosen action
+- expected security effect
+- expected QoS tradeoff
+
+Trial result:
+{trial_result}

@@ -1,0 +1,46 @@
+- id: f6b91346-caa4-4046-9c7a-1b7376515b48
+  name: LLM MTD cloud DB probe
+  description: Read-only cloud reachability probe for cloud_db and cloud_object.
+  tactic: discovery
+  technique:
+    attack_id: T1046
+    name: Network Service Discovery
+  platforms:
+    linux:
+      sh:
+        command: |
+          SCENARIO_ID="${SCENARIO_ID:-edge_to_cloud_probe}"
+          ENTRY_NODE="${ENTRY_NODE:-$(hostname)}"
+          LOGGER_URL="${LOGGER_URL:-http://10.0.10.14:8000/attack/event}"
+          CLOUD_DB_URL="${CLOUD_DB_URL:-http://10.0.10.10:8000}"
+          CLOUD_OBJECT_URL="${CLOUD_OBJECT_URL:-http://10.0.10.11:8000}"
+
+          echo "[cloud_db_probe] scenario=${SCENARIO_ID} entry=${ENTRY_NODE}"
+          cloud_seen=false
+
+          db_status="$(curl -sS -m 3 -o /tmp/caldera_cloud_db_health.out -w "%{http_code}" "${CLOUD_DB_URL}/health")"
+          if [ "$?" -ne 0 ]; then
+            db_status="000"
+          fi
+          object_status="$(curl -sS -m 3 -o /tmp/caldera_cloud_object_health.out -w "%{http_code}" "${CLOUD_OBJECT_URL}/health")"
+          if [ "$?" -ne 0 ]; then
+            object_status="000"
+          fi
+
+          echo "[cloud_db_probe] cloud_db_status=${db_status}"
+          cat /tmp/caldera_cloud_db_health.out 2>/dev/null || true
+          echo
+          echo "[cloud_db_probe] cloud_object_status=${object_status}"
+          cat /tmp/caldera_cloud_object_health.out 2>/dev/null || true
+          echo
+
+          case "${db_status}" in
+            2*) cloud_seen=true ;;
+          esac
+
+          curl -sS -m 2 -X POST "${LOGGER_URL}" \
+            -H 'Content-Type: application/json' \
+            -d "{\"event_type\":\"attack_result\",\"scenario_id\":\"${SCENARIO_ID}\",\"entry_node\":\"${ENTRY_NODE}\",\"tool\":\"caldera\",\"adversary_id\":\"cloud_db_probe\",\"success\":${cloud_seen},\"cloud_seen\":${cloud_seen},\"cloud_db_status\":\"${db_status}\",\"cloud_object_status\":\"${object_status}\"}" \
+            >/dev/null || true
+        cleanup: |
+          rm -f /tmp/caldera_cloud_db_health.out /tmp/caldera_cloud_object_health.out

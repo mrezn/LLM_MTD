@@ -1,0 +1,8 @@
+{
+  "latency_ms": 114299.98219606932,
+  "model_name": "llama3.1:latest",
+  "prompt_preview": "Select one defender strategy ID from the active candidates.\nAllowed defender IDs only: [\"D0_observe\", \"D1_quarantine_sen4\", \"D3_isolate_edge2_gw_for_sen4\", \"D4_isolate_edge2_vm_s4\"]\n\nReturn exactly one compact JSON object with keys:\n- selec",
+  "provider": "ollama",
+  "raw_text": "{\n  \"selected_defender_strategy_id\": \"D1_quarantine_sen4\",\n  \"confidence\": 0.64,\n  \"reasoning_summary\": \"Quarantining sen4 is the most effective action to contain the attacker, as it has already reached this sensor and further progression would be blocked.\",\n  \"expected_security_gain\": 0.64,\n  \"expected_qos_impact\": -0.02\n}",
+  "retries_used": 0
+}

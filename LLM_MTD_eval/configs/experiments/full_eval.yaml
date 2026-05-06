@@ -1,0 +1,17 @@
+name: full_eval
+description: Combined evaluation configuration for later phases.
+models:
+  - game_only
+  - llm_only
+  - hybrid_game_llm
+  - rule_only
+scenarios:
+  - sen4_edge2_clouddb
+  - sen6_edge3_clouddb
+seeds: [42, 43, 44, 45, 46]
+repeats: 5
+metrics:
+  - qos
+  - security
+  - overhead
+  - llm_quality

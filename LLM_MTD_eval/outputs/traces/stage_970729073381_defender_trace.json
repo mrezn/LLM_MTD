@@ -1,0 +1,8 @@
+{
+  "latency_ms": 0.0,
+  "model_name": "llama3.1:latest",
+  "prompt_preview": "Rank all active defender candidates and choose one final strategy.\nAllowed defender IDs only: [\"D1_quarantine_sen4\", \"D2_rate_limit_sen4\", \"D0_observe\"]\n\nReturn exactly one compact JSON object with ke | error=RuntimeError:Ollama completion failed: timed out",
+  "provider": "ollama",
+  "raw_text": "",
+  "retries_used": 0
+}

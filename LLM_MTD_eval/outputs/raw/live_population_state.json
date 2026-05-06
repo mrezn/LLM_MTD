@@ -1,0 +1,19 @@
+{
+  "attacker": {
+    "A2_sensor_http_abuse_sen4": 0.5079258041390452,
+    "A6_sen4_edge_to_cloud_probe": 0.49207419586095485
+  },
+  "defender": {
+    "D0_observe": 0.2214898113714731,
+    "D1_quarantine_sen4": 0.2514275847654532,
+    "D2_rate_limit_sen4": 0.24472749433969246,
+    "D3_isolate_edge2_gw_for_sen4": 0.13948143776068705,
+    "D4_isolate_edge2_vm_s4": 0.14287367176269433
+  },
+  "last_stage": {
+    "path_stage": 3,
+    "scenario_id": "sen4_edge2_clouddb",
+    "selected_attacker": "A2_sensor_http_abuse_sen4",
+    "selected_defender": "D1_quarantine_sen4"
+  }
+}

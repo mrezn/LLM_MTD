@@ -1,0 +1,8 @@
+{
+  "latency_ms": 110708.39683501981,
+  "model_name": "llama3.1:latest",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\n  \"summary_text\": [\n    \"Scenario: sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db, Defender action: observe\",\n    \"Expected security effect: Log current strategy context to detect attacker's path\",\n    \"Expected QoS tradeoff: Increased latency (edge_to_cloud_latency_ms: 2.595)\"\n  ],\n  \"security_outcome\": {\n    \"attack_effect_success\": true,\n    \"defense_success\": false\n  },\n  \"qos_delta\": {\n    \"edge_to_cloud_latency_ms\": 1.111,\n    \"loss_rate\": 0.0,\n    \"sensor_to_edge_latency_ms\": 2.435817181818182,\n    \"throughput_bytes_per_second\": -17.25113522151135\n  },\n  \"controller_delta\": {\n    \"controller_active_actions\": 3,\n    \"controller_apply_ms\": 1.8802669364959002,\n    \"flow_delete_commands\": 0,\n    \"flow_rules_installed\": 45,\n    \"meters_added\": 5,\n    \"total_cpu_seconds\": 148.29098694599998,\n    \"total_memory_kb\": 440836.0\n  }\n}",
+  "retries_used": 0
+}

@@ -1,0 +1,10 @@
+scenario_id,stage_id,candidate_strategy_id,baseline_utility_prior,llm_rank_rank,llm_selected,expected_security_gain,expected_qos_impact,expected_controller_cost
+sen4_edge2_clouddb,13,D3_isolate_edge2_gw_for_sen4,0.0,1,True,0.7293999999999999,0.3262351515151516,0.45479085932377106
+sen4_edge2_clouddb,13,D4_isolate_edge2_vm_s4,0.0,2,False,0.7293999999999999,0.3262351515151516,0.45479085932377106
+sen4_edge2_clouddb,13,D0_observe,0.0,3,False,0.261,0.04023515151515152,0.14279085932377106
+sen4_edge2_clouddb,15,D1_quarantine_sen4,,1,True,,,
+sen4_edge2_clouddb,15,D2_rate_limit_sen4,,2,False,,,
+sen4_edge2_clouddb,15,D0_observe,,3,False,,,
+sen4_edge2_clouddb,16,D3_isolate_edge2_gw_for_sen4,,1,True,,,
+sen4_edge2_clouddb,16,D4_isolate_edge2_vm_s4,,2,False,,,
+sen4_edge2_clouddb,16,D1_quarantine_sen4,,3,False,,,

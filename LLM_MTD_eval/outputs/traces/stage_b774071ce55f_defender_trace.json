@@ -1,0 +1,8 @@
+{
+  "latency_ms": 95170.00128503423,
+  "model_name": "llama3.1:latest",
+  "prompt_preview": "Select one defender strategy ID from the active candidates.\nAllowed defender IDs only: [\"D0_observe\", \"D3_isolate_edge2_gw_for_sen4\", \"D4_isolate_edge2_vm_s4\"]\n\nReturn exactly one compact JSON object with keys:\n- selected_defender_strategy_",
+  "provider": "ollama",
+  "raw_text": "{\n  \"selected_defender_strategy_id\": \"D3_isolate_edge2_gw_for_sen4\",\n  \"confidence\": 0.2768340653567785,\n  \"reasoning_summary\": \"The attacker is currently on the sen4 -> edge2_gw -> edge2_vm_s4 path, and isolating the Edge 2 gateway for sen4 will break this path and prevent further progression.\",\n  \"expected_security_gain\": 0.42,\n  \"expected_qos_impact\": -0.42\n}",
+  "retries_used": 0
+}

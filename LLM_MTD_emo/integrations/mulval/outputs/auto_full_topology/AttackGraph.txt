@@ -1,0 +1,58 @@
+<1>|--execCode(cloud_db,root)
+   (2) RULE 2 : remote exploit of a server program
+      <3>||--netAccess(cloud_db,tcp,8000)
+         (4) RULE 5 : multi-hop access
+            [5]-hacl(edge2_gw,cloud_db,tcp,8000)
+            <6>|--execCode(edge2_gw,root)
+               (7) RULE 2 : remote exploit of a server program
+                  <8>||--netAccess(edge2_gw,tcp,8000)
+                     (9) RULE 5 : multi-hop access
+                        [10]-hacl(sen4,edge2_gw,tcp,8000)
+                        <11>|--execCode(sen4,root)
+                           (12) RULE 2 : remote exploit of a server program
+                              <13>|--netAccess(sen4,tcp,8000)
+                                 (14) RULE 7 : direct on-host access
+                                    [15]-attackerLocated(sen4)
+                              [16]-networkServiceInfo(sen4,sensor_agent_api,tcp,8000,root)
+                              [17]-vulExists(sen4,sensor_node_exposed,sensor_agent_api,remoteExploit,privEscalation)
+                     (18) RULE 6 : direct network access
+                        [19]-hacl(external,edge2_gw,tcp,8000)
+                        [20]-attackerLocated(external)
+                     (21) RULE 6 : direct network access
+                        [10]-hacl(sen4,edge2_gw,tcp,8000)
+                        [15]-attackerLocated(sen4)
+                  [22]-networkServiceInfo(edge2_gw,edge_gateway_api,tcp,8000,root)
+                  [23]-vulExists(edge2_gw,weak_auth_on_gateway,edge_gateway_api,remoteExploit,privEscalation)
+         (24) RULE 5 : multi-hop access
+            [25]-hacl(edge2_vm_s4,cloud_db,tcp,8000)
+            <26>|--execCode(edge2_vm_s4,root)
+               (27) RULE 2 : remote exploit of a server program
+                  <28>|--netAccess(edge2_vm_s4,tcp,8000)
+                     (29) RULE 5 : multi-hop access
+                        [30]-hacl(edge2_gw,edge2_vm_s4,tcp,8000)
+                        execCode(edge2_gw,root)==><6>
+                  [31]-networkServiceInfo(edge2_vm_s4,edge_worker_api,tcp,8000,root)
+                  [32]-vulExists(edge2_vm_s4,worker_service_exposed,edge_worker_api,remoteExploit,privEscalation)
+         (33) RULE 5 : multi-hop access
+            [34]-hacl(edge2_vm_s5,cloud_db,tcp,8000)
+            <35>|--execCode(edge2_vm_s5,root)
+               (36) RULE 2 : remote exploit of a server program
+                  <37>|--netAccess(edge2_vm_s5,tcp,8000)
+                     (38) RULE 5 : multi-hop access
+                        [39]-hacl(edge2_gw,edge2_vm_s5,tcp,8000)
+                        execCode(edge2_gw,root)==><6>
+                  [40]-networkServiceInfo(edge2_vm_s5,edge_worker_api,tcp,8000,root)
+                  [41]-vulExists(edge2_vm_s5,worker_service_exposed,edge_worker_api,remoteExploit,privEscalation)
+         (42) RULE 5 : multi-hop access
+            [43]-hacl(edge2_vm_s6,cloud_db,tcp,8000)
+            <44>|--execCode(edge2_vm_s6,root)
+               (45) RULE 2 : remote exploit of a server program
+                  <46>|--netAccess(edge2_vm_s6,tcp,8000)
+                     (47) RULE 5 : multi-hop access
+                        [48]-hacl(edge2_gw,edge2_vm_s6,tcp,8000)
+                        execCode(edge2_gw,root)==><6>
+                  [49]-networkServiceInfo(edge2_vm_s6,edge_worker_api,tcp,8000,root)
+                  [50]-vulExists(edge2_vm_s6,worker_service_exposed,edge_worker_api,remoteExploit,privEscalation)
+      [51]-networkServiceInfo(cloud_db,cloud_db_api,tcp,8000,root)
+      [52]-vulExists(cloud_db,cloud_api_reachable,cloud_db_api,remoteExploit,privEscalation)
+

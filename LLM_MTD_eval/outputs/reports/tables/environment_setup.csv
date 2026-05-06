@@ -1,0 +1,7 @@
+layer,node_group,node_examples,role,cpu_profile,memory_profile,notes
+sensor,sensor_nodes,"sen1, sen10, sen2",Telemetry sources and candidate attacker footholds.,0.2,128m,10 constrained sensor containers distributed across edge subnets.
+edge,edge_gateways,"edge1_gw, edge2_gw, edge3_gw","Gateway forwarding, queueing, and first-hop defense enforcement.",1.0,512m,3 edge gateways bridge sensor traffic into worker paths.
+edge,edge_workers,"edge1_vm_s1, edge1_vm_s2, edge1_vm_s3",Edge compute workers servicing sensor-derived requests.,0.5,256m,11 workers represent service-side attack progression before cloud reachability.
+cloud,cloud_standard_services,"cloud_logger, cloud_metrics, cloud_object","Shared cloud services for metrics, logging, and object workflows.",1.0,512m,3 standard cloud containers preserve moderate resource headroom.
+cloud,cloud_heavy_services,"cloud_db, cloud_policy",Heavier stateful and policy-intensive cloud services.,2.0,1g,2 higher-capacity services host the protected asset and policy engine.
+control,ryu_controller,c0,OpenFlow control plane and Ryu-based MTD action endpoint.,host process,host process,Listens on 127.0.0.1:6653 with REST actions exposed separately.

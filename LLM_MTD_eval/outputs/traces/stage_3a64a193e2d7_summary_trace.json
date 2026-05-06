@@ -1,0 +1,8 @@
+{
+  "latency_ms": 103121.36587999703,
+  "model_name": "llama3.1:latest",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\n  \"summary_text\": [\n    \"Attacker dispatched HTTP abuse to sensor sen4.\",\n    \"Defender quarantined sensor sen4 to contain the attacker.\",\n    \"Quarantine action blocked further progress of the attacker.\"\n  ],\n  \"security_outcome\": {\n    \"attack_effect_success\": true,\n    \"defense_success\": false\n  },\n  \"qos_delta\": {\n    \"edge_to_cloud_latency_ms\": -1.044,\n    \"loss_rate\": 0.0,\n    \"sensor_to_edge_latency_ms\": -4.269,\n    \"throughput_bytes_per_second\": -5.158\n  },\n  \"controller_delta\": {\n    \"controller_active_actions\": 1,\n    \"controller_apply_ms\": 1.9215409993194044,\n    \"flow_delete_commands\": 0,\n    \"flow_rules_installed\": 20,\n    \"meters_added\": 0,\n    \"total_cpu_seconds\": 5.17357415900001,\n    \"total_memory_kb\": 10328.0\n  }\n}",
+  "retries_used": 0
+}

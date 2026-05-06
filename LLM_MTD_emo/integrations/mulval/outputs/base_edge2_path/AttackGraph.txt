@@ -1,0 +1,32 @@
+<1>|--execCode(cloud_db,root)
+   (2) RULE 2 : remote exploit of a server program
+      <3>|--netAccess(cloud_db,tcp,8000)
+         (4) RULE 5 : multi-hop access
+            [5]-hacl(edge2_vm_s4,cloud_db,tcp,8000)
+            <6>|--execCode(edge2_vm_s4,root)
+               (7) RULE 2 : remote exploit of a server program
+                  <8>|--netAccess(edge2_vm_s4,tcp,8000)
+                     (9) RULE 5 : multi-hop access
+                        [10]-hacl(edge2_gw,edge2_vm_s4,tcp,8000)
+                        <11>|--execCode(edge2_gw,root)
+                           (12) RULE 2 : remote exploit of a server program
+                              <13>||--netAccess(edge2_gw,tcp,8000)
+                                 (14) RULE 5 : multi-hop access
+                                    [15]-hacl(sen4,edge2_gw,tcp,8000)
+                                    <16>|--execCode(sen4,user)
+                                       (17) RULE 2 : remote exploit of a server program
+                                          <18>|--netAccess(sen4,tcp,8000)
+                                             (19) RULE 7 : direct on-host access
+                                                [20]-attackerLocated(sen4)
+                                          [21]-networkServiceInfo(sen4,sensor_agent_api,tcp,8000,user)
+                                          [22]-vulExists(sen4,sensor_node_exposed,sensor_agent_api,remoteExploit,privEscalation)
+                                 (23) RULE 6 : direct network access
+                                    [15]-hacl(sen4,edge2_gw,tcp,8000)
+                                    [20]-attackerLocated(sen4)
+                              [24]-networkServiceInfo(edge2_gw,edge_gateway_api,tcp,8000,root)
+                              [25]-vulExists(edge2_gw,weak_auth_on_gateway,edge_gateway_api,remoteExploit,privEscalation)
+                  [26]-networkServiceInfo(edge2_vm_s4,edge_worker_api,tcp,8000,root)
+                  [27]-vulExists(edge2_vm_s4,worker_service_exposed,edge_worker_api,remoteExploit,privEscalation)
+      [28]-networkServiceInfo(cloud_db,cloud_db_api,tcp,8000,root)
+      [29]-vulExists(cloud_db,cloud_api_reachable,cloud_db_api,remoteExploit,privEscalation)
+

@@ -1,0 +1,10 @@
+method,scenario_id,stage_id,path_stage,attack_effect_success,defense_success,defender_selected,defender_strategy_id,final_defender_strategy_id,method_label
+llm_defender,sen4_edge2_clouddb,3.0,3.0,True,False,D1_quarantine_sen4,D1_quarantine_sen4,D1_quarantine_sen4,LLM defender
+llm_defender,sen4_edge2_clouddb,4.0,3.0,True,False,D1_quarantine_sen4,D1_quarantine_sen4,D1_quarantine_sen4,LLM defender
+llm_defender,sen4_edge2_clouddb,5.0,3.0,True,False,D1_quarantine_sen4,D1_quarantine_sen4,D1_quarantine_sen4,LLM defender
+llm_defender,sen4_edge2_clouddb,8.0,3.0,True,False,D1_quarantine_sen4,D1_quarantine_sen4,D1_quarantine_sen4,LLM defender
+llm_defender,sen4_edge2_clouddb,9.0,3.0,True,False,D1_quarantine_sen4,D1_quarantine_sen4,D1_quarantine_sen4,LLM defender
+llm_defender,sen4_edge2_clouddb,10.0,3.0,True,False,D3_isolate_edge2_gw_for_sen4,D3_isolate_edge2_gw_for_sen4,D3_isolate_edge2_gw_for_sen4,LLM defender
+llm_defender,sen4_edge2_clouddb,13.0,3.0,True,False,D3_isolate_edge2_gw_for_sen4,D3_isolate_edge2_gw_for_sen4,D3_isolate_edge2_gw_for_sen4,LLM defender
+llm_defender,sen4_edge2_clouddb,15.0,3.0,True,False,D1_quarantine_sen4,D1_quarantine_sen4,D1_quarantine_sen4,LLM defender
+llm_defender,sen4_edge2_clouddb,16.0,3.0,True,False,D3_isolate_edge2_gw_for_sen4,D3_isolate_edge2_gw_for_sen4,D3_isolate_edge2_gw_for_sen4,LLM defender
