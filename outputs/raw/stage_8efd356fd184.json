@@ -1,0 +1,3862 @@
+{
+  "active": {
+    "attacker_ids": [
+      "A1_sensor_probe_sen4",
+      "A2_sensor_http_abuse_sen4",
+      "A6_sen4_edge_to_cloud_probe"
+    ],
+    "attackers": [
+      {
+        "action": "sensor_to_edge_probe",
+        "base_cost": 0.14,
+        "base_reward": 0.35,
+        "expected_effects": [
+          "entry_node_present",
+          "gateway_seen"
+        ],
+        "id": "A1_sensor_probe_sen4",
+        "name": "Probe sen4 to Edge 2 path",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db"
+      },
+      {
+        "action": "sensor_to_edge_http_abuse",
+        "base_cost": 0.35,
+        "base_reward": 0.82,
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db"
+      },
+      {
+        "action": "edge_to_cloud_probe",
+        "base_cost": 0.28,
+        "base_reward": 0.58,
+        "expected_effects": [
+          "cloud_seen",
+          "cloud_summary_rate_changes"
+        ],
+        "id": "A6_sen4_edge_to_cloud_probe",
+        "name": "Probe cloud reachability after sen4 Edge 2 pivot",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db"
+      }
+    ],
+    "defender_ids": [
+      "D0_observe"
+    ],
+    "defenders": [
+      {
+        "action": "observe",
+        "base_cost": 0.02,
+        "base_reward": 0.05,
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "name": "Observe and log current strategy context",
+        "scenario_id": "*",
+        "target": ""
+      }
+    ]
+  },
+  "decision_source": "llm_defender",
+  "decision_trace": {
+    "average_utility": {
+      "attacker": 0.051579090062522946,
+      "defender": 0.17726303291975376
+    },
+    "baseline_game_prior": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.37686117003461966,
+        "population_after_rank": 1,
+        "population_before": 0.3770886839955,
+        "population_before_rank": 1,
+        "population_delta": -0.00022751396088033227,
+        "probability": 0.37686117003461966,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selection_mode": "dominant",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "cloud_db",
+        "utility": 0.048227182399999985,
+        "utility_rank": 2
+      },
+      "defender": {
+        "action": "observe",
+        "action_payload": {
+          "action": "observe"
+        },
+        "canonical_baseline_top": {
+          "base_cost": 0.02,
+          "population_share": 1.0,
+          "strategy_id": "D0_observe",
+          "tiebreak_reason": "highest_utility",
+          "utility": 0.17726303291975376
+        },
+        "executor": {
+          "type": "cloud_policy"
+        },
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Observe and log current strategy context",
+        "path": null,
+        "population_after": 1.0,
+        "population_after_rank": 1,
+        "population_before": 1.0,
+        "population_before_rank": 1,
+        "population_delta": 0.0,
+        "probability": 1.0,
+        "scenario_id": "*",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": null,
+        "utility": 0.17726303291975376,
+        "utility_rank": 1
+      }
+    },
+    "baseline_top_defender_population_share": 1.0,
+    "baseline_top_defender_strategy_id": "D0_observe",
+    "baseline_top_defender_tiebreak_reason": "highest_utility",
+    "baseline_top_defender_utility": 0.17726303291975376,
+    "decision_source": "llm_defender",
+    "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+    "executed_via_fallback": false,
+    "execution": {
+      "attacker": {
+        "attempted_path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "operation_id": "",
+        "status": "dry_run",
+        "strategy_id": "A2_sensor_http_abuse_sen4",
+        "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+      },
+      "defender": {
+        "action": "observe",
+        "cloud_policy": {
+          "accepted_keys": [],
+          "context_http_status": 0,
+          "context_ok": false,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": true,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "observe",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+              "source": "llm_defender",
+              "source_strategy_id": "D0_observe"
+            },
+            "target": "",
+            "type": "observe"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {},
+          "status": "skipped",
+          "url": ""
+        },
+        "ryu_response": {
+          "action": "observe",
+          "active_policy_actions": 0,
+          "apply_duration_ms": 0.0,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "http_status": 0,
+          "meters_added": 0,
+          "ok": false,
+          "rule": "",
+          "status": "",
+          "target": "",
+          "target_ips": []
+        },
+        "status": "observe_only",
+        "target": ""
+      }
+    },
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": false,
+        "path_stage": 0,
+        "urgency_level": "low"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D0_observe",
+      "raw_llm_selected_defender_strategy_id": "D0_observe"
+    },
+    "final_baseline_alignment": "followed",
+    "final_decision_alignment_vs_baseline": "followed",
+    "final_defender_action": "observe",
+    "final_defender_strategy_id": "D0_observe",
+    "final_defender_target": "",
+    "llm": {
+      "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+      "baseline_top_defender": {
+        "base_cost": 0.02,
+        "population_share": 1.0,
+        "strategy_id": "D0_observe",
+        "tiebreak_reason": "highest_utility",
+        "utility": 0.17726303291975376
+      },
+      "baseline_top_defender_population_share": 1.0,
+      "baseline_top_defender_strategy_id": "D0_observe",
+      "baseline_top_defender_tiebreak_reason": "highest_utility",
+      "baseline_top_defender_utility": 0.17726303291975376,
+      "confidence": 0.95,
+      "executed_decision_reason": "llm_selected_strategy",
+      "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+      "executed_decision_source": "llm_defender",
+      "executed_defender_strategy_id": "D0_observe",
+      "executed_via_fallback": false,
+      "expected_controller_cost": 0.0,
+      "expected_qos_impact": 0.01,
+      "expected_security_gain": 0.26,
+      "fallback_constraint_name": "",
+      "fallback_reason": "",
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": false,
+          "path_stage": 0,
+          "urgency_level": "low"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D0_observe",
+        "raw_llm_selected_defender_strategy_id": "D0_observe"
+      },
+      "fallback_used": false,
+      "final_baseline_alignment": "followed",
+      "final_decision_alignment_vs_baseline": "followed",
+      "final_defender_action": "observe",
+      "final_defender_strategy_id": "D0_observe",
+      "final_defender_target": "",
+      "llm_baseline_alignment": "followed",
+      "llm_decision_mode": "uncertainty_limited",
+      "llm_override_reason": "",
+      "llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D0_observe"
+        }
+      ],
+      "llm_repeat_previous_action": true,
+      "llm_selected_defender_strategy_id": "D0_observe",
+      "llm_stage_memory_used": true,
+      "llm_telemetry_confidence": "medium",
+      "llm_urgency_level": "low",
+      "llm_why_not_observe": "",
+      "llm_why_not_quarantine": "Quarantining is a high-impact, reactive measure best reserved for confirmed active threats. Since no attack is currently active and the state freshness is only partial, this action would be overly disruptive.",
+      "llm_why_not_rate_limit": "Rate limiting implies an observed resource abuse or excessive traffic flow. With empty defense metrics and low urgency, rate limiting provides little benefit and risks unnecessary disruption.",
+      "model": "gemma4:e4b",
+      "parse_success": true,
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "followed",
+      "raw_llm_baseline_alignment": "followed",
+      "raw_llm_override_reason": "",
+      "raw_llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D0_observe"
+        }
+      ],
+      "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+      "raw_llm_selected_defender_strategy_id": "D0_observe",
+      "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true,
+      "stage_memory": {
+        "previous_attack_effect_success": false,
+        "previous_attack_progression_continued": false,
+        "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+        "previous_defender_execution_status": "observe_only",
+        "previous_defender_strategy_id": "D0_observe",
+        "previous_defender_strategy_id_note": "",
+        "previous_defense_confirmed": false,
+        "previous_defense_success": true,
+        "previous_stage_id": 14,
+        "previous_stage_success": true,
+        "recent_controller_deltas": {
+          "active_policy_actions_delta": 0.0,
+          "controller_apply_ms_delta": 0.0,
+          "flow_delete_commands_delta": 0.0,
+          "flow_rules_installed_delta": 0.0,
+          "meters_added_delta": 0.0,
+          "total_cpu_seconds_delta": 1.576312,
+          "total_memory_kb_delta": 0.0
+        },
+        "recent_qos_deltas": {
+          "edge_to_cloud_latency_ms": 0.04,
+          "sensor_to_edge_latency_ms": -1.08,
+          "throughput_bytes_per_second": -1.32
+        }
+      }
+    },
+    "llm_baseline_alignment": "followed",
+    "llm_decision_mode": "uncertainty_limited",
+    "llm_expected_controller_cost": 0.0,
+    "llm_expected_qos_impact": 0.01,
+    "llm_expected_security_gain": 0.26,
+    "llm_override_reason": "",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D0_observe"
+      }
+    ],
+    "llm_repeat_previous_action": true,
+    "llm_selected_defender_strategy_id": "D0_observe",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "low",
+    "llm_why_not_observe": "",
+    "llm_why_not_quarantine": "Quarantining is a high-impact, reactive measure best reserved for confirmed active threats. Since no attack is currently active and the state freshness is only partial, this action would be overly disruptive.",
+    "llm_why_not_rate_limit": "Rate limiting implies an observed resource abuse or excessive traffic flow. With empty defense metrics and low urgency, rate limiting provides little benefit and risks unnecessary disruption.",
+    "raw_llm_alignment_vs_baseline": "followed",
+    "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+    "raw_llm_selected_defender_strategy_id": "D0_observe",
+    "recorded_at": "2026-06-26T02:46:46.917917+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "schema_version": "llm-mtd-decision-trace-v1",
+    "selection": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.37686117003461966,
+        "population_after_rank": 1,
+        "population_before": 0.3770886839955,
+        "population_before_rank": 1,
+        "population_delta": -0.00022751396088033227,
+        "probability": 0.37686117003461966,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selection_mode": "dominant",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "cloud_db",
+        "utility": 0.048227182399999985,
+        "utility_rank": 2
+      },
+      "defender": {
+        "action": "observe",
+        "action_payload": {
+          "action": "observe"
+        },
+        "executor": {
+          "type": "cloud_policy"
+        },
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Observe and log current strategy context",
+        "path": null,
+        "population_after": 1.0,
+        "population_after_rank": 1,
+        "population_before": 1.0,
+        "population_before_rank": 1,
+        "population_delta": 0.0,
+        "probability": 1.0,
+        "scenario_id": "*",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": null,
+        "utility": 0.17726303291975376,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 15,
+    "stage_summary": {
+      "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "controller_delta": {
+        "active_policy_actions_delta": 0.0,
+        "controller_apply_ms_delta": 0.0,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 0.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 1.263109,
+        "total_memory_kb_delta": 0.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D0_observe",
+      "execution": {
+        "attacker_status": "dry_run",
+        "defender_action": "observe",
+        "defender_status": "observe_only",
+        "defender_target": "",
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "executed_via_fallback": false,
+        "operationally_executed_debug_stage": false,
+        "stage_kind": "warmup",
+        "stage_success": true,
+        "stage_valid": false
+      },
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": false,
+          "path_stage": 0,
+          "urgency_level": "low"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D0_observe",
+        "raw_llm_selected_defender_strategy_id": "D0_observe"
+      },
+      "llm": {
+        "baseline_alignment": "followed",
+        "baseline_top_defender_population_share": 1.0,
+        "baseline_top_defender_strategy_id": "D0_observe",
+        "baseline_top_defender_tiebreak_reason": "highest_utility",
+        "baseline_top_defender_utility": 0.17726303291975376,
+        "decision_mode": "uncertainty_limited",
+        "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+        "executed_via_fallback": false,
+        "fallback_reason": "",
+        "fallback_used": false,
+        "final_decision_alignment_vs_baseline": "followed",
+        "final_defender_strategy_id": "D0_observe",
+        "model": "gemma4:e4b",
+        "override_reason": "",
+        "provider": "ollama",
+        "raw_llm_alignment_vs_baseline": "followed",
+        "raw_llm_baseline_alignment": "followed",
+        "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+        "raw_llm_selected_defender_strategy_id": "D0_observe",
+        "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+        "repeat_previous_action": true,
+        "telemetry_confidence": "medium",
+        "urgency_level": "low",
+        "why_not_observe": "",
+        "why_not_quarantine": "Quarantining is a high-impact, reactive measure best reserved for confirmed active threats. Since no attack is currently active and the state freshness is only partial, this action would be overly disruptive.",
+        "why_not_rate_limit": "Rate limiting implies an observed resource abuse or excessive traffic flow. With empty defense metrics and low urgency, rate limiting provides little benefit and risks unnecessary disruption."
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms": 0.237,
+        "sensor_to_edge_latency_ms": -1.33
+      },
+      "recorded_at": "2026-06-26T02:47:18.714837+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_deactivated": false,
+        "attack_effect_success": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "defense_success": true,
+        "path_regressed": false,
+        "raw_state_defense_success": false,
+        "security_progression_reduced": false
+      },
+      "stage_id": 15,
+      "stage_validation": {
+        "attack_deactivated": false,
+        "comparable_stage": false,
+        "defender_execution_status": "observe_only",
+        "defense_applied": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effect_mismatch": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+        "effect_source_conflict": true,
+        "effect_source_details": {
+          "counters_stopped": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": false
+          },
+          "drop_rules_active": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": true
+          },
+          "rate_limit_active": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": null
+          }
+        },
+        "execution_stage_success": false,
+        "expected_defense_effects": [
+          "strategy_context_recorded"
+        ],
+        "invalidity_reasons": [
+          "not_comparable"
+        ],
+        "learning_valid_stage": false,
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_success": true,
+        "llm_stage_valid": false,
+        "missing_defense_effects": [],
+        "normalized_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": true,
+          "rate_limit_active": false
+        },
+        "observed_defense_effects": [
+          "strategy_context_recorded"
+        ],
+        "operationally_executed_debug_stage": false,
+        "paper_valid_stage": false,
+        "path_regressed": false,
+        "path_stage_after": 0,
+        "path_stage_before": 0,
+        "raw_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": true,
+          "rate_limit_active": false
+        },
+        "security_progression_reduced": false,
+        "security_stage_success": true,
+        "semantic_effect_mapping_details": {
+          "strategy_context_recorded": {
+            "action": "observe",
+            "active_action_for_target": true,
+            "flow_rules_installed": 50,
+            "installed_status": false,
+            "meters_added": 10,
+            "observed": true,
+            "path_stage_after": 0,
+            "path_stage_before": 0,
+            "target": "",
+            "target_is_gateway": false,
+            "target_is_worker": false,
+            "target_on_path": false,
+            "traffic_blocking": true
+          }
+        },
+        "semantic_missing_defense_effects": [],
+        "semantic_observed_defense_effects": [
+          "strategy_context_recorded"
+        ],
+        "stage_kind": "warmup",
+        "stage_success": true,
+        "state_effect_sources": {
+          "counters_stopped": "",
+          "drop_rules_active": "raw_state",
+          "rate_limit_active": ""
+        }
+      },
+      "summary_text": "Stage 15 for sen4_edge2_clouddb: attacker A2_sensor_http_abuse_sen4 met defender D0_observe. Action observe ended with status observe_only; defense_confirmed=False; defense_effects_confirmed=True; defense_success=True. Path stage=0. Outcome: security progression was reduced. Rationale: The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected."
+    },
+    "stage_validation": {
+      "attack_deactivated": false,
+      "comparable_stage": false,
+      "defender_execution_status": "observe_only",
+      "defense_applied": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effect_mismatch": false,
+      "defense_effects_confirmed": true,
+      "defense_executed": false,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": true,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": false
+        },
+        "drop_rules_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": true
+        },
+        "rate_limit_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": null
+        }
+      },
+      "execution_stage_success": false,
+      "expected_defense_effects": [
+        "strategy_context_recorded"
+      ],
+      "invalidity_reasons": [
+        "not_comparable"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [],
+      "normalized_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "observed_defense_effects": [
+        "strategy_context_recorded"
+      ],
+      "operationally_executed_debug_stage": false,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 0,
+      "path_stage_before": 0,
+      "raw_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": true,
+      "semantic_effect_mapping_details": {
+        "strategy_context_recorded": {
+          "action": "observe",
+          "active_action_for_target": true,
+          "flow_rules_installed": 50,
+          "installed_status": false,
+          "meters_added": 10,
+          "observed": true,
+          "path_stage_after": 0,
+          "path_stage_before": 0,
+          "target": "",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": false,
+          "traffic_blocking": true
+        }
+      },
+      "semantic_missing_defense_effects": [],
+      "semantic_observed_defense_effects": [
+        "strategy_context_recorded"
+      ],
+      "stage_kind": "warmup",
+      "stage_success": true,
+      "state_effect_sources": {
+        "counters_stopped": "",
+        "drop_rules_active": "raw_state",
+        "rate_limit_active": ""
+      }
+    },
+    "state_summary": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "attack_success": false,
+      "cloud_seen": false,
+      "controller_active_actions": 2,
+      "counters_stopped": false,
+      "defense_active": true,
+      "defense_success": true,
+      "drop_rules_active": true,
+      "flow_rules_installed": 50,
+      "gateway_seen": false,
+      "meters_added": 10,
+      "normalized_counters_stopped": false,
+      "normalized_drop_rules_active": true,
+      "normalized_rate_limit_active": false,
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "rate_limit_active": false,
+      "raw_counters_stopped": false,
+      "raw_drop_rules_active": true,
+      "raw_rate_limit_active": false,
+      "raw_state_defense_success": false,
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": false
+    },
+    "transition_id": "0a448d3bf1ae4f9fb440727c882e2ffa"
+  },
+  "execution": {
+    "attacker": {
+      "plan": {
+        "bridge_logger_url": "http://127.0.0.1:8000/attack/event",
+        "bridge_policy_url": "http://127.0.0.1:8000/context",
+        "caldera_adversary": "sensor_to_edge",
+        "caldera_adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+        "caldera_adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+        "caldera_env": {
+          "ATTACK_SENSOR_ID": "sen4",
+          "ENTRY_NODE": "sen4",
+          "SCENARIO_ID": "sen4_edge2_clouddb",
+          "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+        },
+        "caldera_target_hosts": [
+          "sen4"
+        ],
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mulval": {
+          "current_path_risk": 0.74,
+          "plausible_paths": [
+            [
+              "sen4",
+              "edge2_gw",
+              "cloud_db"
+            ],
+            [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ]
+          ]
+        },
+        "note": "Dispatch this plan to Caldera manually or through --attacker-dispatch-url. The first lab workflow still keeps Caldera operation launch outside this repo.",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "scenario_id": "sen4_edge2_clouddb",
+        "strategy_id": "A2_sensor_http_abuse_sen4",
+        "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+      },
+      "status": "dry_run"
+    },
+    "defender": {
+      "cloud_policy_context": {
+        "body": "{\"cloud_policy_observe_only_normalized\": true, \"cloud_policy_observe_only_raw\": null, \"decision_source\": \"llm_defender\", \"observe_only\": true, \"policy_mode\": \"llm_direct_ryu\", \"selected_action\": {\"reason\": \"LLM-selected defender strategy was sent directly to Ryu.\", \"ryu_intent\": {\"action\": \"observe\", \"decision_source\": \"llm_defender\", \"llm_reasoning_summary\": \"The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.\", \"source\": \"llm_defender\", \"source_strategy_id\": \"D0_observe\"}, \"target\": \"\", \"type\": \"observe\"}}",
+        "docker_fallback": {
+          "body": "",
+          "container": "mn.cloud_policy",
+          "error": "python3: permission denied while trying to connect to the docker API at unix:///var/run/docker.sock | python: permission denied while trying to connect to the docker API at unix:///var/run/docker.sock",
+          "ok": false,
+          "status": 0,
+          "transport": "docker_exec",
+          "url": "http://127.0.0.1:8000/context"
+        },
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "json": {
+          "cloud_policy_observe_only_normalized": true,
+          "cloud_policy_observe_only_raw": null,
+          "decision_source": "llm_defender",
+          "observe_only": true,
+          "policy_mode": "llm_direct_ryu",
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "observe",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+              "source": "llm_defender",
+              "source_strategy_id": "D0_observe"
+            },
+            "target": "",
+            "type": "observe"
+          }
+        },
+        "ok": false,
+        "raw_body": "",
+        "status": 0,
+        "url": "http://127.0.0.1:8000/context"
+      },
+      "cloud_policy_context_payload": {
+        "caldera_result": {
+          "adversary_id": "sensor_to_edge",
+          "attack_effect_success": false,
+          "attempted_path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "cloud_seen": false,
+          "entry_node": "sen4",
+          "event_type": "attack_selected",
+          "gateway_seen": false,
+          "live_attack_type": "sensor_to_edge_http_abuse",
+          "operation_id": "strategy-sen4_edge2_clouddb",
+          "scenario_id": "sen4_edge2_clouddb",
+          "signals": {
+            "dispatch_http_status": 0,
+            "dispatch_status": "dry_run"
+          },
+          "success": null,
+          "target_asset": "cloud_db",
+          "timestamp": "2026-06-26T02:46:46.882374+00:00",
+          "tool": "strategy_runtime",
+          "worker_seen": false
+        },
+        "defense_result": {
+          "defense_action": "rate_limit",
+          "defense_success": false,
+          "event_type": "defense_result",
+          "operation_id": "state-sen4_edge2_clouddb",
+          "scenario_id": "sen4_edge2_clouddb",
+          "signals": {
+            "active_policy_actions": 2,
+            "counters_stopped": false,
+            "drop_rules_active": true,
+            "flow_rules_installed": 50,
+            "meters_added": 10
+          },
+          "success": false,
+          "target": "sen4",
+          "timestamp": "2026-06-26T02:45:36.032264+00:00",
+          "tool": "strategy_state"
+        },
+        "llm_defender_selection": {
+          "attack_dispatch_status": "dry_run",
+          "caldera_success": false,
+          "decision_source": "llm_defender",
+          "final_defender_strategy_id": "D0_observe",
+          "first_mulval_path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "llm_baseline_alignment": "followed",
+          "llm_fallback_constraint_name": "",
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_model": "gemma4:e4b",
+          "llm_override_reason": "",
+          "llm_provider": "ollama",
+          "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+          "llm_urgency_level": "low",
+          "mulval_path_count": 2,
+          "operation_id": "",
+          "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+          "raw_llm_selected_defender_strategy_id": "D0_observe",
+          "selected_attacker_path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "selected_defender_strategy_id": "D0_observe"
+        },
+        "selected_attacker_strategy": {
+          "action": "sensor_to_edge_http_abuse",
+          "action_payload": null,
+          "executor": {
+            "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+            "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+            "env": {
+              "ATTACK_SENSOR_ID": "sen4",
+              "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+            },
+            "name": "sensor_to_edge",
+            "type": "caldera_adversary"
+          },
+          "expected_effects": [
+            "gateway_seen",
+            "worker_seen",
+            "cloud_seen",
+            "attack_effect_success"
+          ],
+          "id": "A2_sensor_http_abuse_sen4",
+          "live_attack_type": "sensor_to_edge_http_abuse",
+          "mode": "dominant",
+          "name": "Controlled sen4 HTTP telemetry abuse",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "probability": 0.37686117003461966,
+          "scenario_id": "sen4_edge2_clouddb",
+          "target": "cloud_db",
+          "utility": 0.048227182399999985
+        },
+        "selected_defender_strategy": {
+          "action": "observe",
+          "action_payload": {
+            "action": "observe"
+          },
+          "decision_source": "llm_defender",
+          "executor": {
+            "type": "cloud_policy"
+          },
+          "expected_effects": [
+            "strategy_context_recorded"
+          ],
+          "final_defender_strategy_id": "D0_observe",
+          "id": "D0_observe",
+          "live_attack_type": null,
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+          "mode": "llm_defender",
+          "name": "Observe and log current strategy context",
+          "path": null,
+          "probability": 1.0,
+          "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+          "raw_llm_selected_defender_strategy_id": "D0_observe",
+          "scenario_id": "*",
+          "target": null,
+          "utility": 0.17726303291975376
+        },
+        "strategy_layer": {
+          "selection": {
+            "attacker": {
+              "action": "sensor_to_edge_http_abuse",
+              "action_payload": null,
+              "executor": {
+                "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+                "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+                "env": {
+                  "ATTACK_SENSOR_ID": "sen4",
+                  "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+                },
+                "name": "sensor_to_edge",
+                "type": "caldera_adversary"
+              },
+              "expected_effects": [
+                "gateway_seen",
+                "worker_seen",
+                "cloud_seen",
+                "attack_effect_success"
+              ],
+              "id": "A2_sensor_http_abuse_sen4",
+              "live_attack_type": "sensor_to_edge_http_abuse",
+              "mode": "dominant",
+              "name": "Controlled sen4 HTTP telemetry abuse",
+              "path": [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ],
+              "probability": 0.37686117003461966,
+              "scenario_id": "sen4_edge2_clouddb",
+              "target": "cloud_db",
+              "utility": 0.048227182399999985
+            },
+            "defender": {
+              "action": "observe",
+              "action_payload": {
+                "action": "observe"
+              },
+              "executor": {
+                "type": "cloud_policy"
+              },
+              "expected_effects": [
+                "strategy_context_recorded"
+              ],
+              "id": "D0_observe",
+              "live_attack_type": null,
+              "mode": "llm_defender",
+              "name": "Observe and log current strategy context",
+              "path": null,
+              "probability": 1.0,
+              "scenario_id": "*",
+              "target": null,
+              "utility": 0.17726303291975376
+            }
+          },
+          "state": {
+            "attack_active": false,
+            "current_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "defense_active": true,
+            "mulval": {
+              "current_path_risk": 0.74,
+              "path_candidates": [
+                {
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "sen4_edge2_clouddb",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->cloud_db",
+                  "risk_score": 0.74,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "mulval_policy",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen6"
+                    },
+                    {
+                      "action": "reroute_traffic",
+                      "target": "sen6",
+                      "via": "s_edge2"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen6"
+                    }
+                  ],
+                  "entry_node": "sen6",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen6",
+                    "edge3_gw",
+                    "edge3_vm_s6",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen6_edge3_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "rate_limit",
+                      "kbps": 256,
+                      "target": "edge2_gw"
+                    },
+                    {
+                      "action": "isolate_sensor",
+                      "target": "edge2_gw"
+                    }
+                  ],
+                  "entry_node": "edge2_gw",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "edge2_gateway_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_candidates": [
+                {
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "sen4_edge2_clouddb",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->cloud_db",
+                  "risk_score": 0.74,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "mulval_policy",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_paths": [
+                [
+                  "sen4",
+                  "edge2_gw",
+                  "cloud_db"
+                ],
+                [
+                  "sen4",
+                  "edge2_gw",
+                  "edge2_vm_s4",
+                  "cloud_db"
+                ]
+              ],
+              "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+              "policy_scenario_id": "sen4_edge2_clouddb"
+            },
+            "path_stage": 0,
+            "scenario_id": "sen4_edge2_clouddb"
+          }
+        }
+      },
+      "cloud_policy_decision": {
+        "json": {
+          "cloud_policy_observe_only_normalized": true,
+          "decision_source": "llm_defender",
+          "observe_only": true,
+          "policy_mode": "llm_direct_ryu",
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "observe",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+              "source": "llm_defender",
+              "source_strategy_id": "D0_observe"
+            },
+            "target": "",
+            "type": "observe"
+          }
+        },
+        "reason": "llm_selected_direct_ryu_intent",
+        "status": "skipped"
+      },
+      "defense_event": {
+        "reason": "defender action was not confirmed by Ryu/controller metrics",
+        "status": "skipped"
+      },
+      "payload": {
+        "action": "observe",
+        "decision_source": "llm_defender",
+        "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+        "source": "llm_defender",
+        "source_strategy_id": "D0_observe"
+      },
+      "status": "observe_only"
+    }
+  },
+  "fallback_resolution": {
+    "constraint_name": "",
+    "constraint_trigger": {
+      "attack_active": false,
+      "path_stage": 0,
+      "urgency_level": "low"
+    },
+    "fallback_explanation": "",
+    "fallback_reason": "",
+    "fallback_selection_policy": "",
+    "fallback_used": false,
+    "final_defender_strategy_id": "D0_observe",
+    "raw_llm_selected_defender_strategy_id": "D0_observe"
+  },
+  "game": {
+    "attacker_average_utility": 0.051579090062522946,
+    "attacker_payoffs": {
+      "A1_sensor_probe_sen4": {
+        "D0_observe": 0.0724623128
+      },
+      "A2_sensor_http_abuse_sen4": {
+        "D0_observe": 0.048227182399999985
+      },
+      "A6_sen4_edge_to_cloud_probe": {
+        "D0_observe": 0.04096841919999997
+      }
+    },
+    "attacker_population": {
+      "A1_sensor_probe_sen4": 0.25093974502318644,
+      "A2_sensor_http_abuse_sen4": 0.37686117003461966,
+      "A6_sen4_edge_to_cloud_probe": 0.3721990849421939
+    },
+    "attacker_population_before": {
+      "A1_sensor_probe_sen4": 0.25,
+      "A2_sensor_http_abuse_sen4": 0.3770886839955,
+      "A6_sen4_edge_to_cloud_probe": 0.3729113160045
+    },
+    "attacker_utilities": {
+      "A1_sensor_probe_sen4": 0.0724623128,
+      "A2_sensor_http_abuse_sen4": 0.048227182399999985,
+      "A6_sen4_edge_to_cloud_probe": 0.04096841919999997
+    },
+    "defender_average_utility": 0.17726303291975376,
+    "defender_payoffs": {
+      "A1_sensor_probe_sen4": {
+        "D0_observe": 0.1573291945760555
+      },
+      "A2_sensor_http_abuse_sen4": {
+        "D0_observe": 0.1863091945760555
+      },
+      "A6_sen4_edge_to_cloud_probe": {
+        "D0_observe": 0.1814791945760555
+      }
+    },
+    "defender_population": {
+      "D0_observe": 1.0
+    },
+    "defender_population_before": {
+      "D0_observe": 1.0
+    },
+    "defender_utilities": {
+      "D0_observe": 0.17726303291975376
+    },
+    "parameters": {
+      "eta_attacker": 0.18,
+      "eta_defender": 0.22,
+      "omega_ac": 0.65,
+      "omega_dc": 0.4,
+      "omega_gp": 0.25,
+      "omega_r": 0.25,
+      "regulatory_beta": 0.18
+    }
+  },
+  "llm": {
+    "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+    "baseline_top_defender": {
+      "base_cost": 0.02,
+      "population_share": 1.0,
+      "strategy_id": "D0_observe",
+      "tiebreak_reason": "highest_utility",
+      "utility": 0.17726303291975376
+    },
+    "baseline_top_defender_population_share": 1.0,
+    "baseline_top_defender_strategy_id": "D0_observe",
+    "baseline_top_defender_tiebreak_reason": "highest_utility",
+    "baseline_top_defender_utility": 0.17726303291975376,
+    "confidence": 0.95,
+    "executed_decision_reason": "llm_selected_strategy",
+    "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+    "executed_decision_source": "llm_defender",
+    "executed_defender_strategy_id": "D0_observe",
+    "executed_via_fallback": false,
+    "expected_controller_cost": 0.0,
+    "expected_qos_impact": 0.01,
+    "expected_security_gain": 0.26,
+    "fallback_constraint_name": "",
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": false,
+        "path_stage": 0,
+        "urgency_level": "low"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D0_observe",
+      "raw_llm_selected_defender_strategy_id": "D0_observe"
+    },
+    "fallback_used": false,
+    "final_baseline_alignment": "followed",
+    "final_decision_alignment_vs_baseline": "followed",
+    "final_defender_action": "observe",
+    "final_defender_strategy_id": "D0_observe",
+    "final_defender_target": "",
+    "latency_ms": 70847.16300698346,
+    "llm_baseline_alignment": "followed",
+    "llm_decision_mode": "uncertainty_limited",
+    "llm_override_reason": "",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D0_observe"
+      }
+    ],
+    "llm_repeat_previous_action": true,
+    "llm_selected_defender_strategy_id": "D0_observe",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "low",
+    "llm_why_not_observe": "",
+    "llm_why_not_quarantine": "Quarantining is a high-impact, reactive measure best reserved for confirmed active threats. Since no attack is currently active and the state freshness is only partial, this action would be overly disruptive.",
+    "llm_why_not_rate_limit": "Rate limiting implies an observed resource abuse or excessive traffic flow. With empty defense metrics and low urgency, rate limiting provides little benefit and risks unnecessary disruption.",
+    "model": "gemma4:e4b",
+    "parse_success": true,
+    "prompt_preview": "Prompt mode: full\n\n{\n  \"active_defender_candidates\": [\n    {\n      \"action\": \"observe\",\n      \"baseline_utility_prior\": 0.177263,\n      \"defender_population_share\": 1.0,\n      \"expected_controller_cost\": 0.0,\n      \"expected_qos_impact\": 0.",
+    "provider": "ollama",
+    "raw_llm_alignment_vs_baseline": "followed",
+    "raw_llm_baseline_alignment": "followed",
+    "raw_llm_override_reason": "",
+    "raw_llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D0_observe"
+      }
+    ],
+    "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+    "raw_llm_selected_defender_strategy_id": "D0_observe",
+    "raw_response": {
+      "baseline_alignment": "followed",
+      "confidence": 0.95,
+      "decision_mode": "uncertainty_limited",
+      "expected_controller_cost": 0.0,
+      "expected_qos_impact": 0.01,
+      "expected_security_gain": 0.26,
+      "override_reason": null,
+      "ranked_candidates": [
+        "D0_observe"
+      ],
+      "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+      "repeat_previous_action": true,
+      "selected_defender_strategy_id": "D0_observe",
+      "telemetry_confidence": "medium",
+      "urgency_level": "low",
+      "why_not_observe": null,
+      "why_not_quarantine": "Quarantining is a high-impact, reactive measure best reserved for confirmed active threats. Since no attack is currently active and the state freshness is only partial, this action would be overly disruptive.",
+      "why_not_rate_limit": "Rate limiting implies an observed resource abuse or excessive traffic flow. With empty defense metrics and low urgency, rate limiting provides little benefit and risks unnecessary disruption."
+    },
+    "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+    "recovery_used": false,
+    "request_error": "",
+    "request_success": true,
+    "retries_used": 0,
+    "stage_memory": {
+      "previous_attack_effect_success": false,
+      "previous_attack_progression_continued": false,
+      "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "previous_defender_execution_status": "observe_only",
+      "previous_defender_strategy_id": "D0_observe",
+      "previous_defender_strategy_id_note": "",
+      "previous_defense_confirmed": false,
+      "previous_defense_success": true,
+      "previous_stage_id": 14,
+      "previous_stage_success": true,
+      "recent_controller_deltas": {
+        "active_policy_actions_delta": 0.0,
+        "controller_apply_ms_delta": 0.0,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 0.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 1.576312,
+        "total_memory_kb_delta": 0.0
+      },
+      "recent_qos_deltas": {
+        "edge_to_cloud_latency_ms": 0.04,
+        "sensor_to_edge_latency_ms": -1.08,
+        "throughput_bytes_per_second": -1.32
+      }
+    }
+  },
+  "next_state": {
+    "attack_active": false,
+    "attack_effect_success": false,
+    "attack_success": false,
+    "attacker_observation": {
+      "estimated_containment": 0.44999999999999996,
+      "estimated_risk": 0.5700000000000001,
+      "estimated_success_probability": 0.0,
+      "foothold": "sen4",
+      "observed_blocking": true,
+      "observed_path_stage": 0
+    },
+    "built_at": "2026-06-26T02:46:46.917436+00:00",
+    "controller": {
+      "active_actions": [
+        {
+          "action": "rate_limit",
+          "active_policy_actions": 2,
+          "burst_size": 128,
+          "cookie": "0xa11cf3ee42bed28b",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 5,
+          "kbps": 128,
+          "meter_id": 34978,
+          "meters_added": 5,
+          "rule": "meter ipv4 source traffic, then continue to default forwarding",
+          "ryu_apply_duration_ms": 0.6260049995034933,
+          "ryu_flow_mods_enqueued_at": "2026-06-26T02:44:28.949127+00:00",
+          "ryu_request_received_at": "2026-06-26T02:44:28.948491+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        },
+        {
+          "action": "rate_limit",
+          "active_policy_actions": 1,
+          "burst_size": 128,
+          "cookie": "0xa11cf3c9bb2e5f9f",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 5,
+          "kbps": 128,
+          "meter_id": 34117,
+          "meters_added": 5,
+          "rule": "meter ipv4 source traffic, then continue to default forwarding",
+          "ryu_apply_duration_ms": 0.9923739999067038,
+          "ryu_flow_mods_enqueued_at": "2026-06-26T02:38:19.960624+00:00",
+          "ryu_request_received_at": "2026-06-26T02:38:19.959620+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        }
+      ]
+    },
+    "controller_reachable": true,
+    "counters_stopped": false,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {},
+      "cloud_seen": false,
+      "defense_metrics": {},
+      "gateway_seen": false,
+      "topology": {
+        "active_action_count": 2,
+        "active_actions": [
+          {
+            "action": "rate_limit",
+            "active_policy_actions": 2,
+            "burst_size": 128,
+            "cookie": "0xa11cf3ee42bed28b",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 5,
+            "kbps": 128,
+            "meter_id": 34978,
+            "meters_added": 5,
+            "rule": "meter ipv4 source traffic, then continue to default forwarding",
+            "ryu_apply_duration_ms": 0.6260049995034933,
+            "ryu_flow_mods_enqueued_at": "2026-06-26T02:44:28.949127+00:00",
+            "ryu_request_received_at": "2026-06-26T02:44:28.948491+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          },
+          {
+            "action": "rate_limit",
+            "active_policy_actions": 1,
+            "burst_size": 128,
+            "cookie": "0xa11cf3c9bb2e5f9f",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 5,
+            "kbps": 128,
+            "meter_id": 34117,
+            "meters_added": 5,
+            "rule": "meter ipv4 source traffic, then continue to default forwarding",
+            "ryu_apply_duration_ms": 0.9923739999067038,
+            "ryu_flow_mods_enqueued_at": "2026-06-26T02:38:19.960624+00:00",
+            "ryu_request_received_at": "2026-06-26T02:38:19.959620+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          }
+        ],
+        "connected_switch_count": 5,
+        "known_host_count": 30,
+        "switch_count": 5
+      },
+      "worker_seen": false
+    },
+    "defense_active": true,
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": true,
+    "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.74,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "cloud_db"
+        ],
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "sen4_edge2_clouddb"
+    },
+    "normalized_counters_stopped": false,
+    "normalized_drop_rules_active": true,
+    "normalized_rate_limit_active": false,
+    "normalized_state_effects": {
+      "counters_stopped": false,
+      "drop_rules_active": true,
+      "rate_limit_active": false
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 2,
+      "controller_apply_ms": 0.6260049995034933,
+      "flow_delete_commands": 10,
+      "flow_rules_installed": 50,
+      "meters_added": 10,
+      "total_cpu_seconds": 238.744105918,
+      "total_memory_kb": 425780.0
+    },
+    "path_stage": 0,
+    "path_stage_label": "none",
+    "qos": {
+      "edge_to_cloud_latency_ms": 0.49299999999999994,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 0.656,
+      "throughput_bytes_per_second": 9547.875886828435
+    },
+    "rate_limit_active": false,
+    "raw_counters_stopped": false,
+    "raw_drop_rules_active": true,
+    "raw_rate_limit_active": false,
+    "raw_state_effects": {
+      "counters_stopped": false,
+      "drop_rules_active": true,
+      "rate_limit_active": false
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "state_effect_sources": {
+      "counters_stopped": "",
+      "drop_rules_active": "raw_state",
+      "rate_limit_active": ""
+    },
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 5114.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 2299.0,
+      "gateway_received": 2299.0,
+      "generated_total": 2316.0,
+      "worker_requests": 2301.0
+    }
+  },
+  "persistence": {
+    "decision_trace_logged": true,
+    "learning_eligible": false,
+    "learning_skipped_reason": "not_comparable",
+    "paper_valid_stage": false,
+    "population_saved": false,
+    "reason": "",
+    "skipped": false,
+    "stage_logged": true,
+    "summary_logged": true,
+    "valid_stage_for_learning": false
+  },
+  "recorded_at": "2026-06-26T02:47:18.716655+00:00",
+  "run_id": "stage_8efd356fd184",
+  "schema_version": "llm-mtd-live-stage-result-v1",
+  "selection": {
+    "attacker": {
+      "action": "sensor_to_edge_http_abuse",
+      "action_payload": null,
+      "executor": {
+        "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+        "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+        "env": {
+          "ATTACK_SENSOR_ID": "sen4",
+          "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+        },
+        "name": "sensor_to_edge",
+        "type": "caldera_adversary"
+      },
+      "expected_effects": [
+        "gateway_seen",
+        "worker_seen",
+        "cloud_seen",
+        "attack_effect_success"
+      ],
+      "id": "A2_sensor_http_abuse_sen4",
+      "live_attack_type": "sensor_to_edge_http_abuse",
+      "mode": "dominant",
+      "name": "Controlled sen4 HTTP telemetry abuse",
+      "path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "probability": 0.37686117003461966,
+      "scenario_id": "sen4_edge2_clouddb",
+      "target": "cloud_db",
+      "utility": 0.048227182399999985
+    },
+    "defender": {
+      "action": "observe",
+      "action_payload": {
+        "action": "observe"
+      },
+      "executor": {
+        "type": "cloud_policy"
+      },
+      "expected_effects": [
+        "strategy_context_recorded"
+      ],
+      "id": "D0_observe",
+      "live_attack_type": null,
+      "mode": "llm_defender",
+      "name": "Observe and log current strategy context",
+      "path": null,
+      "probability": 1.0,
+      "scenario_id": "*",
+      "target": null,
+      "utility": 0.17726303291975376
+    }
+  },
+  "stage_summary": {
+    "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+    "controller_delta": {
+      "active_policy_actions_delta": 0.0,
+      "controller_apply_ms_delta": 0.0,
+      "flow_delete_commands_delta": 0.0,
+      "flow_rules_installed_delta": 0.0,
+      "meters_added_delta": 0.0,
+      "total_cpu_seconds_delta": 1.263109,
+      "total_memory_kb_delta": 0.0
+    },
+    "decision_source": "llm_defender",
+    "defender_strategy_id": "D0_observe",
+    "execution": {
+      "attacker_status": "dry_run",
+      "defender_action": "observe",
+      "defender_status": "observe_only",
+      "defender_target": "",
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effects_confirmed": true,
+      "defense_executed": false,
+      "defense_selected": true,
+      "executed_via_fallback": false,
+      "operationally_executed_debug_stage": false,
+      "stage_kind": "warmup",
+      "stage_success": true,
+      "stage_valid": false
+    },
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": false,
+        "path_stage": 0,
+        "urgency_level": "low"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D0_observe",
+      "raw_llm_selected_defender_strategy_id": "D0_observe"
+    },
+    "llm": {
+      "baseline_alignment": "followed",
+      "baseline_top_defender_population_share": 1.0,
+      "baseline_top_defender_strategy_id": "D0_observe",
+      "baseline_top_defender_tiebreak_reason": "highest_utility",
+      "baseline_top_defender_utility": 0.17726303291975376,
+      "decision_mode": "uncertainty_limited",
+      "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+      "executed_via_fallback": false,
+      "fallback_reason": "",
+      "fallback_used": false,
+      "final_decision_alignment_vs_baseline": "followed",
+      "final_defender_strategy_id": "D0_observe",
+      "model": "gemma4:e4b",
+      "override_reason": "",
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "followed",
+      "raw_llm_baseline_alignment": "followed",
+      "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+      "raw_llm_selected_defender_strategy_id": "D0_observe",
+      "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+      "repeat_previous_action": true,
+      "telemetry_confidence": "medium",
+      "urgency_level": "low",
+      "why_not_observe": "",
+      "why_not_quarantine": "Quarantining is a high-impact, reactive measure best reserved for confirmed active threats. Since no attack is currently active and the state freshness is only partial, this action would be overly disruptive.",
+      "why_not_rate_limit": "Rate limiting implies an observed resource abuse or excessive traffic flow. With empty defense metrics and low urgency, rate limiting provides little benefit and risks unnecessary disruption."
+    },
+    "qos_delta": {
+      "edge_to_cloud_latency_ms": 0.237,
+      "sensor_to_edge_latency_ms": -1.33
+    },
+    "recorded_at": "2026-06-26T02:47:18.714837+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "security_outcome": {
+      "attack_deactivated": false,
+      "attack_effect_success": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effects_confirmed": true,
+      "defense_executed": false,
+      "defense_selected": true,
+      "defense_success": true,
+      "path_regressed": false,
+      "raw_state_defense_success": false,
+      "security_progression_reduced": false
+    },
+    "stage_id": 15,
+    "stage_validation": {
+      "attack_deactivated": false,
+      "comparable_stage": false,
+      "defender_execution_status": "observe_only",
+      "defense_applied": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effect_mismatch": false,
+      "defense_effects_confirmed": true,
+      "defense_executed": false,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": true,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": false
+        },
+        "drop_rules_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": true
+        },
+        "rate_limit_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": null
+        }
+      },
+      "execution_stage_success": false,
+      "expected_defense_effects": [
+        "strategy_context_recorded"
+      ],
+      "invalidity_reasons": [
+        "not_comparable"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [],
+      "normalized_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "observed_defense_effects": [
+        "strategy_context_recorded"
+      ],
+      "operationally_executed_debug_stage": false,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 0,
+      "path_stage_before": 0,
+      "raw_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": true,
+      "semantic_effect_mapping_details": {
+        "strategy_context_recorded": {
+          "action": "observe",
+          "active_action_for_target": true,
+          "flow_rules_installed": 50,
+          "installed_status": false,
+          "meters_added": 10,
+          "observed": true,
+          "path_stage_after": 0,
+          "path_stage_before": 0,
+          "target": "",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": false,
+          "traffic_blocking": true
+        }
+      },
+      "semantic_missing_defense_effects": [],
+      "semantic_observed_defense_effects": [
+        "strategy_context_recorded"
+      ],
+      "stage_kind": "warmup",
+      "stage_success": true,
+      "state_effect_sources": {
+        "counters_stopped": "",
+        "drop_rules_active": "raw_state",
+        "rate_limit_active": ""
+      }
+    },
+    "summary_text": "Stage 15 for sen4_edge2_clouddb: attacker A2_sensor_http_abuse_sen4 met defender D0_observe. Action observe ended with status observe_only; defense_confirmed=False; defense_effects_confirmed=True; defense_success=True. Path stage=0. Outcome: security progression was reduced. Rationale: The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected."
+  },
+  "stage_validation": {
+    "attack_deactivated": false,
+    "comparable_stage": false,
+    "defender_execution_status": "observe_only",
+    "defense_applied": false,
+    "defense_applied_but_not_effective": false,
+    "defense_confirmed": false,
+    "defense_effect_mismatch": false,
+    "defense_effects_confirmed": true,
+    "defense_executed": false,
+    "defense_selected": true,
+    "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+    "effect_source_conflict": true,
+    "effect_source_details": {
+      "counters_stopped": {
+        "defense_event": null,
+        "ryu_response": false,
+        "state": false
+      },
+      "drop_rules_active": {
+        "defense_event": null,
+        "ryu_response": false,
+        "state": true
+      },
+      "rate_limit_active": {
+        "defense_event": null,
+        "ryu_response": false,
+        "state": null
+      }
+    },
+    "execution_stage_success": false,
+    "expected_defense_effects": [
+      "strategy_context_recorded"
+    ],
+    "invalidity_reasons": [
+      "not_comparable"
+    ],
+    "learning_valid_stage": false,
+    "llm_parse_success": true,
+    "llm_recovery_used": false,
+    "llm_request_error": "",
+    "llm_request_success": true,
+    "llm_stage_success": true,
+    "llm_stage_valid": false,
+    "missing_defense_effects": [],
+    "normalized_state_effects": {
+      "counters_stopped": false,
+      "drop_rules_active": true,
+      "rate_limit_active": false
+    },
+    "observed_defense_effects": [
+      "strategy_context_recorded"
+    ],
+    "operationally_executed_debug_stage": false,
+    "paper_valid_stage": false,
+    "path_regressed": false,
+    "path_stage_after": 0,
+    "path_stage_before": 0,
+    "raw_state_effects": {
+      "counters_stopped": false,
+      "drop_rules_active": true,
+      "rate_limit_active": false
+    },
+    "security_progression_reduced": false,
+    "security_stage_success": true,
+    "semantic_effect_mapping_details": {
+      "strategy_context_recorded": {
+        "action": "observe",
+        "active_action_for_target": true,
+        "flow_rules_installed": 50,
+        "installed_status": false,
+        "meters_added": 10,
+        "observed": true,
+        "path_stage_after": 0,
+        "path_stage_before": 0,
+        "target": "",
+        "target_is_gateway": false,
+        "target_is_worker": false,
+        "target_on_path": false,
+        "traffic_blocking": true
+      }
+    },
+    "semantic_missing_defense_effects": [],
+    "semantic_observed_defense_effects": [
+      "strategy_context_recorded"
+    ],
+    "stage_kind": "warmup",
+    "stage_success": true,
+    "state_effect_sources": {
+      "counters_stopped": "",
+      "drop_rules_active": "raw_state",
+      "rate_limit_active": ""
+    }
+  },
+  "state": {
+    "attack_active": false,
+    "attack_effect_success": false,
+    "attack_success": false,
+    "attacker_observation": {
+      "estimated_containment": 0.44999999999999996,
+      "estimated_risk": 0.5700000000000001,
+      "estimated_success_probability": 0.0,
+      "foothold": "sen4",
+      "observed_blocking": true,
+      "observed_path_stage": 0
+    },
+    "built_at": "2026-06-26T02:45:36.032264+00:00",
+    "controller": {
+      "active_actions": [
+        {
+          "action": "rate_limit",
+          "active_policy_actions": 2,
+          "burst_size": 128,
+          "cookie": "0xa11cf3ee42bed28b",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 5,
+          "kbps": 128,
+          "meter_id": 34978,
+          "meters_added": 5,
+          "rule": "meter ipv4 source traffic, then continue to default forwarding",
+          "ryu_apply_duration_ms": 0.6260049995034933,
+          "ryu_flow_mods_enqueued_at": "2026-06-26T02:44:28.949127+00:00",
+          "ryu_request_received_at": "2026-06-26T02:44:28.948491+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        },
+        {
+          "action": "rate_limit",
+          "active_policy_actions": 1,
+          "burst_size": 128,
+          "cookie": "0xa11cf3c9bb2e5f9f",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 5,
+          "kbps": 128,
+          "meter_id": 34117,
+          "meters_added": 5,
+          "rule": "meter ipv4 source traffic, then continue to default forwarding",
+          "ryu_apply_duration_ms": 0.9923739999067038,
+          "ryu_flow_mods_enqueued_at": "2026-06-26T02:38:19.960624+00:00",
+          "ryu_request_received_at": "2026-06-26T02:38:19.959620+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        }
+      ]
+    },
+    "controller_reachable": true,
+    "counters_stopped": false,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {},
+      "cloud_seen": false,
+      "defense_metrics": {},
+      "gateway_seen": false,
+      "topology": {
+        "active_action_count": 2,
+        "active_actions": [
+          {
+            "action": "rate_limit",
+            "active_policy_actions": 2,
+            "burst_size": 128,
+            "cookie": "0xa11cf3ee42bed28b",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 5,
+            "kbps": 128,
+            "meter_id": 34978,
+            "meters_added": 5,
+            "rule": "meter ipv4 source traffic, then continue to default forwarding",
+            "ryu_apply_duration_ms": 0.6260049995034933,
+            "ryu_flow_mods_enqueued_at": "2026-06-26T02:44:28.949127+00:00",
+            "ryu_request_received_at": "2026-06-26T02:44:28.948491+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          },
+          {
+            "action": "rate_limit",
+            "active_policy_actions": 1,
+            "burst_size": 128,
+            "cookie": "0xa11cf3c9bb2e5f9f",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 5,
+            "kbps": 128,
+            "meter_id": 34117,
+            "meters_added": 5,
+            "rule": "meter ipv4 source traffic, then continue to default forwarding",
+            "ryu_apply_duration_ms": 0.9923739999067038,
+            "ryu_flow_mods_enqueued_at": "2026-06-26T02:38:19.960624+00:00",
+            "ryu_request_received_at": "2026-06-26T02:38:19.959620+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          }
+        ],
+        "connected_switch_count": 5,
+        "known_host_count": 30,
+        "switch_count": 5
+      },
+      "worker_seen": false
+    },
+    "defense_active": true,
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": true,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.74,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "cloud_db"
+        ],
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "sen4_edge2_clouddb"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 2,
+      "controller_apply_ms": 0.6260049995034933,
+      "flow_delete_commands": 10,
+      "flow_rules_installed": 50,
+      "meters_added": 10,
+      "total_cpu_seconds": 237.48099702099998,
+      "total_memory_kb": 425780.0
+    },
+    "path_stage": 0,
+    "path_stage_label": "none",
+    "qos": {
+      "edge_to_cloud_latency_ms": 0.621,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 1.9257272727272727,
+      "throughput_bytes_per_second": 9547.051881139148
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 5036.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 2264.0,
+      "gateway_received": 2264.0,
+      "generated_total": 2281.0,
+      "worker_requests": 2266.0
+    }
+  },
+  "strategy_space_checksum": "40a0fc14b039c4f8",
+  "transition": {
+    "average_utility": {
+      "attacker": 0.051579090062522946,
+      "defender": 0.17726303291975376
+    },
+    "baseline_game_prior": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.37686117003461966,
+        "population_after_rank": 1,
+        "population_before": 0.3770886839955,
+        "population_before_rank": 1,
+        "population_delta": -0.00022751396088033227,
+        "probability": 0.37686117003461966,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selection_mode": "dominant",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "cloud_db",
+        "utility": 0.048227182399999985,
+        "utility_rank": 2
+      },
+      "defender": {
+        "action": "observe",
+        "action_payload": {
+          "action": "observe"
+        },
+        "canonical_baseline_top": {
+          "base_cost": 0.02,
+          "population_share": 1.0,
+          "strategy_id": "D0_observe",
+          "tiebreak_reason": "highest_utility",
+          "utility": 0.17726303291975376
+        },
+        "executor": {
+          "type": "cloud_policy"
+        },
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Observe and log current strategy context",
+        "path": null,
+        "population_after": 1.0,
+        "population_after_rank": 1,
+        "population_before": 1.0,
+        "population_before_rank": 1,
+        "population_delta": 0.0,
+        "probability": 1.0,
+        "scenario_id": "*",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": null,
+        "utility": 0.17726303291975376,
+        "utility_rank": 1
+      }
+    },
+    "baseline_top_defender_population_share": 1.0,
+    "baseline_top_defender_strategy_id": "D0_observe",
+    "baseline_top_defender_tiebreak_reason": "highest_utility",
+    "baseline_top_defender_utility": 0.17726303291975376,
+    "decision_source": "llm_defender",
+    "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+    "executed_via_fallback": false,
+    "execution": {
+      "attacker": {
+        "plan": {
+          "bridge_logger_url": "http://127.0.0.1:8000/attack/event",
+          "bridge_policy_url": "http://127.0.0.1:8000/context",
+          "caldera_adversary": "sensor_to_edge",
+          "caldera_adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "caldera_adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "caldera_env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "ENTRY_NODE": "sen4",
+            "SCENARIO_ID": "sen4_edge2_clouddb",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "caldera_target_hosts": [
+            "sen4"
+          ],
+          "executor": {
+            "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+            "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+            "env": {
+              "ATTACK_SENSOR_ID": "sen4",
+              "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+            },
+            "name": "sensor_to_edge",
+            "type": "caldera_adversary"
+          },
+          "expected_effects": [
+            "gateway_seen",
+            "worker_seen",
+            "cloud_seen",
+            "attack_effect_success"
+          ],
+          "live_attack_type": "sensor_to_edge_http_abuse",
+          "mulval": {
+            "current_path_risk": 0.74,
+            "plausible_paths": [
+              [
+                "sen4",
+                "edge2_gw",
+                "cloud_db"
+              ],
+              [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ]
+            ]
+          },
+          "note": "Dispatch this plan to Caldera manually or through --attacker-dispatch-url. The first lab workflow still keeps Caldera operation launch outside this repo.",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "scenario_id": "sen4_edge2_clouddb",
+          "strategy_id": "A2_sensor_http_abuse_sen4",
+          "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+        },
+        "status": "dry_run"
+      },
+      "defender": {
+        "cloud_policy_context": {
+          "body": "{\"cloud_policy_observe_only_normalized\": true, \"cloud_policy_observe_only_raw\": null, \"decision_source\": \"llm_defender\", \"observe_only\": true, \"policy_mode\": \"llm_direct_ryu\", \"selected_action\": {\"reason\": \"LLM-selected defender strategy was sent directly to Ryu.\", \"ryu_intent\": {\"action\": \"observe\", \"decision_source\": \"llm_defender\", \"llm_reasoning_summary\": \"The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.\", \"source\": \"llm_defender\", \"source_strategy_id\": \"D0_observe\"}, \"target\": \"\", \"type\": \"observe\"}}",
+          "docker_fallback": {
+            "body": "",
+            "container": "mn.cloud_policy",
+            "error": "python3: permission denied while trying to connect to the docker API at unix:///var/run/docker.sock | python: permission denied while trying to connect to the docker API at unix:///var/run/docker.sock",
+            "ok": false,
+            "status": 0,
+            "transport": "docker_exec",
+            "url": "http://127.0.0.1:8000/context"
+          },
+          "error": "<urlopen error [Errno 111] Connection refused>",
+          "json": {
+            "cloud_policy_observe_only_normalized": true,
+            "cloud_policy_observe_only_raw": null,
+            "decision_source": "llm_defender",
+            "observe_only": true,
+            "policy_mode": "llm_direct_ryu",
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "observe",
+                "decision_source": "llm_defender",
+                "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+                "source": "llm_defender",
+                "source_strategy_id": "D0_observe"
+              },
+              "target": "",
+              "type": "observe"
+            }
+          },
+          "ok": false,
+          "raw_body": "",
+          "status": 0,
+          "url": "http://127.0.0.1:8000/context"
+        },
+        "cloud_policy_context_payload": {
+          "caldera_result": {
+            "adversary_id": "sensor_to_edge",
+            "attack_effect_success": false,
+            "attempted_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "cloud_seen": false,
+            "entry_node": "sen4",
+            "event_type": "attack_selected",
+            "gateway_seen": false,
+            "live_attack_type": "sensor_to_edge_http_abuse",
+            "operation_id": "strategy-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb",
+            "signals": {
+              "dispatch_http_status": 0,
+              "dispatch_status": "dry_run"
+            },
+            "success": null,
+            "target_asset": "cloud_db",
+            "timestamp": "2026-06-26T02:46:46.882374+00:00",
+            "tool": "strategy_runtime",
+            "worker_seen": false
+          },
+          "defense_result": {
+            "defense_action": "rate_limit",
+            "defense_success": false,
+            "event_type": "defense_result",
+            "operation_id": "state-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb",
+            "signals": {
+              "active_policy_actions": 2,
+              "counters_stopped": false,
+              "drop_rules_active": true,
+              "flow_rules_installed": 50,
+              "meters_added": 10
+            },
+            "success": false,
+            "target": "sen4",
+            "timestamp": "2026-06-26T02:45:36.032264+00:00",
+            "tool": "strategy_state"
+          },
+          "llm_defender_selection": {
+            "attack_dispatch_status": "dry_run",
+            "caldera_success": false,
+            "decision_source": "llm_defender",
+            "final_defender_strategy_id": "D0_observe",
+            "first_mulval_path": [
+              "sen4",
+              "edge2_gw",
+              "cloud_db"
+            ],
+            "llm_baseline_alignment": "followed",
+            "llm_fallback_constraint_name": "",
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_model": "gemma4:e4b",
+            "llm_override_reason": "",
+            "llm_provider": "ollama",
+            "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+            "llm_urgency_level": "low",
+            "mulval_path_count": 2,
+            "operation_id": "",
+            "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+            "raw_llm_selected_defender_strategy_id": "D0_observe",
+            "selected_attacker_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "selected_defender_strategy_id": "D0_observe"
+          },
+          "selected_attacker_strategy": {
+            "action": "sensor_to_edge_http_abuse",
+            "action_payload": null,
+            "executor": {
+              "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+              "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+              "env": {
+                "ATTACK_SENSOR_ID": "sen4",
+                "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+              },
+              "name": "sensor_to_edge",
+              "type": "caldera_adversary"
+            },
+            "expected_effects": [
+              "gateway_seen",
+              "worker_seen",
+              "cloud_seen",
+              "attack_effect_success"
+            ],
+            "id": "A2_sensor_http_abuse_sen4",
+            "live_attack_type": "sensor_to_edge_http_abuse",
+            "mode": "dominant",
+            "name": "Controlled sen4 HTTP telemetry abuse",
+            "path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "probability": 0.37686117003461966,
+            "scenario_id": "sen4_edge2_clouddb",
+            "target": "cloud_db",
+            "utility": 0.048227182399999985
+          },
+          "selected_defender_strategy": {
+            "action": "observe",
+            "action_payload": {
+              "action": "observe"
+            },
+            "decision_source": "llm_defender",
+            "executor": {
+              "type": "cloud_policy"
+            },
+            "expected_effects": [
+              "strategy_context_recorded"
+            ],
+            "final_defender_strategy_id": "D0_observe",
+            "id": "D0_observe",
+            "live_attack_type": null,
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+            "mode": "llm_defender",
+            "name": "Observe and log current strategy context",
+            "path": null,
+            "probability": 1.0,
+            "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+            "raw_llm_selected_defender_strategy_id": "D0_observe",
+            "scenario_id": "*",
+            "target": null,
+            "utility": 0.17726303291975376
+          },
+          "strategy_layer": {
+            "selection": {
+              "attacker": {
+                "action": "sensor_to_edge_http_abuse",
+                "action_payload": null,
+                "executor": {
+                  "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+                  "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+                  "env": {
+                    "ATTACK_SENSOR_ID": "sen4",
+                    "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+                  },
+                  "name": "sensor_to_edge",
+                  "type": "caldera_adversary"
+                },
+                "expected_effects": [
+                  "gateway_seen",
+                  "worker_seen",
+                  "cloud_seen",
+                  "attack_effect_success"
+                ],
+                "id": "A2_sensor_http_abuse_sen4",
+                "live_attack_type": "sensor_to_edge_http_abuse",
+                "mode": "dominant",
+                "name": "Controlled sen4 HTTP telemetry abuse",
+                "path": [
+                  "sen4",
+                  "edge2_gw",
+                  "edge2_vm_s4",
+                  "cloud_db"
+                ],
+                "probability": 0.37686117003461966,
+                "scenario_id": "sen4_edge2_clouddb",
+                "target": "cloud_db",
+                "utility": 0.048227182399999985
+              },
+              "defender": {
+                "action": "observe",
+                "action_payload": {
+                  "action": "observe"
+                },
+                "executor": {
+                  "type": "cloud_policy"
+                },
+                "expected_effects": [
+                  "strategy_context_recorded"
+                ],
+                "id": "D0_observe",
+                "live_attack_type": null,
+                "mode": "llm_defender",
+                "name": "Observe and log current strategy context",
+                "path": null,
+                "probability": 1.0,
+                "scenario_id": "*",
+                "target": null,
+                "utility": 0.17726303291975376
+              }
+            },
+            "state": {
+              "attack_active": false,
+              "current_path": [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ],
+              "defense_active": true,
+              "mulval": {
+                "current_path_risk": 0.74,
+                "path_candidates": [
+                  {
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "sen4_edge2_clouddb",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->cloud_db",
+                    "risk_score": 0.74,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "mulval_policy",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen6"
+                      },
+                      {
+                        "action": "reroute_traffic",
+                        "target": "sen6",
+                        "via": "s_edge2"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen6"
+                      }
+                    ],
+                    "entry_node": "sen6",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen6",
+                      "edge3_gw",
+                      "edge3_vm_s6",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen6_edge3_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "rate_limit",
+                        "kbps": 256,
+                        "target": "edge2_gw"
+                      },
+                      {
+                        "action": "isolate_sensor",
+                        "target": "edge2_gw"
+                      }
+                    ],
+                    "entry_node": "edge2_gw",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "edge2_gateway_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_candidates": [
+                  {
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "sen4_edge2_clouddb",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->cloud_db",
+                    "risk_score": 0.74,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "mulval_policy",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_paths": [
+                  [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ]
+                ],
+                "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+                "policy_scenario_id": "sen4_edge2_clouddb"
+              },
+              "path_stage": 0,
+              "scenario_id": "sen4_edge2_clouddb"
+            }
+          }
+        },
+        "cloud_policy_decision": {
+          "json": {
+            "cloud_policy_observe_only_normalized": true,
+            "decision_source": "llm_defender",
+            "observe_only": true,
+            "policy_mode": "llm_direct_ryu",
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "observe",
+                "decision_source": "llm_defender",
+                "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+                "source": "llm_defender",
+                "source_strategy_id": "D0_observe"
+              },
+              "target": "",
+              "type": "observe"
+            }
+          },
+          "reason": "llm_selected_direct_ryu_intent",
+          "status": "skipped"
+        },
+        "defense_event": {
+          "reason": "defender action was not confirmed by Ryu/controller metrics",
+          "status": "skipped"
+        },
+        "payload": {
+          "action": "observe",
+          "decision_source": "llm_defender",
+          "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+          "source": "llm_defender",
+          "source_strategy_id": "D0_observe"
+        },
+        "status": "observe_only"
+      }
+    },
+    "execution_summary": {
+      "attacker": {
+        "attempted_path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "operation_id": "",
+        "status": "dry_run",
+        "strategy_id": "A2_sensor_http_abuse_sen4",
+        "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+      },
+      "defender": {
+        "action": "observe",
+        "cloud_policy": {
+          "accepted_keys": [],
+          "context_http_status": 0,
+          "context_ok": false,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": true,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "observe",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+              "source": "llm_defender",
+              "source_strategy_id": "D0_observe"
+            },
+            "target": "",
+            "type": "observe"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {},
+          "status": "skipped",
+          "url": ""
+        },
+        "ryu_response": {
+          "action": "observe",
+          "active_policy_actions": 0,
+          "apply_duration_ms": 0.0,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "http_status": 0,
+          "meters_added": 0,
+          "ok": false,
+          "rule": "",
+          "status": "",
+          "target": "",
+          "target_ips": []
+        },
+        "status": "observe_only",
+        "target": ""
+      }
+    },
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": false,
+        "path_stage": 0,
+        "urgency_level": "low"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D0_observe",
+      "raw_llm_selected_defender_strategy_id": "D0_observe"
+    },
+    "final_baseline_alignment": "followed",
+    "final_decision_alignment_vs_baseline": "followed",
+    "final_defender_action": "observe",
+    "final_defender_strategy_id": "D0_observe",
+    "final_defender_target": "",
+    "inference": {
+      "attacker_execution_status": "dry_run",
+      "attacker_expected_effects": [
+        "gateway_seen",
+        "worker_seen",
+        "cloud_seen",
+        "attack_effect_success"
+      ],
+      "attacker_progressed": false,
+      "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "caldera_abilities_ran": 0,
+      "defender_execution_status": "observe_only",
+      "defender_expected_effects": [
+        "strategy_context_recorded"
+      ],
+      "defender_strategy_id": "D0_observe",
+      "defense_applied": false,
+      "defense_containment_observed": true,
+      "defense_observed": true,
+      "path_frozen": false,
+      "path_stage_delta": 0
+    },
+    "llm": {
+      "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+      "baseline_top_defender": {
+        "base_cost": 0.02,
+        "population_share": 1.0,
+        "strategy_id": "D0_observe",
+        "tiebreak_reason": "highest_utility",
+        "utility": 0.17726303291975376
+      },
+      "baseline_top_defender_population_share": 1.0,
+      "baseline_top_defender_strategy_id": "D0_observe",
+      "baseline_top_defender_tiebreak_reason": "highest_utility",
+      "baseline_top_defender_utility": 0.17726303291975376,
+      "confidence": 0.95,
+      "executed_decision_reason": "llm_selected_strategy",
+      "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+      "executed_decision_source": "llm_defender",
+      "executed_defender_strategy_id": "D0_observe",
+      "executed_via_fallback": false,
+      "expected_controller_cost": 0.0,
+      "expected_qos_impact": 0.01,
+      "expected_security_gain": 0.26,
+      "fallback_constraint_name": "",
+      "fallback_reason": "",
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": false,
+          "path_stage": 0,
+          "urgency_level": "low"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D0_observe",
+        "raw_llm_selected_defender_strategy_id": "D0_observe"
+      },
+      "fallback_used": false,
+      "final_baseline_alignment": "followed",
+      "final_decision_alignment_vs_baseline": "followed",
+      "final_defender_action": "observe",
+      "final_defender_strategy_id": "D0_observe",
+      "final_defender_target": "",
+      "llm_baseline_alignment": "followed",
+      "llm_decision_mode": "uncertainty_limited",
+      "llm_override_reason": "",
+      "llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D0_observe"
+        }
+      ],
+      "llm_repeat_previous_action": true,
+      "llm_selected_defender_strategy_id": "D0_observe",
+      "llm_stage_memory_used": true,
+      "llm_telemetry_confidence": "medium",
+      "llm_urgency_level": "low",
+      "llm_why_not_observe": "",
+      "llm_why_not_quarantine": "Quarantining is a high-impact, reactive measure best reserved for confirmed active threats. Since no attack is currently active and the state freshness is only partial, this action would be overly disruptive.",
+      "llm_why_not_rate_limit": "Rate limiting implies an observed resource abuse or excessive traffic flow. With empty defense metrics and low urgency, rate limiting provides little benefit and risks unnecessary disruption.",
+      "model": "gemma4:e4b",
+      "parse_success": true,
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "followed",
+      "raw_llm_baseline_alignment": "followed",
+      "raw_llm_override_reason": "",
+      "raw_llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D0_observe"
+        }
+      ],
+      "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+      "raw_llm_selected_defender_strategy_id": "D0_observe",
+      "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true,
+      "stage_memory": {
+        "previous_attack_effect_success": false,
+        "previous_attack_progression_continued": false,
+        "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+        "previous_defender_execution_status": "observe_only",
+        "previous_defender_strategy_id": "D0_observe",
+        "previous_defender_strategy_id_note": "",
+        "previous_defense_confirmed": false,
+        "previous_defense_success": true,
+        "previous_stage_id": 14,
+        "previous_stage_success": true,
+        "recent_controller_deltas": {
+          "active_policy_actions_delta": 0.0,
+          "controller_apply_ms_delta": 0.0,
+          "flow_delete_commands_delta": 0.0,
+          "flow_rules_installed_delta": 0.0,
+          "meters_added_delta": 0.0,
+          "total_cpu_seconds_delta": 1.576312,
+          "total_memory_kb_delta": 0.0
+        },
+        "recent_qos_deltas": {
+          "edge_to_cloud_latency_ms": 0.04,
+          "sensor_to_edge_latency_ms": -1.08,
+          "throughput_bytes_per_second": -1.32
+        }
+      }
+    },
+    "llm_baseline_alignment": "followed",
+    "llm_decision_mode": "uncertainty_limited",
+    "llm_expected_controller_cost": 0.0,
+    "llm_expected_qos_impact": 0.01,
+    "llm_expected_security_gain": 0.26,
+    "llm_override_reason": "",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D0_observe"
+      }
+    ],
+    "llm_repeat_previous_action": true,
+    "llm_selected_defender_strategy_id": "D0_observe",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "low",
+    "llm_why_not_observe": "",
+    "llm_why_not_quarantine": "Quarantining is a high-impact, reactive measure best reserved for confirmed active threats. Since no attack is currently active and the state freshness is only partial, this action would be overly disruptive.",
+    "llm_why_not_rate_limit": "Rate limiting implies an observed resource abuse or excessive traffic flow. With empty defense metrics and low urgency, rate limiting provides little benefit and risks unnecessary disruption.",
+    "next_state": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "built_at": "2026-06-26T02:46:46.917436+00:00",
+      "counters_stopped": false,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": true,
+      "defense_success": false,
+      "drop_rules_active": true,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.74,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 2,
+        "controller_apply_ms": 0.6260049995034933,
+        "flow_delete_commands": 10,
+        "flow_rules_installed": 50,
+        "meters_added": 10,
+        "total_cpu_seconds": 238.744105918,
+        "total_memory_kb": 425780.0
+      },
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "qos": {
+        "edge_to_cloud_latency_ms": 0.49299999999999994,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 0.656,
+        "throughput_bytes_per_second": 9547.875886828435
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 5114.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 2299.0,
+        "gateway_received": 2299.0,
+        "generated_total": 2316.0,
+        "worker_requests": 2301.0
+      }
+    },
+    "population_after": {
+      "attacker": {
+        "A1_sensor_probe_sen4": 0.25093974502318644,
+        "A2_sensor_http_abuse_sen4": 0.37686117003461966,
+        "A6_sen4_edge_to_cloud_probe": 0.3721990849421939
+      },
+      "defender": {
+        "D0_observe": 1.0
+      }
+    },
+    "population_before": {
+      "attacker": {
+        "A1_sensor_probe_sen4": 0.25,
+        "A2_sensor_http_abuse_sen4": 0.3770886839955,
+        "A6_sen4_edge_to_cloud_probe": 0.3729113160045
+      },
+      "defender": {
+        "D0_observe": 1.0
+      }
+    },
+    "previous_state": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "built_at": "2026-06-26T02:45:36.032264+00:00",
+      "counters_stopped": false,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": true,
+      "defense_success": false,
+      "drop_rules_active": true,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.74,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 2,
+        "controller_apply_ms": 0.6260049995034933,
+        "flow_delete_commands": 10,
+        "flow_rules_installed": 50,
+        "meters_added": 10,
+        "total_cpu_seconds": 237.48099702099998,
+        "total_memory_kb": 425780.0
+      },
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "qos": {
+        "edge_to_cloud_latency_ms": 0.621,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 1.9257272727272727,
+        "throughput_bytes_per_second": 9547.051881139148
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 5036.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 2264.0,
+        "gateway_received": 2264.0,
+        "generated_total": 2281.0,
+        "worker_requests": 2266.0
+      }
+    },
+    "raw_llm_alignment_vs_baseline": "followed",
+    "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+    "raw_llm_selected_defender_strategy_id": "D0_observe",
+    "recorded_at": "2026-06-26T02:46:46.917861+00:00",
+    "schema_version": "llm-mtd-stage-transition-v2",
+    "selection": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.37686117003461966,
+        "population_after_rank": 1,
+        "population_before": 0.3770886839955,
+        "population_before_rank": 1,
+        "population_delta": -0.00022751396088033227,
+        "probability": 0.37686117003461966,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selection_mode": "dominant",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "cloud_db",
+        "utility": 0.048227182399999985,
+        "utility_rank": 2
+      },
+      "defender": {
+        "action": "observe",
+        "action_payload": {
+          "action": "observe"
+        },
+        "executor": {
+          "type": "cloud_policy"
+        },
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Observe and log current strategy context",
+        "path": null,
+        "population_after": 1.0,
+        "population_after_rank": 1,
+        "population_before": 1.0,
+        "population_before_rank": 1,
+        "population_delta": 0.0,
+        "probability": 1.0,
+        "scenario_id": "*",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": null,
+        "utility": 0.17726303291975376,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 15,
+    "stage_summary": {
+      "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "controller_delta": {
+        "active_policy_actions_delta": 0.0,
+        "controller_apply_ms_delta": 0.0,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 0.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 1.263109,
+        "total_memory_kb_delta": 0.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D0_observe",
+      "execution": {
+        "attacker_status": "dry_run",
+        "defender_action": "observe",
+        "defender_status": "observe_only",
+        "defender_target": "",
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "executed_via_fallback": false,
+        "operationally_executed_debug_stage": false,
+        "stage_kind": "warmup",
+        "stage_success": true,
+        "stage_valid": false
+      },
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": false,
+          "path_stage": 0,
+          "urgency_level": "low"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D0_observe",
+        "raw_llm_selected_defender_strategy_id": "D0_observe"
+      },
+      "llm": {
+        "baseline_alignment": "followed",
+        "baseline_top_defender_population_share": 1.0,
+        "baseline_top_defender_strategy_id": "D0_observe",
+        "baseline_top_defender_tiebreak_reason": "highest_utility",
+        "baseline_top_defender_utility": 0.17726303291975376,
+        "decision_mode": "uncertainty_limited",
+        "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+        "executed_via_fallback": false,
+        "fallback_reason": "",
+        "fallback_used": false,
+        "final_decision_alignment_vs_baseline": "followed",
+        "final_defender_strategy_id": "D0_observe",
+        "model": "gemma4:e4b",
+        "override_reason": "",
+        "provider": "ollama",
+        "raw_llm_alignment_vs_baseline": "followed",
+        "raw_llm_baseline_alignment": "followed",
+        "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+        "raw_llm_selected_defender_strategy_id": "D0_observe",
+        "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected.",
+        "repeat_previous_action": true,
+        "telemetry_confidence": "medium",
+        "urgency_level": "low",
+        "why_not_observe": "",
+        "why_not_quarantine": "Quarantining is a high-impact, reactive measure best reserved for confirmed active threats. Since no attack is currently active and the state freshness is only partial, this action would be overly disruptive.",
+        "why_not_rate_limit": "Rate limiting implies an observed resource abuse or excessive traffic flow. With empty defense metrics and low urgency, rate limiting provides little benefit and risks unnecessary disruption."
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms": 0.237,
+        "sensor_to_edge_latency_ms": -1.33
+      },
+      "recorded_at": "2026-06-26T02:47:18.714837+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_deactivated": false,
+        "attack_effect_success": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "defense_success": true,
+        "path_regressed": false,
+        "raw_state_defense_success": false,
+        "security_progression_reduced": false
+      },
+      "stage_id": 15,
+      "stage_validation": {
+        "attack_deactivated": false,
+        "comparable_stage": false,
+        "defender_execution_status": "observe_only",
+        "defense_applied": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effect_mismatch": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+        "effect_source_conflict": true,
+        "effect_source_details": {
+          "counters_stopped": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": false
+          },
+          "drop_rules_active": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": true
+          },
+          "rate_limit_active": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": null
+          }
+        },
+        "execution_stage_success": false,
+        "expected_defense_effects": [
+          "strategy_context_recorded"
+        ],
+        "invalidity_reasons": [
+          "not_comparable"
+        ],
+        "learning_valid_stage": false,
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_success": true,
+        "llm_stage_valid": false,
+        "missing_defense_effects": [],
+        "normalized_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": true,
+          "rate_limit_active": false
+        },
+        "observed_defense_effects": [
+          "strategy_context_recorded"
+        ],
+        "operationally_executed_debug_stage": false,
+        "paper_valid_stage": false,
+        "path_regressed": false,
+        "path_stage_after": 0,
+        "path_stage_before": 0,
+        "raw_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": true,
+          "rate_limit_active": false
+        },
+        "security_progression_reduced": false,
+        "security_stage_success": true,
+        "semantic_effect_mapping_details": {
+          "strategy_context_recorded": {
+            "action": "observe",
+            "active_action_for_target": true,
+            "flow_rules_installed": 50,
+            "installed_status": false,
+            "meters_added": 10,
+            "observed": true,
+            "path_stage_after": 0,
+            "path_stage_before": 0,
+            "target": "",
+            "target_is_gateway": false,
+            "target_is_worker": false,
+            "target_on_path": false,
+            "traffic_blocking": true
+          }
+        },
+        "semantic_missing_defense_effects": [],
+        "semantic_observed_defense_effects": [
+          "strategy_context_recorded"
+        ],
+        "stage_kind": "warmup",
+        "stage_success": true,
+        "state_effect_sources": {
+          "counters_stopped": "",
+          "drop_rules_active": "raw_state",
+          "rate_limit_active": ""
+        }
+      },
+      "summary_text": "Stage 15 for sen4_edge2_clouddb: attacker A2_sensor_http_abuse_sen4 met defender D0_observe. Action observe ended with status observe_only; defense_confirmed=False; defense_effects_confirmed=True; defense_success=True. Path stage=0. Outcome: security progression was reduced. Rationale: The current evidence shows no active attack (attack_active: false) and the path stage is at its beginning (path_stage: 0). The telemetry quality indicates empty attack/defense metrics and partial state freshness. Given the lack of immediate threat confirmation, a highly disruptive or aggressive action is unwarranted. Observing the environment allows for gathering more data without incurring significant cost or QoS impact, aligning with an uncertainty-limited approach. Since D0_observe is the only allowed candidate and it perfectly matches this low-threat/high-uncertainty profile, it is selected."
+    },
+    "stage_validation": {
+      "attack_deactivated": false,
+      "comparable_stage": false,
+      "defender_execution_status": "observe_only",
+      "defense_applied": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effect_mismatch": false,
+      "defense_effects_confirmed": true,
+      "defense_executed": false,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": true,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": false
+        },
+        "drop_rules_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": true
+        },
+        "rate_limit_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": null
+        }
+      },
+      "execution_stage_success": false,
+      "expected_defense_effects": [
+        "strategy_context_recorded"
+      ],
+      "invalidity_reasons": [
+        "not_comparable"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [],
+      "normalized_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "observed_defense_effects": [
+        "strategy_context_recorded"
+      ],
+      "operationally_executed_debug_stage": false,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 0,
+      "path_stage_before": 0,
+      "raw_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": true,
+      "semantic_effect_mapping_details": {
+        "strategy_context_recorded": {
+          "action": "observe",
+          "active_action_for_target": true,
+          "flow_rules_installed": 50,
+          "installed_status": false,
+          "meters_added": 10,
+          "observed": true,
+          "path_stage_after": 0,
+          "path_stage_before": 0,
+          "target": "",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": false,
+          "traffic_blocking": true
+        }
+      },
+      "semantic_missing_defense_effects": [],
+      "semantic_observed_defense_effects": [
+        "strategy_context_recorded"
+      ],
+      "stage_kind": "warmup",
+      "stage_success": true,
+      "state_effect_sources": {
+        "counters_stopped": "",
+        "drop_rules_active": "raw_state",
+        "rate_limit_active": ""
+      }
+    },
+    "state_summary": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "attack_success": false,
+      "cloud_seen": false,
+      "controller_active_actions": 2,
+      "counters_stopped": false,
+      "defense_active": true,
+      "defense_success": true,
+      "drop_rules_active": true,
+      "flow_rules_installed": 50,
+      "gateway_seen": false,
+      "meters_added": 10,
+      "normalized_counters_stopped": false,
+      "normalized_drop_rules_active": true,
+      "normalized_rate_limit_active": false,
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "rate_limit_active": false,
+      "raw_counters_stopped": false,
+      "raw_drop_rules_active": true,
+      "raw_rate_limit_active": false,
+      "raw_state_defense_success": false,
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": false
+    },
+    "transition_id": "0a448d3bf1ae4f9fb440727c882e2ffa"
+  }
+}

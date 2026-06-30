@@ -1,0 +1,8 @@
+{
+  "latency_ms": 142609.55542698503,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"The attacker continues probing towards the cloud database (cloud_db) despite previous defenses. The defender attempts to isolate the next critical component, `edge2_vm_s4`, using a dry-run defense.\", \"security_outcome\": {\"attack_effect_success\": true, \"defense_success\": false}, \"qos_delta\": {\"edge_to_cloud_latency_ms\": 0.047999999999999996, \"sensor_to_edge_latency_ms\": -0.451727272727273, \"throughput_bytes_per_second\": -11.81232333395043}, \"controller_delta\": {\"flow_rules_installed_delta\": 0, \"meters_added_delta\": 0}}",
+  "retries_used": 1
+}

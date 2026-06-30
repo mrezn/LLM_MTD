@@ -1,8 +1,0 @@
-{
-  "latency_ms": 147742.99530700227,
-  "model_name": "llama3.1:latest",
-  "prompt_preview": "Select one defender strategy ID from the active candidates.\nAllowed defender IDs only: [\"D0_observe\", \"D1_quarantine_sen4\", \"D2_rate_limit_sen4\", \"D3_isolate_edge2_gw_for_sen4\", \"D4_isolate_edge2_vm_s4\"]\n\nReturn exactly one compact JSON obj",
-  "provider": "ollama",
-  "raw_text": "{\n  \"selected_defender_strategy_id\": \"D1_quarantine_sen4\",\n  \"confidence\": 0.75,\n  \"reasoning_summary\": \"The attacker has reached the cloud stage (path_stage: 3) and is progressing towards the target asset 'cloud_db'. Quarantining sen4, which is the current entry node, will break the path and prevent further progression.\",\n  \"expected_security_gain\": 0.6444422729939109,\n  \"expected_qos_impact\": -0.1\n}",
-  "retries_used": 1
-}

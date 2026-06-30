@@ -1,0 +1,8 @@
+{
+  "latency_ms": 32603.964982001344,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"The defender applied rate limiting (D2) to sensor sen4, a proactive measure taken despite no active threat. This action is balanced, offering moderate security gain while maintaining low QoS impact.\", \"security_outcome\": {\"attack_effect_success\": false, \"defense_success\": false}, \"qos_delta\": {\"edge_to_cloud_latency_ms\": 0.154, \"sensor_to_edge_latency_ms\": -1.213}, \"controller_delta\": {\"total_cpu_seconds\": 41.9, \"flow_rules_installed\": 5}}",
+  "retries_used": 0
+}

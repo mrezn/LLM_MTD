@@ -1,0 +1,8 @@
+{
+  "latency_ms": 52907.93182899961,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Prompt mode: full\n\n{\n  \"active_defender_candidates\": [\n    {\n      \"action\": \"observe\",\n      \"baseline_utility_prior\": 0.057507,\n      \"defender_population_share\": 0.296094,\n      \"expected_controller_cost\": 0.0,\n      \"expected_qos_impact",
+  "provider": "ollama",
+  "raw_text": "{\"baseline_alignment\": \"followed\", \"confidence\": 0.85, \"decision_mode\": \"uncertainty_limited\", \"expected_controller_cost\": 0.22, \"expected_qos_impact\": 0.32, \"expected_security_gain\": 0.68, \"override_reason\": \"The path relevance is maximal (1.0) and the threat context suggests a high-value target (cloud_db) is being targeted via sen4. While telemetry confidence is only medium due to empty metrics, the combination of strong path evidence and the need for immediate containment outweighs the risk of disruption from quarantine.\", \"ranked_candidates\": [{\"strategy_id\": \"D1_quarantine_sen4\", \"score\": 0.92}, {\"strategy_id\": \"D2_rate_limit_sen4\", \"score\": 0.75}, {\"strategy_id\": \"D0_observe\", \"score\": 0.3}]\n}",
+  "retries_used": 0
+}

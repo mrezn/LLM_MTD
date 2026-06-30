@@ -1,0 +1,146 @@
+# defender/actions/action_definitions.yml
+# Defender MTD Action Space — LLM_MTD_modular
+# Each entry defines one executable defense action with its parameters,
+# constraints, Ryu payload template, and cost/impact estimates.
+
+version: "2.0"
+
+actions:
+  - id: observe
+    name: "Observe (no enforcement)"
+    description: >
+      Monitor the network without applying any OpenFlow rule changes.
+      The lowest-cost action; appropriate when threat evidence is weak
+      or telemetry is stale.
+    ryu_action: observe
+    requires_target: false
+    parameters: []
+    estimated_base_cost: 0.00
+    estimated_qos_impact: 0.00
+    estimated_security_gain: 0.10
+    allowed_path_stages: [0, 1, 2, 3]
+    disruptive: false
+    reversible: true
+    reversal_action: null
+
+  - id: rate_limit
+    name: "Rate-limit sensor traffic"
+    description: >
+      Install an OpenFlow meter band on the target sensor's IPv4 source
+      traffic. Reduces bandwidth from a compromised or noisy sensor while
+      keeping it reachable (less disruptive than quarantine).
+    ryu_action: rate_limit
+    requires_target: true
+    parameters:
+      - name: kbps
+        type: int
+        default: 256
+        description: "Allowed kilobits per second"
+      - name: burst_size
+        type: int
+        default: 256
+        description: "Burst buffer size in kilobits"
+    estimated_base_cost: 0.20
+    estimated_qos_impact: 0.16
+    estimated_security_gain: 0.58
+    allowed_path_stages: [1, 2, 3]
+    disruptive: false
+    reversible: true
+    reversal_action: clear_target_policy
+
+  - id: reroute_traffic
+    name: "Reroute dual-homed sensor"
+    description: >
+      For a dual-homed sensor (sen6), drop traffic on the non-preferred
+      switch interface and force all traffic through the preferred gateway.
+      Isolates one attack path while keeping the sensor functional.
+    ryu_action: reroute_traffic
+    requires_target: true
+    parameters:
+      - name: via
+        type: str
+        default: ""
+        description: "Preferred switch name (e.g. s_edge3). Auto-selected if empty."
+    estimated_base_cost: 0.35
+    estimated_qos_impact: 0.14
+    estimated_security_gain: 0.62
+    allowed_path_stages: [1, 2, 3]
+    disruptive: false
+    reversible: true
+    reversal_action: clear_target_policy
+    requires_dual_homed: true
+
+  - id: quarantine_sensor
+    name: "Quarantine sensor (full IP isolation)"
+    description: >
+      Install high-priority OpenFlow DROP rules for all IPv4 and ARP
+      traffic to/from the target sensor across all switches. Completely
+      isolates the node. Highest security gain, highest disruption.
+    ryu_action: quarantine_sensor
+    requires_target: true
+    parameters: []
+    estimated_base_cost: 0.70
+    estimated_qos_impact: 0.32
+    estimated_security_gain: 0.82
+    allowed_path_stages: [2, 3]
+    disruptive: true
+    reversible: true
+    reversal_action: release_sensor
+
+  - id: isolate_sensor
+    name: "Isolate sensor (full IP isolation, alias)"
+    description: >
+      Alias for quarantine_sensor. Installs identical DROP rules.
+      Use when the strategy layer selects the 'isolate' variant.
+    ryu_action: isolate_sensor
+    requires_target: true
+    parameters: []
+    estimated_base_cost: 0.70
+    estimated_qos_impact: 0.32
+    estimated_security_gain: 0.74
+    allowed_path_stages: [2, 3]
+    disruptive: true
+    reversible: true
+    reversal_action: release_sensor
+
+  - id: release_sensor
+    name: "Release sensor (remove quarantine)"
+    description: >
+      Remove all OpenFlow DROP rules for a previously quarantined sensor.
+      Restores normal network access.
+    ryu_action: release_sensor
+    requires_target: true
+    parameters: []
+    estimated_base_cost: 0.05
+    estimated_qos_impact: 0.00
+    estimated_security_gain: 0.00
+    allowed_path_stages: [0, 1, 2, 3]
+    disruptive: false
+    reversible: false
+    reversal_action: null
+
+  - id: clear_target_policy
+    name: "Clear all policy rules for target"
+    description: >
+      Remove all active OpenFlow policy rules (any action type) for the
+      specified target node. Restores default forwarding behavior.
+    ryu_action: clear_target_policy
+    requires_target: true
+    parameters: []
+    estimated_base_cost: 0.05
+    estimated_qos_impact: 0.00
+    estimated_security_gain: 0.00
+    allowed_path_stages: [0, 1, 2, 3]
+    disruptive: false
+    reversible: false
+    reversal_action: null
+
+constraints:
+  max_active_quarantines: 3
+  max_active_rate_limits: 10
+  allow_disruptive_without_evidence: false
+  min_path_stage_for_quarantine: 2
+  min_path_stage_for_isolate: 2
+  observe_always_allowed: true
+  rate_limit_min_kbps: 64
+  rate_limit_max_kbps: 10000

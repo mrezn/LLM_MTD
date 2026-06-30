@@ -1,0 +1,8 @@
+{
+  "latency_ms": 30300.958239939064,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"The attacker attempts to exploit the compromised edge VM (edge2_vm_s4) to reach the cloud database. The defender isolates this specific VM layer to contain the lateral movement.\", \"security_outcome\": {\"attack_effect_success\": false, \"defense_success\": true}, \"qos_delta\": {\"sensor_to_edge_latency_ms\": 1.3289, \"throughput_bytes_per_second\": -0.4311}, \"controller_delta\": {\"flow_rules_installed\": 20}}",
+  "retries_used": 0
+}

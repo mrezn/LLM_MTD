@@ -1,8 +1,0 @@
-{
-  "latency_ms": 82850.89714900096,
-  "model_name": "gpt-oss:20b",
-  "prompt_preview": "Scenario ID: sen4_edge2_clouddb\nTarget asset: cloud_db\nEntry node: sen4\n\nAttack context:\n{\n  \"caldera_result\": null,\n  \"mulval_path\": [\n    \"sen4\",\n    \"edge2_gw\",\n    \"edge2_vm_s4\",\n    \"cloud_db\"\n  ],\n  \"risk_score\": 0.5\n}\n\nQoS context:\n{",
-  "provider": "ollama",
-  "raw_text": "We need to choose one defender action. Attack context: path from sen4 to cloud_db via edge2_gw, edge2_vm_s4. risk_score 0.5 moderate. QoS context shows no pressure, overhead negligible. Security context: attack_effect_success false, cloud_seen false, etc. So no attack detected yet. Attack pressure low. So best to observe. According to rule 3: If uncertain, prefer observe. So choose observe. Provide confidence maybe 0.8? But risk moderate. But we have no evidence of attack. So high confidence that observe is fine. expected_security_gain 0.0? Observing yields no direct gain but may detect. But we can set small positive? But guidelines: expected_security_gain between 0 and 1. We can set 0.1 maybe. QoS impact 0.0. Provide reasoning summary: \": \"No attack detected, low risk, observe to gather info.\" \n\n  }",
-  "retries_used": 0
-}

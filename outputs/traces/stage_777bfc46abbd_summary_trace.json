@@ -1,0 +1,8 @@
+{
+  "latency_ms": 35122.1254230004,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"The attacker attempts to abuse sensor HTTP services (A2), but the defender chooses a passive observation strategy (D0). Since no threat evidence is confirmed, this non-disruptive approach prioritizes gathering reliable state information.\", \"security_outcome\": {\"attack_effect_success\": false, \"defense_success\": false}, \"qos_delta\": {\"edge_to_cloud_latency_ms\": -1.313, \"sensor_to_edge_latency_ms\": -0.904, \"throughput_bytes_per_second\": 18.56}, \"controller_delta\": {\"flow_delete_commands\": 0, \"flow_rules_installed\": 0}}",
+  "retries_used": 0
+}

@@ -1,0 +1,8 @@
+{
+  "latency_ms": 39884.460617089644,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Scenario ID: sen4_edge2_clouddb\nTarget asset: cloud_db\nEntry node: sen4\n\nGame-model defender shortlist:\n[\n  {\n    \"active_pool_update\": {\n      \"demote\": [],\n      \"enabled\": false,\n      \"promote\": []\n    },\n    \"confidence\": 0.55,\n    \"ex",
+  "provider": "ollama",
+  "raw_text": "{\"selected_defender_strategy\": \"observe\", \"target\": \"\", \"parameters\": {}, \"confidence\": 0.8, \"reasoning_summary\": \"The risk score (0.5) is moderate, and current QoS metrics show low stress, making observation the safest initial action.\", \"expected_security_gain\": 0.1, \"expected_qos_impact\": 0.02, \"active_pool_update\": {\"enabled\": false, \"promote\": [], \"demote\": []}}",
+  "retries_used": 0
+}

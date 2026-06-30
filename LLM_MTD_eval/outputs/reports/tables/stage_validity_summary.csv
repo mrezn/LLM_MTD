@@ -1,4 +1,0 @@
-method,scenario_id,total_stages,paper_valid_stages,fallback_only_stages,timeout_failed_stages,defense_applied_but_ineffective_stages,defense_effect_mismatch_stages,defense_executed_rate,defense_confirmed_rate,defense_effects_confirmed_rate,defense_success_rate,paper_valid_stage_rate
-Baseline game,*,2,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0
-Baseline game,sen4_edge2_clouddb,34,13,0,0,0,0,0.2647058823529412,0.0,0.0,0.058823529411764705,0.38235294117647056
-LLM defender,sen4_edge2_clouddb,16,10,4,1,9,3,0.5625,0.5625,0.375,0.0,0.625

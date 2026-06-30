@@ -1,0 +1,3 @@
+method,flow_rules_installed,meters_added,controller_apply_ms,method_label
+baseline_game,13.68421052631579,0.0,2.743959413428935,Baseline game
+llm_defender,6.153846153846154,0.0,1.1496450774407445,LLM defender

@@ -1,0 +1,8 @@
+{
+  "latency_ms": 31615.86754999007,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"The attacker attempted HTTP abuse at sen4, but the defender chose to observe (D0), confirming no immediate threat. This non-intervention approach minimizes disruption while gathering intelligence.\", \"security_outcome\": {\"attack_effect_success\": false, \"defense_success\": false}, \"qos_delta\": {\"edge_to_cloud_latency_ms\": 0.076, \"sensor_to_edge_latency_ms\": -1.284}, \"controller_delta\": {\"flow_delete_commands\": 0, \"flow_rules_installed\": 0}}",
+  "retries_used": 0
+}

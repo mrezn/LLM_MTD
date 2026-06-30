@@ -1,0 +1,8 @@
+{
+  "latency_ms": 32337.47770707123,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"The attacker continues targeting the cloud database (cloud_db) via sensor sen4. The defender applies rate limiting to slow down this lateral movement, maintaining a balance between security and performance.\", \"security_outcome\": {\"attack_effect_success\": false, \"defense_success\": false}, \"qos_delta\": {\"edge_to_cloud_latency_ms\": 0.328, \"sensor_to_edge_latency_ms\": -1.545}, \"controller_delta\": {\"total_cpu_seconds\": 1.497, \"total_memory_kb\": 0}}",
+  "retries_used": 0
+}

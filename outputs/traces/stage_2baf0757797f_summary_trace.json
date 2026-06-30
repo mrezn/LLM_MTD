@@ -1,0 +1,8 @@
+{
+  "latency_ms": 138199.2371249944,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"Attacker probes from edge to cloud (A6), countered by isolating the specific VM (D4). The attack successfully reached the cloud stage, but defense was applied at a critical intermediate point.\", \"security_outcome\": {\"attack_effect_success\": true, \"defense_success\": false}, \"qos_delta\": {\"edge_to_cloud_latency_ms\": 0.302, \"sensor_to_edge_latency_ms\": -1.643, \"throughput_bytes_per_second\": -185.84}, \"controller_delta\": {\"flow_rules_installed_delta\": 0, \"meters_added_delta\": 0}}",
+  "retries_used": 1
+}

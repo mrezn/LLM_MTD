@@ -1,8 +1,0 @@
-{
-  "latency_ms": 72223.43888599426,
-  "model_name": "gemma4:e4b",
-  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
-  "provider": "ollama",
-  "raw_text": "{\"summary_text\": \"The attacker attempts to exploit the sensor via HTTP abuse (A2), and the defender executes a quarantine action on the sensor (D1).\", \"security_outcome\": {\"attack_effect_success\": false, \"defense_success\": false}, \"qos_delta\": {\"edge_to_cloud_latency_ms\": 0.0, \"loss_rate\": 0.0, \"sensor_to_edge_latency_ms\": 0.0, \"throughput_bytes_per_second\": 0}, \"controller_delta\": {\"controller_active_actions\": 1, \"controller_apply_ms\": 3.220826998585835, \"flow_delete_commands\": 0, \"flow_rules_installed\": 20, \"meters_added\": 0, \"total_cpu_seconds\": 0, \"total_memory_kb\": 0}}",
-  "retries_used": 0
-}

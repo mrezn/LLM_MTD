@@ -1,8 +1,0 @@
-{
-  "latency_ms": 99323.31383800192,
-  "model_name": "llama3.1:latest",
-  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
-  "provider": "ollama",
-  "raw_text": "{\n  \"summary_text\": [\n    \"Attacker strategy: A2_sensor_http_abuse_sen4, Defender strategy: D1_quarantine_sen4\",\n    \"Expected security effect: Contain the attacker by quarantining sen4\",\n    \"Expected QoS tradeoff: Potential increase in edge-to-cloud latency\"\n  ],\n  \"security_outcome\": {\n    \"attack_effect_success\": true,\n    \"defense_success\": false\n  },\n  \"qos_delta\": {\n    \"edge_to_cloud_latency_ms\": 1.1,\n    \"loss_rate\": 0.0,\n    \"sensor_to_edge_latency_ms\": 1.1203636363636365,\n    \"throughput_bytes_per_second\": -40.124030082665\n  },\n  \"controller_delta\": {\n    \"total_cpu_seconds\": 4.456000078617076,\n    \"total_memory_kb\": 0.0\n  }\n}",
-  "retries_used": 0
-}

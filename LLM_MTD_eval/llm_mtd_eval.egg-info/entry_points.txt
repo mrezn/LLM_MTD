@@ -1,2 +1,0 @@
-[console_scripts]
-llm-mtd-eval = llm_mtd_eval.cli:main

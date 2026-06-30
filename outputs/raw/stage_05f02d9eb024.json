@@ -1,0 +1,3917 @@
+{
+  "active": {
+    "attacker_ids": [],
+    "attackers": [],
+    "defender_ids": [
+      "D0_observe",
+      "D1_quarantine_sen4",
+      "D2_rate_limit_sen4"
+    ],
+    "defenders": [
+      {
+        "action": "observe",
+        "base_cost": 0.02,
+        "base_reward": 0.05,
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "name": "Observe and log current strategy context",
+        "scenario_id": "*",
+        "target": ""
+      },
+      {
+        "action": "quarantine_sensor",
+        "base_cost": 0.2,
+        "base_reward": 0.75,
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "name": "Quarantine sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4"
+      },
+      {
+        "action": "rate_limit",
+        "base_cost": 0.13,
+        "base_reward": 0.55,
+        "expected_effects": [
+          "throttled_traffic",
+          "lower_gateway_queue"
+        ],
+        "id": "D2_rate_limit_sen4",
+        "name": "Rate-limit sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4"
+      }
+    ],
+    "filtered_out_reasons": {
+      "attackers": {
+        "A1_sensor_probe_sen4": "mulval_disallowed",
+        "A2_sensor_http_abuse_sen4": "mulval_disallowed",
+        "A3_dual_homed_http_abuse_sen6": "scenario_mismatch",
+        "A4_edge2_gateway_cloud_probe": "scenario_mismatch",
+        "A5_edge2_gateway_service_abuse": "scenario_mismatch",
+        "A6_sen4_edge_to_cloud_probe": "activation_constraints",
+        "A7_edge3_path_pressure_sen6": "scenario_mismatch",
+        "A8_sen6_alternate_edge2_probe": "scenario_mismatch",
+        "A9_edge2_worker_request_pressure": "scenario_mismatch"
+      },
+      "defenders": {
+        "D3_isolate_edge2_gw_for_sen4": "activation_constraints",
+        "D4_isolate_edge2_vm_s4": "activation_constraints",
+        "D5_quarantine_sen6": "scenario_mismatch",
+        "D6_reroute_sen6_to_edge2": "scenario_mismatch",
+        "D7_rate_limit_sen6": "scenario_mismatch",
+        "D8_rate_limit_edge2_gw": "scenario_mismatch",
+        "D9_isolate_edge2_gw": "scenario_mismatch"
+      }
+    }
+  },
+  "decision_source": "llm_defender",
+  "decision_trace": {
+    "active_attacker_ids": [],
+    "active_defender_ids": [
+      "D0_observe",
+      "D1_quarantine_sen4",
+      "D2_rate_limit_sen4"
+    ],
+    "average_utility": {
+      "attacker": 0.0,
+      "defender": 0.0
+    },
+    "baseline_game_prior": {
+      "attacker": {},
+      "defender": {
+        "action": "rate_limit",
+        "action_payload": {
+          "action": "rate_limit",
+          "kbps": 128,
+          "target": "sen4"
+        },
+        "canonical_baseline_top": {
+          "base_cost": 0.2,
+          "population_share": 0.39987404248573216,
+          "strategy_id": "D1_quarantine_sen4",
+          "tiebreak_reason": "utility_tie_highest_population_share",
+          "utility": 0.0
+        },
+        "current_utility": 0.0,
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "throttled_traffic",
+          "lower_gateway_queue"
+        ],
+        "id": "D2_rate_limit_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Rate-limit sen4",
+        "path": null,
+        "population_after": 0.30427684839280117,
+        "population_after_rank": 2,
+        "population_before": 0.30427684839280117,
+        "population_before_rank": 2,
+        "population_delta": 0.0,
+        "population_share": 0.30427684839280117,
+        "probability": 0.30427684839280117,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selected_by": "",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "sen4",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "baseline_top_defender_population_share": 0.39987404248573216,
+    "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+    "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+    "baseline_top_defender_utility": 0.0,
+    "decision_source": "llm_defender",
+    "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+    "executed_via_fallback": false,
+    "execution": {
+      "attacker": {
+        "abilities_ran": 0,
+        "ability_link_count": 0,
+        "adversary_id": "",
+        "adversary_name": "",
+        "adversary_verified": null,
+        "attempted_path": [],
+        "chain_summary": {},
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "execution_valid": null,
+        "expected_effects": [],
+        "links_collected": 0,
+        "live_attack_type": "",
+        "operation_id": "",
+        "operation_status": "",
+        "status": "no_active_attacker_strategy",
+        "strategy_id": "",
+        "strategy_name": "",
+        "successful_link_count": 0,
+        "used_ad_hoc": false,
+        "warnings": []
+      },
+      "defender": {
+        "action": "rate_limit",
+        "cloud_policy": {
+          "accepted_keys": [],
+          "context_http_status": 0,
+          "context_ok": false,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "rate_limit",
+              "decision_source": "llm_defender",
+              "kbps": 128,
+              "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+              "source": "llm_defender",
+              "source_strategy_id": "D2_rate_limit_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "rate_limit"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {
+            "active_policy_actions": 1,
+            "controller_action_duration_ms": 18.267092003952712,
+            "counters_stopped": false,
+            "drop_rules_active": false,
+            "flow_rules_installed": 5,
+            "meters_added": 5,
+            "rate_limit_active": true,
+            "target_ips_count": 1
+          },
+          "status": "post_failed",
+          "url": "http://127.0.0.1:8000/attack/event"
+        },
+        "ryu_response": {
+          "action": "rate_limit",
+          "active_policy_actions": 1,
+          "apply_duration_ms": 18.267092003952712,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 5,
+          "http_status": 202,
+          "meters_added": 5,
+          "ok": true,
+          "rule": "meter ipv4 source traffic, then continue to default forwarding",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        },
+        "status": "executed",
+        "target": "sen4"
+      }
+    },
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": false,
+        "path_stage": 0,
+        "urgency_level": "low"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D2_rate_limit_sen4",
+      "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4"
+    },
+    "filtered_out_reasons": {
+      "attackers": {
+        "A1_sensor_probe_sen4": "mulval_disallowed",
+        "A2_sensor_http_abuse_sen4": "mulval_disallowed",
+        "A3_dual_homed_http_abuse_sen6": "scenario_mismatch",
+        "A4_edge2_gateway_cloud_probe": "scenario_mismatch",
+        "A5_edge2_gateway_service_abuse": "scenario_mismatch",
+        "A6_sen4_edge_to_cloud_probe": "activation_constraints",
+        "A7_edge3_path_pressure_sen6": "scenario_mismatch",
+        "A8_sen6_alternate_edge2_probe": "scenario_mismatch",
+        "A9_edge2_worker_request_pressure": "scenario_mismatch"
+      },
+      "defenders": {
+        "D3_isolate_edge2_gw_for_sen4": "activation_constraints",
+        "D4_isolate_edge2_vm_s4": "activation_constraints",
+        "D5_quarantine_sen6": "scenario_mismatch",
+        "D6_reroute_sen6_to_edge2": "scenario_mismatch",
+        "D7_rate_limit_sen6": "scenario_mismatch",
+        "D8_rate_limit_edge2_gw": "scenario_mismatch",
+        "D9_isolate_edge2_gw": "scenario_mismatch"
+      }
+    },
+    "final_baseline_alignment": "overrode",
+    "final_decision_alignment_vs_baseline": "overrode",
+    "final_defender_action": "rate_limit",
+    "final_defender_strategy_id": "D2_rate_limit_sen4",
+    "final_defender_target": "sen4",
+    "llm": {
+      "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+      "baseline_top_defender": {
+        "base_cost": 0.2,
+        "population_share": 0.39987404248573216,
+        "strategy_id": "D1_quarantine_sen4",
+        "tiebreak_reason": "utility_tie_highest_population_share",
+        "utility": 0.0
+      },
+      "baseline_top_defender_population_share": 0.39987404248573216,
+      "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+      "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+      "baseline_top_defender_utility": 0.0,
+      "confidence": 0.85,
+      "executed_decision_reason": "llm_selected_strategy",
+      "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+      "executed_decision_source": "llm_defender",
+      "executed_defender_strategy_id": "D2_rate_limit_sen4",
+      "executed_via_fallback": false,
+      "expected_controller_cost": 0.12,
+      "expected_qos_impact": 0.16,
+      "expected_security_gain": 0.58,
+      "fallback_constraint_name": "",
+      "fallback_reason": "",
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": false,
+          "path_stage": 0,
+          "urgency_level": "low"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D2_rate_limit_sen4",
+        "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4"
+      },
+      "fallback_used": false,
+      "final_baseline_alignment": "overrode",
+      "final_decision_alignment_vs_baseline": "overrode",
+      "final_defender_action": "rate_limit",
+      "final_defender_strategy_id": "D2_rate_limit_sen4",
+      "final_defender_target": "sen4",
+      "llm_baseline_alignment": "overrode",
+      "llm_decision_mode": "uncertainty_limited",
+      "llm_override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+      "llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D2_rate_limit_sen4"
+        },
+        {
+          "llm_rank": 2,
+          "strategy_id": "D0_observe"
+        },
+        {
+          "llm_rank": 3,
+          "strategy_id": "D1_quarantine_sen4"
+        }
+      ],
+      "llm_repeat_previous_action": false,
+      "llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+      "llm_stage_memory_used": true,
+      "llm_telemetry_confidence": "medium",
+      "llm_urgency_level": "low",
+      "llm_why_not_observe": "Observation (D0) is too passive when the path relevance and potential threat level are still high, even if not currently active. A minimal defensive action is warranted to maintain posture.",
+      "llm_why_not_quarantine": "Quarantining a sensor (D1) is highly disruptive (high QoS impact 0.32, cost 0.22). Since there is no confirmed active attack and the path stage is 'none', this level of disruption is excessive and disproportionate to the current evidence.",
+      "llm_why_not_rate_limit": "",
+      "model": "gemma4:e4b",
+      "parse_success": true,
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "overrode",
+      "raw_llm_baseline_alignment": "overrode",
+      "raw_llm_override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+      "raw_llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D2_rate_limit_sen4"
+        },
+        {
+          "llm_rank": 2,
+          "strategy_id": "D0_observe"
+        },
+        {
+          "llm_rank": 3,
+          "strategy_id": "D1_quarantine_sen4"
+        }
+      ],
+      "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+      "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+      "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true,
+      "stage_memory": {
+        "previous_attack_effect_success": true,
+        "previous_attack_progression_continued": true,
+        "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+        "previous_defender_execution_status": "executed",
+        "previous_defender_strategy_id": "D1_quarantine_sen4",
+        "previous_defender_strategy_id_note": "",
+        "previous_defense_confirmed": true,
+        "previous_defense_success": true,
+        "previous_stage_id": 21,
+        "previous_stage_success": true,
+        "recent_controller_deltas": {
+          "active_policy_actions_delta": 1.0,
+          "controller_apply_ms_delta": 1.197411,
+          "flow_delete_commands_delta": 0.0,
+          "flow_rules_installed_delta": 20.0,
+          "meters_added_delta": 0.0,
+          "total_cpu_seconds_delta": 11.995089,
+          "total_memory_kb_delta": 0.0
+        },
+        "recent_qos_deltas": {
+          "edge_to_cloud_latency_ms": 0.153,
+          "sensor_to_edge_latency_ms": -1.289,
+          "throughput_bytes_per_second": -14.11
+        }
+      }
+    },
+    "llm_baseline_alignment": "overrode",
+    "llm_decision_mode": "uncertainty_limited",
+    "llm_expected_controller_cost": 0.12,
+    "llm_expected_qos_impact": 0.16,
+    "llm_expected_security_gain": 0.58,
+    "llm_override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D2_rate_limit_sen4"
+      },
+      {
+        "llm_rank": 2,
+        "strategy_id": "D0_observe"
+      },
+      {
+        "llm_rank": 3,
+        "strategy_id": "D1_quarantine_sen4"
+      }
+    ],
+    "llm_repeat_previous_action": false,
+    "llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "low",
+    "llm_why_not_observe": "Observation (D0) is too passive when the path relevance and potential threat level are still high, even if not currently active. A minimal defensive action is warranted to maintain posture.",
+    "llm_why_not_quarantine": "Quarantining a sensor (D1) is highly disruptive (high QoS impact 0.32, cost 0.22). Since there is no confirmed active attack and the path stage is 'none', this level of disruption is excessive and disproportionate to the current evidence.",
+    "llm_why_not_rate_limit": "",
+    "pre_stage_reset": {
+      "known_host_diagnostics": {
+        "expected_host_count": 30,
+        "known_host_source": "merged",
+        "merged_known_host_count": 30,
+        "missing_dynamic_host_ips": [],
+        "missing_dynamic_host_nodes": [],
+        "observed_dynamic_host_count": 30
+      },
+      "post_result": {
+        "body": "{\"action\": \"clear_all_policies\", \"flow_delete_commands\": 0, \"flow_rules_installed\": 0, \"meters_added\": 0, \"meters_deleted\": 0, \"removed_actions\": [], \"status\": \"cleared\"}",
+        "error": "",
+        "json": {
+          "action": "clear_all_policies",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "meters_added": 0,
+          "meters_deleted": 0,
+          "removed_actions": [],
+          "status": "cleared"
+        },
+        "ok": true,
+        "status": 202,
+        "url": "http://127.0.0.1:8080/mtd/actions"
+      },
+      "post_teardown_verified": true,
+      "pre_stage_active_policy_count_after": 0,
+      "pre_stage_active_policy_count_before": 0,
+      "pre_stage_reset_attempted": true,
+      "pre_stage_reset_success": true,
+      "reset_mode": "clear_all_policies"
+    },
+    "raw_llm_alignment_vs_baseline": "overrode",
+    "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+    "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+    "recorded_at": "2026-06-30T01:57:56.839840+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "schema_version": "llm-mtd-decision-trace-v1",
+    "selection": {
+      "attacker": {},
+      "defender": {
+        "action": "rate_limit",
+        "action_payload": {
+          "action": "rate_limit",
+          "kbps": 128,
+          "target": "sen4"
+        },
+        "current_utility": 0.0,
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "throttled_traffic",
+          "lower_gateway_queue"
+        ],
+        "id": "D2_rate_limit_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Rate-limit sen4",
+        "path": null,
+        "population_after": 0.30427684839280117,
+        "population_after_rank": 2,
+        "population_before": 0.30427684839280117,
+        "population_before_rank": 2,
+        "population_delta": 0.0,
+        "population_share": 0.30427684839280117,
+        "probability": 0.30427684839280117,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selected_by": "",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "sen4",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 22,
+    "stage_summary": {
+      "attacker_strategy_id": "",
+      "controller_delta": {
+        "active_policy_actions_delta": 1.0,
+        "controller_apply_ms_delta": 16.63492,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 5.0,
+        "meters_added_delta": 5.0,
+        "total_cpu_seconds_delta": 11.626151,
+        "total_memory_kb_delta": 0.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D2_rate_limit_sen4",
+      "execution": {
+        "attacker_status": "no_active_attacker_strategy",
+        "defender_action": "rate_limit",
+        "defender_status": "executed",
+        "defender_target": "sen4",
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": true,
+        "defense_effects_confirmed": false,
+        "defense_executed": true,
+        "defense_selected": true,
+        "executed_via_fallback": false,
+        "operationally_executed_debug_stage": true,
+        "stage_kind": "warmup",
+        "stage_success": true,
+        "stage_valid": false
+      },
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": false,
+          "path_stage": 0,
+          "urgency_level": "low"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D2_rate_limit_sen4",
+        "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4"
+      },
+      "llm": {
+        "baseline_alignment": "overrode",
+        "baseline_top_defender_population_share": 0.39987404248573216,
+        "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+        "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+        "baseline_top_defender_utility": 0.0,
+        "decision_mode": "uncertainty_limited",
+        "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+        "executed_via_fallback": false,
+        "fallback_reason": "",
+        "fallback_used": false,
+        "final_decision_alignment_vs_baseline": "overrode",
+        "final_defender_strategy_id": "D2_rate_limit_sen4",
+        "model": "gemma4:e4b",
+        "override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+        "provider": "ollama",
+        "raw_llm_alignment_vs_baseline": "overrode",
+        "raw_llm_baseline_alignment": "overrode",
+        "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+        "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+        "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+        "repeat_previous_action": false,
+        "telemetry_confidence": "medium",
+        "urgency_level": "low",
+        "why_not_observe": "Observation (D0) is too passive when the path relevance and potential threat level are still high, even if not currently active. A minimal defensive action is warranted to maintain posture.",
+        "why_not_quarantine": "Quarantining a sensor (D1) is highly disruptive (high QoS impact 0.32, cost 0.22). Since there is no confirmed active attack and the path stage is 'none', this level of disruption is excessive and disproportionate to the current evidence.",
+        "why_not_rate_limit": ""
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms": 0.1,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 0.321,
+        "throughput_bytes_per_second": -147.22
+      },
+      "recorded_at": "2026-06-30T01:59:52.406971+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_deactivated": false,
+        "attack_effect_success": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": true,
+        "defense_effects_confirmed": false,
+        "defense_executed": true,
+        "defense_selected": true,
+        "defense_success": true,
+        "path_regressed": false,
+        "raw_state_defense_success": false,
+        "security_progression_reduced": false
+      },
+      "stage_id": 22,
+      "stage_validation": {
+        "attack_deactivated": false,
+        "attribution_source": "live_execution",
+        "comparable_stage": false,
+        "defender_execution_status": "executed",
+        "defense_applied": true,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": true,
+        "defense_effect_mismatch": true,
+        "defense_effect_observed": false,
+        "defense_effects_confirmed": false,
+        "defense_executed": true,
+        "defense_selected": true,
+        "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+        "effect_source_conflict": false,
+        "effect_source_details": {
+          "counters_stopped": {
+            "defense_event": false,
+            "ryu_response": false,
+            "state": false
+          },
+          "drop_rules_active": {
+            "defense_event": false,
+            "ryu_response": false,
+            "state": false
+          },
+          "rate_limit_active": {
+            "defense_event": true,
+            "ryu_response": true,
+            "state": true
+          }
+        },
+        "execution_stage_success": true,
+        "expected_defense_effects": [
+          "throttled_traffic",
+          "lower_gateway_queue"
+        ],
+        "invalidity_reasons": [
+          "not_comparable"
+        ],
+        "learning_valid_stage": false,
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_success": true,
+        "llm_stage_valid": false,
+        "missing_defense_effects": [
+          "lower_gateway_queue"
+        ],
+        "normalized_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": false,
+          "rate_limit_active": true
+        },
+        "observed_defense_effects": [
+          "throttled_traffic"
+        ],
+        "operationally_executed_debug_stage": true,
+        "paper_valid_stage": false,
+        "path_regressed": false,
+        "path_stage_after": 0,
+        "path_stage_before": 0,
+        "raw_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": false,
+          "rate_limit_active": true
+        },
+        "security_progression_reduced": false,
+        "security_stage_success": true,
+        "semantic_containment": false,
+        "semantic_effect_mapping_details": {
+          "lower_gateway_queue": {
+            "action": "rate_limit",
+            "active_action_for_target": true,
+            "flow_rules_installed": 45,
+            "installed_status": true,
+            "meters_added": 5,
+            "observed": false,
+            "path_stage_after": 0,
+            "path_stage_before": 0,
+            "target": "sen4",
+            "target_is_gateway": false,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": false
+          },
+          "throttled_traffic": {
+            "action": "rate_limit",
+            "active_action_for_target": true,
+            "flow_rules_installed": 45,
+            "installed_status": true,
+            "meters_added": 5,
+            "observed": true,
+            "path_stage_after": 0,
+            "path_stage_before": 0,
+            "target": "sen4",
+            "target_is_gateway": false,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": false
+          }
+        },
+        "semantic_missing_defense_effects": [
+          "lower_gateway_queue"
+        ],
+        "semantic_observed_defense_effects": [
+          "throttled_traffic"
+        ],
+        "stage_kind": "warmup",
+        "stage_success": true,
+        "state_effect_sources": {
+          "counters_stopped": "",
+          "drop_rules_active": "",
+          "rate_limit_active": "defense_event+ryu+raw_state"
+        }
+      },
+      "summary_text": "Stage 22 for sen4_edge2_clouddb: attacker  met defender D2_rate_limit_sen4. Action rate_limit targeting sen4 ended with status executed; defense_confirmed=True; defense_effects_confirmed=False; defense_success=True. Path stage=0. Outcome: security progression was reduced. Rationale: The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance."
+    },
+    "stage_validation": {
+      "attack_deactivated": false,
+      "attribution_source": "live_execution",
+      "comparable_stage": false,
+      "defender_execution_status": "executed",
+      "defense_applied": true,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": true,
+      "defense_effect_mismatch": true,
+      "defense_effect_observed": false,
+      "defense_effects_confirmed": false,
+      "defense_executed": true,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": false,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": false,
+          "ryu_response": false,
+          "state": false
+        },
+        "drop_rules_active": {
+          "defense_event": false,
+          "ryu_response": false,
+          "state": false
+        },
+        "rate_limit_active": {
+          "defense_event": true,
+          "ryu_response": true,
+          "state": true
+        }
+      },
+      "execution_stage_success": true,
+      "expected_defense_effects": [
+        "throttled_traffic",
+        "lower_gateway_queue"
+      ],
+      "invalidity_reasons": [
+        "not_comparable"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [
+        "lower_gateway_queue"
+      ],
+      "normalized_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": true
+      },
+      "observed_defense_effects": [
+        "throttled_traffic"
+      ],
+      "operationally_executed_debug_stage": true,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 0,
+      "path_stage_before": 0,
+      "raw_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": true
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": true,
+      "semantic_containment": false,
+      "semantic_effect_mapping_details": {
+        "lower_gateway_queue": {
+          "action": "rate_limit",
+          "active_action_for_target": true,
+          "flow_rules_installed": 45,
+          "installed_status": true,
+          "meters_added": 5,
+          "observed": false,
+          "path_stage_after": 0,
+          "path_stage_before": 0,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        },
+        "throttled_traffic": {
+          "action": "rate_limit",
+          "active_action_for_target": true,
+          "flow_rules_installed": 45,
+          "installed_status": true,
+          "meters_added": 5,
+          "observed": true,
+          "path_stage_after": 0,
+          "path_stage_before": 0,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        }
+      },
+      "semantic_missing_defense_effects": [
+        "lower_gateway_queue"
+      ],
+      "semantic_observed_defense_effects": [
+        "throttled_traffic"
+      ],
+      "stage_kind": "warmup",
+      "stage_success": true,
+      "state_effect_sources": {
+        "counters_stopped": "",
+        "drop_rules_active": "",
+        "rate_limit_active": "defense_event+ryu+raw_state"
+      }
+    },
+    "state_summary": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "attack_success": false,
+      "cloud_seen": false,
+      "cloud_seen_confidence": 0.1,
+      "cloud_seen_reason": "no_caldera_abilities_ran",
+      "controller_active_actions": 1,
+      "counters_stopped": false,
+      "defense_active": true,
+      "defense_success": true,
+      "drop_rules_active": false,
+      "effective_path_stage": 0,
+      "eval_action_applied": true,
+      "eval_action_effect_observed": false,
+      "flow_rules_installed": 45,
+      "gateway_seen": false,
+      "live_environment_has_active_defenses": true,
+      "meters_added": 5,
+      "normalized_counters_stopped": false,
+      "normalized_drop_rules_active": false,
+      "normalized_rate_limit_active": true,
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "rate_limit_active": true,
+      "raw_counters_stopped": false,
+      "raw_drop_rules_active": false,
+      "raw_path_stage": 0,
+      "raw_rate_limit_active": true,
+      "raw_state_defense_success": false,
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": false
+    },
+    "strategy_mismatch": false,
+    "strategy_space_checksum": "e9723a9e27dfefec",
+    "transition_id": "c810bd328bc5454795b84f1d8a9d9883"
+  },
+  "execution": {
+    "attacker": {
+      "status": "no_active_attacker_strategy"
+    },
+    "defender": {
+      "cloud_policy_context": {
+        "body": "{\"cloud_policy_observe_only_normalized\": false, \"cloud_policy_observe_only_raw\": null, \"decision_source\": \"llm_defender\", \"observe_only\": false, \"policy_mode\": \"llm_direct_ryu\", \"selected_action\": {\"reason\": \"LLM-selected defender strategy was sent directly to Ryu.\", \"ryu_intent\": {\"action\": \"rate_limit\", \"decision_source\": \"llm_defender\", \"kbps\": 128, \"llm_reasoning_summary\": \"The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.\", \"source\": \"llm_defender\", \"source_strategy_id\": \"D2_rate_limit_sen4\", \"target\": \"sen4\"}, \"target\": \"sen4\", \"type\": \"rate_limit\"}}",
+        "docker_fallback": {
+          "body": "",
+          "container": "mn.cloud_policy",
+          "error": "Docker socket is not readable/writable by this user: /var/run/docker.sock. Run `sudo usermod -aG docker $USER && newgrp docker`, or pass `--no-cloud-policy-docker-fallback` / `--no-core-docker-fallback`.",
+          "ok": false,
+          "status": 0,
+          "transport": "docker_exec",
+          "url": "http://127.0.0.1:8000/context"
+        },
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "json": {
+          "cloud_policy_observe_only_normalized": false,
+          "cloud_policy_observe_only_raw": null,
+          "decision_source": "llm_defender",
+          "observe_only": false,
+          "policy_mode": "llm_direct_ryu",
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "rate_limit",
+              "decision_source": "llm_defender",
+              "kbps": 128,
+              "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+              "source": "llm_defender",
+              "source_strategy_id": "D2_rate_limit_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "rate_limit"
+          }
+        },
+        "ok": false,
+        "raw_body": "",
+        "status": 0,
+        "url": "http://127.0.0.1:8000/context"
+      },
+      "cloud_policy_context_payload": {
+        "llm_defender_selection": {
+          "attack_dispatch_status": "no_active_attacker_strategy",
+          "caldera_success": false,
+          "decision_source": "llm_defender",
+          "final_defender_strategy_id": "D2_rate_limit_sen4",
+          "first_mulval_path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "llm_baseline_alignment": "followed",
+          "llm_fallback_constraint_name": "",
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_model": "gemma4:e4b",
+          "llm_override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+          "llm_provider": "ollama",
+          "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+          "llm_urgency_level": "low",
+          "mulval_path_count": 2,
+          "operation_id": "",
+          "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+          "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+          "selected_attacker_path": [],
+          "selected_defender_strategy_id": "D2_rate_limit_sen4"
+        },
+        "selected_attacker_strategy": null,
+        "selected_defender_strategy": {
+          "action": "rate_limit",
+          "action_payload": {
+            "action": "rate_limit",
+            "kbps": 128,
+            "target": "sen4"
+          },
+          "current_utility": 0.0,
+          "decision_source": "llm_defender",
+          "executor": {
+            "type": "ryu_rest"
+          },
+          "expected_effects": [
+            "throttled_traffic",
+            "lower_gateway_queue"
+          ],
+          "final_defender_strategy_id": "D2_rate_limit_sen4",
+          "id": "D2_rate_limit_sen4",
+          "live_attack_type": null,
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+          "mode": "llm_defender",
+          "name": "Rate-limit sen4",
+          "path": null,
+          "population_share": 0.30427684839280117,
+          "probability": 0.30427684839280117,
+          "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+          "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+          "scenario_id": "sen4_edge2_clouddb",
+          "selected_by": "",
+          "target": "sen4",
+          "utility": 0.0
+        },
+        "strategy_layer": {
+          "selection": {
+            "attacker": null,
+            "defender": {
+              "action": "rate_limit",
+              "action_payload": {
+                "action": "rate_limit",
+                "kbps": 128,
+                "target": "sen4"
+              },
+              "current_utility": 0.0,
+              "executor": {
+                "type": "ryu_rest"
+              },
+              "expected_effects": [
+                "throttled_traffic",
+                "lower_gateway_queue"
+              ],
+              "id": "D2_rate_limit_sen4",
+              "live_attack_type": null,
+              "mode": "llm_defender",
+              "name": "Rate-limit sen4",
+              "path": null,
+              "population_share": 0.30427684839280117,
+              "probability": 0.30427684839280117,
+              "scenario_id": "sen4_edge2_clouddb",
+              "selected_by": "",
+              "target": "sen4",
+              "utility": 0.0
+            }
+          },
+          "state": {
+            "attack_active": false,
+            "current_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "defense_active": false,
+            "mulval": {
+              "current_path_risk": 0.5,
+              "mulval_match_type": "missing_exact_path",
+              "mulval_path_mismatch": true,
+              "path_candidates": [
+                {
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "sen4_edge2_clouddb",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->cloud_db",
+                  "risk_score": 0.74,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "mulval_policy",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen6"
+                    },
+                    {
+                      "action": "reroute_traffic",
+                      "target": "sen6",
+                      "via": "s_edge2"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen6"
+                    }
+                  ],
+                  "entry_node": "sen6",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen6",
+                    "edge3_gw",
+                    "edge3_vm_s6",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen6_edge3_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "rate_limit",
+                      "kbps": 256,
+                      "target": "edge2_gw"
+                    },
+                    {
+                      "action": "isolate_sensor",
+                      "target": "edge2_gw"
+                    }
+                  ],
+                  "entry_node": "edge2_gw",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "edge2_gateway_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_candidates": [
+                {
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "sen4_edge2_clouddb",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->cloud_db",
+                  "risk_score": 0.74,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "mulval_policy",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_paths": [
+                [
+                  "sen4",
+                  "edge2_gw",
+                  "cloud_db"
+                ],
+                [
+                  "sen4",
+                  "edge2_gw",
+                  "edge2_vm_s4",
+                  "cloud_db"
+                ]
+              ],
+              "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+              "policy_scenario_id": "sen4_edge2_clouddb"
+            },
+            "path_stage": 0,
+            "scenario_id": "sen4_edge2_clouddb"
+          }
+        }
+      },
+      "cloud_policy_decision": {
+        "json": {
+          "cloud_policy_observe_only_normalized": false,
+          "decision_source": "llm_defender",
+          "observe_only": false,
+          "policy_mode": "llm_direct_ryu",
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "rate_limit",
+              "decision_source": "llm_defender",
+              "kbps": 128,
+              "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+              "source": "llm_defender",
+              "source_strategy_id": "D2_rate_limit_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "rate_limit"
+          }
+        },
+        "reason": "llm_selected_direct_ryu_intent",
+        "status": "skipped"
+      },
+      "defense_event": {
+        "payload": {
+          "defense_action": "rate_limit",
+          "defense_success": true,
+          "event_type": "defense_result",
+          "operation_id": "strategy-sen4_edge2_clouddb",
+          "scenario_id": "sen4_edge2_clouddb",
+          "signals": {
+            "active_policy_actions": 1,
+            "controller_action_duration_ms": 18.267092003952712,
+            "counters_stopped": false,
+            "drop_rules_active": false,
+            "flow_rules_installed": 5,
+            "meters_added": 5,
+            "rate_limit_active": true,
+            "target_ips_count": 1
+          },
+          "source_strategy_id": "D2_rate_limit_sen4",
+          "success": true,
+          "target": "sen4",
+          "timestamp": "2026-06-30T01:57:56.829073+00:00",
+          "tool": "ryu_mtd"
+        },
+        "post_result": {
+          "body": "",
+          "error": "<urlopen error [Errno 111] Connection refused>",
+          "ok": false,
+          "status": 0,
+          "url": "http://127.0.0.1:8000/attack/event"
+        },
+        "status": "post_failed"
+      },
+      "payload": {
+        "action": "rate_limit",
+        "decision_source": "llm_defender",
+        "kbps": 128,
+        "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+        "source": "llm_defender",
+        "source_strategy_id": "D2_rate_limit_sen4",
+        "target": "sen4"
+      },
+      "post_result": {
+        "body": "{\"action\": \"rate_limit\", \"active_policy_actions\": 1, \"burst_size\": 128, \"cookie\": \"0xa11cf83a3057eee7\", \"flow_delete_commands\": 0, \"flow_rules_installed\": 5, \"kbps\": 128, \"meter_id\": 57780, \"meters_added\": 5, \"rule\": \"meter ipv4 source traffic, then continue to default forwarding\", \"ryu_apply_duration_ms\": 18.267092003952712, \"ryu_flow_mods_enqueued_at\": \"2026-06-30T01:57:56.757295+00:00\", \"ryu_request_received_at\": \"2026-06-30T01:57:56.737691+00:00\", \"status\": \"installed\", \"target\": \"sen4\", \"target_ips\": [\"10.0.2.14\"]}",
+        "error": "",
+        "ok": true,
+        "status": 202,
+        "url": "http://127.0.0.1:8080/mtd/action"
+      },
+      "status": "executed"
+    }
+  },
+  "fallback_resolution": {
+    "constraint_name": "",
+    "constraint_trigger": {
+      "attack_active": false,
+      "path_stage": 0,
+      "urgency_level": "low"
+    },
+    "fallback_explanation": "",
+    "fallback_reason": "",
+    "fallback_selection_policy": "",
+    "fallback_used": false,
+    "final_defender_strategy_id": "D2_rate_limit_sen4",
+    "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4"
+  },
+  "game": {
+    "attacker_average_utility": 0.0,
+    "attacker_payoffs": {},
+    "attacker_population": {},
+    "attacker_population_before": {},
+    "attacker_utilities": {},
+    "defender_average_utility": 0.0,
+    "defender_payoffs": {},
+    "defender_population": {
+      "D0_observe": 0.2958491091214667,
+      "D1_quarantine_sen4": 0.39987404248573216,
+      "D2_rate_limit_sen4": 0.30427684839280117
+    },
+    "defender_population_before": {
+      "D0_observe": 0.2958491091214667,
+      "D1_quarantine_sen4": 0.39987404248573216,
+      "D2_rate_limit_sen4": 0.30427684839280117
+    },
+    "defender_utilities": {
+      "D0_observe": 0,
+      "D1_quarantine_sen4": 0,
+      "D2_rate_limit_sen4": 0
+    },
+    "parameters": {
+      "eta_attacker": 0.18,
+      "eta_defender": 0.22,
+      "omega_ac": 0.65,
+      "omega_dc": 0.4,
+      "omega_gp": 0.25,
+      "omega_r": 0.25,
+      "regulatory_beta": 0.18
+    }
+  },
+  "llm": {
+    "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+    "baseline_top_defender": {
+      "base_cost": 0.2,
+      "population_share": 0.39987404248573216,
+      "strategy_id": "D1_quarantine_sen4",
+      "tiebreak_reason": "utility_tie_highest_population_share",
+      "utility": 0.0
+    },
+    "baseline_top_defender_population_share": 0.39987404248573216,
+    "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+    "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+    "baseline_top_defender_utility": 0.0,
+    "confidence": 0.85,
+    "executed_decision_reason": "llm_selected_strategy",
+    "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+    "executed_decision_source": "llm_defender",
+    "executed_defender_strategy_id": "D2_rate_limit_sen4",
+    "executed_via_fallback": false,
+    "expected_controller_cost": 0.12,
+    "expected_qos_impact": 0.16,
+    "expected_security_gain": 0.58,
+    "fallback_constraint_name": "",
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": false,
+        "path_stage": 0,
+        "urgency_level": "low"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D2_rate_limit_sen4",
+      "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4"
+    },
+    "fallback_used": false,
+    "final_baseline_alignment": "overrode",
+    "final_decision_alignment_vs_baseline": "overrode",
+    "final_defender_action": "rate_limit",
+    "final_defender_strategy_id": "D2_rate_limit_sen4",
+    "final_defender_target": "sen4",
+    "latency_ms": 304328.20424996316,
+    "llm_baseline_alignment": "overrode",
+    "llm_decision_mode": "uncertainty_limited",
+    "llm_override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D2_rate_limit_sen4"
+      },
+      {
+        "llm_rank": 2,
+        "strategy_id": "D0_observe"
+      },
+      {
+        "llm_rank": 3,
+        "strategy_id": "D1_quarantine_sen4"
+      }
+    ],
+    "llm_repeat_previous_action": false,
+    "llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "low",
+    "llm_why_not_observe": "Observation (D0) is too passive when the path relevance and potential threat level are still high, even if not currently active. A minimal defensive action is warranted to maintain posture.",
+    "llm_why_not_quarantine": "Quarantining a sensor (D1) is highly disruptive (high QoS impact 0.32, cost 0.22). Since there is no confirmed active attack and the path stage is 'none', this level of disruption is excessive and disproportionate to the current evidence.",
+    "llm_why_not_rate_limit": "",
+    "model": "gemma4:e4b",
+    "parse_success": true,
+    "prompt_preview": "Prompt mode: full\n\n{\n  \"active_defender_candidates\": [\n    {\n      \"action\": \"observe\",\n      \"baseline_utility_prior\": 0.0,\n      \"defender_population_share\": 0.295849,\n      \"expected_controller_cost\": 0.0,\n      \"expected_qos_impact\": 0.",
+    "provider": "ollama",
+    "raw_llm_alignment_vs_baseline": "overrode",
+    "raw_llm_baseline_alignment": "overrode",
+    "raw_llm_override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+    "raw_llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D2_rate_limit_sen4"
+      },
+      {
+        "llm_rank": 2,
+        "strategy_id": "D0_observe"
+      },
+      {
+        "llm_rank": 3,
+        "strategy_id": "D1_quarantine_sen4"
+      }
+    ],
+    "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+    "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+    "raw_response": {
+      "baseline_alignment": "followed",
+      "confidence": 0.85,
+      "decision_mode": "uncertainty_limited",
+      "expected_controller_cost": 0.12,
+      "expected_qos_impact": 0.16,
+      "expected_security_gain": 0.58,
+      "override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+      "ranked_candidates": [
+        "D2_rate_limit_sen4",
+        "D0_observe",
+        "D1_quarantine_sen4"
+      ],
+      "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+      "repeat_previous_action": false,
+      "selected_defender_strategy_id": "D2_rate_limit_sen4",
+      "telemetry_confidence": "medium",
+      "urgency_level": "low",
+      "why_not_observe": "Observation (D0) is too passive when the path relevance and potential threat level are still high, even if not currently active. A minimal defensive action is warranted to maintain posture.",
+      "why_not_quarantine": "Quarantining a sensor (D1) is highly disruptive (high QoS impact 0.32, cost 0.22). Since there is no confirmed active attack and the path stage is 'none', this level of disruption is excessive and disproportionate to the current evidence.",
+      "why_not_rate_limit": ""
+    },
+    "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+    "recovery_used": false,
+    "request_error": "",
+    "request_success": true,
+    "retries_used": 2,
+    "stage_memory": {
+      "previous_attack_effect_success": true,
+      "previous_attack_progression_continued": true,
+      "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "previous_defender_execution_status": "executed",
+      "previous_defender_strategy_id": "D1_quarantine_sen4",
+      "previous_defender_strategy_id_note": "",
+      "previous_defense_confirmed": true,
+      "previous_defense_success": true,
+      "previous_stage_id": 21,
+      "previous_stage_success": true,
+      "recent_controller_deltas": {
+        "active_policy_actions_delta": 1.0,
+        "controller_apply_ms_delta": 1.197411,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 20.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 11.995089,
+        "total_memory_kb_delta": 0.0
+      },
+      "recent_qos_deltas": {
+        "edge_to_cloud_latency_ms": 0.153,
+        "sensor_to_edge_latency_ms": -1.289,
+        "throughput_bytes_per_second": -14.11
+      }
+    }
+  },
+  "next_state": {
+    "attack_active": false,
+    "attack_effect_success": false,
+    "attack_success": false,
+    "attacker_observation": {
+      "estimated_containment": 0.1,
+      "estimated_risk": 0.32,
+      "estimated_success_probability": 0.0,
+      "foothold": "sen4",
+      "observed_blocking": true,
+      "observed_path_stage": 0
+    },
+    "built_at": "2026-06-30T01:57:56.827501+00:00",
+    "controller": {
+      "active_actions": [
+        {
+          "action": "rate_limit",
+          "active_policy_actions": 1,
+          "burst_size": 128,
+          "cookie": "0xa11cf83a3057eee7",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 5,
+          "kbps": 128,
+          "meter_id": 57780,
+          "meters_added": 5,
+          "rule": "meter ipv4 source traffic, then continue to default forwarding",
+          "ryu_apply_duration_ms": 18.267092003952712,
+          "ryu_flow_mods_enqueued_at": "2026-06-30T01:57:56.757295+00:00",
+          "ryu_request_received_at": "2026-06-30T01:57:56.737691+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        }
+      ]
+    },
+    "controller_reachable": true,
+    "counters_stopped": false,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {},
+      "cloud_seen": false,
+      "cloud_seen_confidence": 0.1,
+      "cloud_seen_reason": "no_caldera_abilities_ran",
+      "defense_metrics": {},
+      "gateway_seen": false,
+      "topology": {
+        "active_action_count": 1,
+        "active_actions": [
+          {
+            "action": "rate_limit",
+            "active_policy_actions": 1,
+            "burst_size": 128,
+            "cookie": "0xa11cf83a3057eee7",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 5,
+            "kbps": 128,
+            "meter_id": 57780,
+            "meters_added": 5,
+            "rule": "meter ipv4 source traffic, then continue to default forwarding",
+            "ryu_apply_duration_ms": 18.267092003952712,
+            "ryu_flow_mods_enqueued_at": "2026-06-30T01:57:56.757295+00:00",
+            "ryu_request_received_at": "2026-06-30T01:57:56.737691+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          }
+        ],
+        "connected_switch_count": 5,
+        "known_host_count": 30,
+        "switch_count": 5
+      },
+      "worker_seen": false
+    },
+    "defense_active": true,
+    "defense_evidence": {
+      "active_policy_actions": [
+        "rate_limit:sen4"
+      ],
+      "counters_stopped": false,
+      "drop_rules_active": false,
+      "flow_rules_deleted": 0,
+      "flow_rules_installed": 45,
+      "meters_added": 5,
+      "rate_limit_active": true,
+      "ryu_counters_stopped": false,
+      "ryu_drop_rules_active": false,
+      "source": "ryu_status",
+      "stale_defense_metrics": false
+    },
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": false,
+    "effective_path_stage": 0,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.5,
+      "mulval_match_type": "missing_exact_path",
+      "mulval_path_mismatch": true,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "cloud_db"
+        ],
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "sen4_edge2_clouddb"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "attacker_execution": {
+        "status": "no_active_attacker_strategy"
+      },
+      "cloud_storage_baseline": 2870.0,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 1,
+      "controller_apply_ms": 18.267092003952712,
+      "flow_delete_commands": 0,
+      "flow_rules_installed": 45,
+      "meters_added": 5,
+      "total_cpu_seconds": 210.37354858999998,
+      "total_memory_kb": 419912.0
+    },
+    "path_evidence": {
+      "cloud_seen": false,
+      "cloud_seen_confidence": 0.1,
+      "cloud_seen_reason": "no_caldera_abilities_ran",
+      "effective_path_stage": 0,
+      "gateway_seen": false,
+      "path_regression_reason": "none",
+      "raw_path_stage": 0,
+      "worker_seen": false
+    },
+    "path_regression_reason": "none",
+    "path_stage": 0,
+    "path_stage_label": "none",
+    "qos": {
+      "edge_to_cloud_latency_ms": 0.829,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 1.149181818181818,
+      "throughput_bytes_per_second": 9497.870517962781
+    },
+    "rate_limit_active": true,
+    "raw_path_stage": 0,
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v2",
+    "source_errors": [],
+    "source_notes": [
+      "game seed path sen4->edge2_gw->edge2_vm_s4->cloud_db has no exact match in MulVAL path_risk_scores; using conservative default risk=0.50"
+    ],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_exfil_confirmations": 0,
+      "cloud_storage_baseline": 2870.0,
+      "cloud_storage_confirmations": 3209.0,
+      "cloud_storage_delta": 339.0,
+      "cloud_storage_delta_ratio": 0.11811846689895471,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 1444.0,
+      "gateway_received": 1445.0,
+      "generated_total": 1459.0,
+      "worker_requests": 1446.0
+    }
+  },
+  "persistence": {
+    "decision_trace_logged": true,
+    "learning_eligible": false,
+    "learning_skipped_reason": "not_comparable",
+    "paper_valid_stage": false,
+    "population_saved": false,
+    "reason": "",
+    "skipped": false,
+    "stage_logged": true,
+    "summary_logged": true,
+    "valid_stage_for_learning": false
+  },
+  "post_stage_reset": {
+    "known_host_diagnostics": {
+      "expected_host_count": 30,
+      "known_host_source": "merged",
+      "merged_known_host_count": 30,
+      "missing_dynamic_host_ips": [],
+      "missing_dynamic_host_nodes": [],
+      "observed_dynamic_host_count": 30
+    },
+    "post_result": {
+      "body": "{\"action\": \"clear_all_policies\", \"flow_delete_commands\": 5, \"flow_rules_installed\": 0, \"meters_added\": 0, \"meters_deleted\": 5, \"removed_actions\": [\"rate_limit:sen4:e382c9a56f87\"], \"status\": \"cleared\"}",
+      "error": "",
+      "json": {
+        "action": "clear_all_policies",
+        "flow_delete_commands": 5,
+        "flow_rules_installed": 0,
+        "meters_added": 0,
+        "meters_deleted": 5,
+        "removed_actions": [
+          "rate_limit:sen4:e382c9a56f87"
+        ],
+        "status": "cleared"
+      },
+      "ok": true,
+      "status": 202,
+      "url": "http://127.0.0.1:8080/mtd/actions"
+    },
+    "post_teardown_verified": true,
+    "pre_stage_active_policy_count_after": 0,
+    "pre_stage_active_policy_count_before": 1,
+    "pre_stage_reset_attempted": true,
+    "pre_stage_reset_success": true,
+    "reset_mode": "clear_all_policies"
+  },
+  "pre_stage_reset": {
+    "known_host_diagnostics": {
+      "expected_host_count": 30,
+      "known_host_source": "merged",
+      "merged_known_host_count": 30,
+      "missing_dynamic_host_ips": [],
+      "missing_dynamic_host_nodes": [],
+      "observed_dynamic_host_count": 30
+    },
+    "post_result": {
+      "body": "{\"action\": \"clear_all_policies\", \"flow_delete_commands\": 0, \"flow_rules_installed\": 0, \"meters_added\": 0, \"meters_deleted\": 0, \"removed_actions\": [], \"status\": \"cleared\"}",
+      "error": "",
+      "json": {
+        "action": "clear_all_policies",
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 0,
+        "meters_added": 0,
+        "meters_deleted": 0,
+        "removed_actions": [],
+        "status": "cleared"
+      },
+      "ok": true,
+      "status": 202,
+      "url": "http://127.0.0.1:8080/mtd/actions"
+    },
+    "post_teardown_verified": true,
+    "pre_stage_active_policy_count_after": 0,
+    "pre_stage_active_policy_count_before": 0,
+    "pre_stage_reset_attempted": true,
+    "pre_stage_reset_success": true,
+    "reset_mode": "clear_all_policies"
+  },
+  "recorded_at": "2026-06-30T01:59:52.450574+00:00",
+  "run_id": "stage_05f02d9eb024",
+  "runtime_reference_strategy_space_checksum": "e9723a9e27dfefec",
+  "schema_version": "llm-mtd-live-stage-result-v1",
+  "selection": {
+    "attacker": null,
+    "defender": {
+      "action": "rate_limit",
+      "action_payload": {
+        "action": "rate_limit",
+        "kbps": 128,
+        "target": "sen4"
+      },
+      "current_utility": 0.0,
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "expected_effects": [
+        "throttled_traffic",
+        "lower_gateway_queue"
+      ],
+      "id": "D2_rate_limit_sen4",
+      "live_attack_type": null,
+      "mode": "llm_defender",
+      "name": "Rate-limit sen4",
+      "path": null,
+      "population_share": 0.30427684839280117,
+      "probability": 0.30427684839280117,
+      "scenario_id": "sen4_edge2_clouddb",
+      "selected_by": "",
+      "target": "sen4",
+      "utility": 0.0
+    }
+  },
+  "stage_summary": {
+    "attacker_strategy_id": "",
+    "controller_delta": {
+      "active_policy_actions_delta": 1.0,
+      "controller_apply_ms_delta": 16.63492,
+      "flow_delete_commands_delta": 0.0,
+      "flow_rules_installed_delta": 5.0,
+      "meters_added_delta": 5.0,
+      "total_cpu_seconds_delta": 11.626151,
+      "total_memory_kb_delta": 0.0
+    },
+    "decision_source": "llm_defender",
+    "defender_strategy_id": "D2_rate_limit_sen4",
+    "execution": {
+      "attacker_status": "no_active_attacker_strategy",
+      "defender_action": "rate_limit",
+      "defender_status": "executed",
+      "defender_target": "sen4",
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": true,
+      "defense_effects_confirmed": false,
+      "defense_executed": true,
+      "defense_selected": true,
+      "executed_via_fallback": false,
+      "operationally_executed_debug_stage": true,
+      "stage_kind": "warmup",
+      "stage_success": true,
+      "stage_valid": false
+    },
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": false,
+        "path_stage": 0,
+        "urgency_level": "low"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D2_rate_limit_sen4",
+      "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4"
+    },
+    "llm": {
+      "baseline_alignment": "overrode",
+      "baseline_top_defender_population_share": 0.39987404248573216,
+      "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+      "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+      "baseline_top_defender_utility": 0.0,
+      "decision_mode": "uncertainty_limited",
+      "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+      "executed_via_fallback": false,
+      "fallback_reason": "",
+      "fallback_used": false,
+      "final_decision_alignment_vs_baseline": "overrode",
+      "final_defender_strategy_id": "D2_rate_limit_sen4",
+      "model": "gemma4:e4b",
+      "override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "overrode",
+      "raw_llm_baseline_alignment": "overrode",
+      "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+      "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+      "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+      "repeat_previous_action": false,
+      "telemetry_confidence": "medium",
+      "urgency_level": "low",
+      "why_not_observe": "Observation (D0) is too passive when the path relevance and potential threat level are still high, even if not currently active. A minimal defensive action is warranted to maintain posture.",
+      "why_not_quarantine": "Quarantining a sensor (D1) is highly disruptive (high QoS impact 0.32, cost 0.22). Since there is no confirmed active attack and the path stage is 'none', this level of disruption is excessive and disproportionate to the current evidence.",
+      "why_not_rate_limit": ""
+    },
+    "qos_delta": {
+      "edge_to_cloud_latency_ms": 0.1,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 0.321,
+      "throughput_bytes_per_second": -147.22
+    },
+    "recorded_at": "2026-06-30T01:59:52.406971+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "security_outcome": {
+      "attack_deactivated": false,
+      "attack_effect_success": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": true,
+      "defense_effects_confirmed": false,
+      "defense_executed": true,
+      "defense_selected": true,
+      "defense_success": true,
+      "path_regressed": false,
+      "raw_state_defense_success": false,
+      "security_progression_reduced": false
+    },
+    "stage_id": 22,
+    "stage_validation": {
+      "attack_deactivated": false,
+      "attribution_source": "live_execution",
+      "comparable_stage": false,
+      "defender_execution_status": "executed",
+      "defense_applied": true,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": true,
+      "defense_effect_mismatch": true,
+      "defense_effect_observed": false,
+      "defense_effects_confirmed": false,
+      "defense_executed": true,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": false,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": false,
+          "ryu_response": false,
+          "state": false
+        },
+        "drop_rules_active": {
+          "defense_event": false,
+          "ryu_response": false,
+          "state": false
+        },
+        "rate_limit_active": {
+          "defense_event": true,
+          "ryu_response": true,
+          "state": true
+        }
+      },
+      "execution_stage_success": true,
+      "expected_defense_effects": [
+        "throttled_traffic",
+        "lower_gateway_queue"
+      ],
+      "invalidity_reasons": [
+        "not_comparable"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [
+        "lower_gateway_queue"
+      ],
+      "normalized_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": true
+      },
+      "observed_defense_effects": [
+        "throttled_traffic"
+      ],
+      "operationally_executed_debug_stage": true,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 0,
+      "path_stage_before": 0,
+      "raw_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": true
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": true,
+      "semantic_containment": false,
+      "semantic_effect_mapping_details": {
+        "lower_gateway_queue": {
+          "action": "rate_limit",
+          "active_action_for_target": true,
+          "flow_rules_installed": 45,
+          "installed_status": true,
+          "meters_added": 5,
+          "observed": false,
+          "path_stage_after": 0,
+          "path_stage_before": 0,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        },
+        "throttled_traffic": {
+          "action": "rate_limit",
+          "active_action_for_target": true,
+          "flow_rules_installed": 45,
+          "installed_status": true,
+          "meters_added": 5,
+          "observed": true,
+          "path_stage_after": 0,
+          "path_stage_before": 0,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        }
+      },
+      "semantic_missing_defense_effects": [
+        "lower_gateway_queue"
+      ],
+      "semantic_observed_defense_effects": [
+        "throttled_traffic"
+      ],
+      "stage_kind": "warmup",
+      "stage_success": true,
+      "state_effect_sources": {
+        "counters_stopped": "",
+        "drop_rules_active": "",
+        "rate_limit_active": "defense_event+ryu+raw_state"
+      }
+    },
+    "summary_text": "Stage 22 for sen4_edge2_clouddb: attacker  met defender D2_rate_limit_sen4. Action rate_limit targeting sen4 ended with status executed; defense_confirmed=True; defense_effects_confirmed=False; defense_success=True. Path stage=0. Outcome: security progression was reduced. Rationale: The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance."
+  },
+  "stage_validation": {
+    "attack_deactivated": false,
+    "attribution_source": "live_execution",
+    "comparable_stage": false,
+    "defender_execution_status": "executed",
+    "defense_applied": true,
+    "defense_applied_but_not_effective": false,
+    "defense_confirmed": true,
+    "defense_effect_mismatch": true,
+    "defense_effect_observed": false,
+    "defense_effects_confirmed": false,
+    "defense_executed": true,
+    "defense_selected": true,
+    "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+    "effect_source_conflict": false,
+    "effect_source_details": {
+      "counters_stopped": {
+        "defense_event": false,
+        "ryu_response": false,
+        "state": false
+      },
+      "drop_rules_active": {
+        "defense_event": false,
+        "ryu_response": false,
+        "state": false
+      },
+      "rate_limit_active": {
+        "defense_event": true,
+        "ryu_response": true,
+        "state": true
+      }
+    },
+    "execution_stage_success": true,
+    "expected_defense_effects": [
+      "throttled_traffic",
+      "lower_gateway_queue"
+    ],
+    "invalidity_reasons": [
+      "not_comparable"
+    ],
+    "learning_valid_stage": false,
+    "llm_parse_success": true,
+    "llm_recovery_used": false,
+    "llm_request_error": "",
+    "llm_request_success": true,
+    "llm_stage_success": true,
+    "llm_stage_valid": false,
+    "missing_defense_effects": [
+      "lower_gateway_queue"
+    ],
+    "normalized_state_effects": {
+      "counters_stopped": false,
+      "drop_rules_active": false,
+      "rate_limit_active": true
+    },
+    "observed_defense_effects": [
+      "throttled_traffic"
+    ],
+    "operationally_executed_debug_stage": true,
+    "paper_valid_stage": false,
+    "path_regressed": false,
+    "path_stage_after": 0,
+    "path_stage_before": 0,
+    "raw_state_effects": {
+      "counters_stopped": false,
+      "drop_rules_active": false,
+      "rate_limit_active": true
+    },
+    "security_progression_reduced": false,
+    "security_stage_success": true,
+    "semantic_containment": false,
+    "semantic_effect_mapping_details": {
+      "lower_gateway_queue": {
+        "action": "rate_limit",
+        "active_action_for_target": true,
+        "flow_rules_installed": 45,
+        "installed_status": true,
+        "meters_added": 5,
+        "observed": false,
+        "path_stage_after": 0,
+        "path_stage_before": 0,
+        "target": "sen4",
+        "target_is_gateway": false,
+        "target_is_worker": false,
+        "target_on_path": true,
+        "traffic_blocking": false
+      },
+      "throttled_traffic": {
+        "action": "rate_limit",
+        "active_action_for_target": true,
+        "flow_rules_installed": 45,
+        "installed_status": true,
+        "meters_added": 5,
+        "observed": true,
+        "path_stage_after": 0,
+        "path_stage_before": 0,
+        "target": "sen4",
+        "target_is_gateway": false,
+        "target_is_worker": false,
+        "target_on_path": true,
+        "traffic_blocking": false
+      }
+    },
+    "semantic_missing_defense_effects": [
+      "lower_gateway_queue"
+    ],
+    "semantic_observed_defense_effects": [
+      "throttled_traffic"
+    ],
+    "stage_kind": "warmup",
+    "stage_success": true,
+    "state_effect_sources": {
+      "counters_stopped": "",
+      "drop_rules_active": "",
+      "rate_limit_active": "defense_event+ryu+raw_state"
+    }
+  },
+  "state": {
+    "attack_active": false,
+    "attack_effect_success": false,
+    "attack_success": false,
+    "attacker_observation": {
+      "estimated_containment": 0.0,
+      "estimated_risk": 0.12,
+      "estimated_success_probability": 0.1,
+      "foothold": "sen4",
+      "observed_blocking": false,
+      "observed_path_stage": 0
+    },
+    "built_at": "2026-06-30T01:52:52.206285+00:00",
+    "controller": {
+      "active_actions": []
+    },
+    "controller_reachable": true,
+    "counters_stopped": false,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {},
+      "cloud_seen": false,
+      "cloud_seen_confidence": 0.1,
+      "cloud_seen_reason": "missing_cloud_storage_baseline",
+      "defense_metrics": {},
+      "gateway_seen": false,
+      "topology": {
+        "active_action_count": 0,
+        "active_actions": [],
+        "connected_switch_count": 5,
+        "known_host_count": 30,
+        "switch_count": 5
+      },
+      "worker_seen": false
+    },
+    "defense_active": false,
+    "defense_evidence": {
+      "active_policy_actions": [],
+      "counters_stopped": false,
+      "drop_rules_active": false,
+      "flow_rules_deleted": 0,
+      "flow_rules_installed": 40,
+      "meters_added": 0,
+      "rate_limit_active": false,
+      "ryu_counters_stopped": false,
+      "ryu_drop_rules_active": false,
+      "source": "none",
+      "stale_defense_metrics": false
+    },
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": false,
+    "effective_path_stage": 0,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.5,
+      "mulval_match_type": "missing_exact_path",
+      "mulval_path_mismatch": true,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "cloud_db"
+        ],
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "sen4_edge2_clouddb"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 0,
+      "controller_apply_ms": 1.6321719740517437,
+      "flow_delete_commands": 0,
+      "flow_rules_installed": 40,
+      "meters_added": 0,
+      "total_cpu_seconds": 198.74739719,
+      "total_memory_kb": 419912.0
+    },
+    "path_evidence": {
+      "cloud_seen": false,
+      "cloud_seen_confidence": 0.1,
+      "cloud_seen_reason": "missing_cloud_storage_baseline",
+      "effective_path_stage": 0,
+      "gateway_seen": false,
+      "path_regression_reason": "none",
+      "raw_path_stage": 0,
+      "worker_seen": false
+    },
+    "path_regression_reason": "none",
+    "path_stage": 0,
+    "path_stage_label": "none",
+    "qos": {
+      "edge_to_cloud_latency_ms": 0.731,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 2.430181818181818,
+      "throughput_bytes_per_second": 9486.68977782343
+    },
+    "rate_limit_active": false,
+    "raw_path_stage": 0,
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v2",
+    "source_errors": [],
+    "source_notes": [
+      "game seed path sen4->edge2_gw->edge2_vm_s4->cloud_db has no exact match in MulVAL path_risk_scores; using conservative default risk=0.50"
+    ],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_exfil_confirmations": 0,
+      "cloud_storage_baseline": 0.0,
+      "cloud_storage_confirmations": 2870.0,
+      "cloud_storage_delta": 2870.0,
+      "cloud_storage_delta_ratio": 0.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 1291.0,
+      "gateway_received": 1292.0,
+      "generated_total": 1307.0,
+      "worker_requests": 1294.0
+    }
+  },
+  "strategy_mismatch": false,
+  "strategy_space_checksum": "e9723a9e27dfefec",
+  "transition": {
+    "active_attacker_ids": [],
+    "active_defender_ids": [
+      "D0_observe",
+      "D1_quarantine_sen4",
+      "D2_rate_limit_sen4"
+    ],
+    "average_utility": {
+      "attacker": 0.0,
+      "defender": 0.0
+    },
+    "baseline_game_prior": {
+      "attacker": {},
+      "defender": {
+        "action": "rate_limit",
+        "action_payload": {
+          "action": "rate_limit",
+          "kbps": 128,
+          "target": "sen4"
+        },
+        "canonical_baseline_top": {
+          "base_cost": 0.2,
+          "population_share": 0.39987404248573216,
+          "strategy_id": "D1_quarantine_sen4",
+          "tiebreak_reason": "utility_tie_highest_population_share",
+          "utility": 0.0
+        },
+        "current_utility": 0.0,
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "throttled_traffic",
+          "lower_gateway_queue"
+        ],
+        "id": "D2_rate_limit_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Rate-limit sen4",
+        "path": null,
+        "population_after": 0.30427684839280117,
+        "population_after_rank": 2,
+        "population_before": 0.30427684839280117,
+        "population_before_rank": 2,
+        "population_delta": 0.0,
+        "population_share": 0.30427684839280117,
+        "probability": 0.30427684839280117,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selected_by": "",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "sen4",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "baseline_top_defender_population_share": 0.39987404248573216,
+    "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+    "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+    "baseline_top_defender_utility": 0.0,
+    "decision_source": "llm_defender",
+    "evidence": {
+      "caldera_evidence": {
+        "abilities_ran": 0,
+        "adversary_verified": false,
+        "execution_valid": null,
+        "links_collected": 0,
+        "operation_id": "",
+        "used_ad_hoc": false,
+        "warnings": []
+      },
+      "defense_evidence": {
+        "active_policy_actions": [
+          "rate_limit:sen4"
+        ],
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "flow_rules_deleted": 0,
+        "flow_rules_installed": 45,
+        "meters_added": 5,
+        "rate_limit_active": true,
+        "ryu_counters_stopped": false,
+        "ryu_drop_rules_active": false,
+        "source": "ryu_status",
+        "stale_defense_metrics": false
+      },
+      "outcome": {
+        "attacker_progressed": false,
+        "classification": "experimental",
+        "defense_success": false,
+        "path_regressed": false
+      },
+      "path_evidence": {
+        "cloud_seen": false,
+        "cloud_seen_confidence": 0.1,
+        "cloud_seen_reason": "no_caldera_abilities_ran",
+        "effective_path_stage": 0,
+        "gateway_seen": false,
+        "path_regression_reason": "none",
+        "raw_path_stage": 0,
+        "worker_seen": false
+      }
+    },
+    "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+    "executed_via_fallback": false,
+    "execution": {
+      "attacker": {
+        "status": "no_active_attacker_strategy"
+      },
+      "defender": {
+        "cloud_policy_context": {
+          "body": "{\"cloud_policy_observe_only_normalized\": false, \"cloud_policy_observe_only_raw\": null, \"decision_source\": \"llm_defender\", \"observe_only\": false, \"policy_mode\": \"llm_direct_ryu\", \"selected_action\": {\"reason\": \"LLM-selected defender strategy was sent directly to Ryu.\", \"ryu_intent\": {\"action\": \"rate_limit\", \"decision_source\": \"llm_defender\", \"kbps\": 128, \"llm_reasoning_summary\": \"The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.\", \"source\": \"llm_defender\", \"source_strategy_id\": \"D2_rate_limit_sen4\", \"target\": \"sen4\"}, \"target\": \"sen4\", \"type\": \"rate_limit\"}}",
+          "docker_fallback": {
+            "body": "",
+            "container": "mn.cloud_policy",
+            "error": "Docker socket is not readable/writable by this user: /var/run/docker.sock. Run `sudo usermod -aG docker $USER && newgrp docker`, or pass `--no-cloud-policy-docker-fallback` / `--no-core-docker-fallback`.",
+            "ok": false,
+            "status": 0,
+            "transport": "docker_exec",
+            "url": "http://127.0.0.1:8000/context"
+          },
+          "error": "<urlopen error [Errno 111] Connection refused>",
+          "json": {
+            "cloud_policy_observe_only_normalized": false,
+            "cloud_policy_observe_only_raw": null,
+            "decision_source": "llm_defender",
+            "observe_only": false,
+            "policy_mode": "llm_direct_ryu",
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "rate_limit",
+                "decision_source": "llm_defender",
+                "kbps": 128,
+                "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+                "source": "llm_defender",
+                "source_strategy_id": "D2_rate_limit_sen4",
+                "target": "sen4"
+              },
+              "target": "sen4",
+              "type": "rate_limit"
+            }
+          },
+          "ok": false,
+          "raw_body": "",
+          "status": 0,
+          "url": "http://127.0.0.1:8000/context"
+        },
+        "cloud_policy_context_payload": {
+          "llm_defender_selection": {
+            "attack_dispatch_status": "no_active_attacker_strategy",
+            "caldera_success": false,
+            "decision_source": "llm_defender",
+            "final_defender_strategy_id": "D2_rate_limit_sen4",
+            "first_mulval_path": [
+              "sen4",
+              "edge2_gw",
+              "cloud_db"
+            ],
+            "llm_baseline_alignment": "followed",
+            "llm_fallback_constraint_name": "",
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_model": "gemma4:e4b",
+            "llm_override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+            "llm_provider": "ollama",
+            "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+            "llm_urgency_level": "low",
+            "mulval_path_count": 2,
+            "operation_id": "",
+            "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+            "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+            "selected_attacker_path": [],
+            "selected_defender_strategy_id": "D2_rate_limit_sen4"
+          },
+          "selected_attacker_strategy": null,
+          "selected_defender_strategy": {
+            "action": "rate_limit",
+            "action_payload": {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            },
+            "current_utility": 0.0,
+            "decision_source": "llm_defender",
+            "executor": {
+              "type": "ryu_rest"
+            },
+            "expected_effects": [
+              "throttled_traffic",
+              "lower_gateway_queue"
+            ],
+            "final_defender_strategy_id": "D2_rate_limit_sen4",
+            "id": "D2_rate_limit_sen4",
+            "live_attack_type": null,
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+            "mode": "llm_defender",
+            "name": "Rate-limit sen4",
+            "path": null,
+            "population_share": 0.30427684839280117,
+            "probability": 0.30427684839280117,
+            "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+            "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+            "scenario_id": "sen4_edge2_clouddb",
+            "selected_by": "",
+            "target": "sen4",
+            "utility": 0.0
+          },
+          "strategy_layer": {
+            "selection": {
+              "attacker": null,
+              "defender": {
+                "action": "rate_limit",
+                "action_payload": {
+                  "action": "rate_limit",
+                  "kbps": 128,
+                  "target": "sen4"
+                },
+                "current_utility": 0.0,
+                "executor": {
+                  "type": "ryu_rest"
+                },
+                "expected_effects": [
+                  "throttled_traffic",
+                  "lower_gateway_queue"
+                ],
+                "id": "D2_rate_limit_sen4",
+                "live_attack_type": null,
+                "mode": "llm_defender",
+                "name": "Rate-limit sen4",
+                "path": null,
+                "population_share": 0.30427684839280117,
+                "probability": 0.30427684839280117,
+                "scenario_id": "sen4_edge2_clouddb",
+                "selected_by": "",
+                "target": "sen4",
+                "utility": 0.0
+              }
+            },
+            "state": {
+              "attack_active": false,
+              "current_path": [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ],
+              "defense_active": false,
+              "mulval": {
+                "current_path_risk": 0.5,
+                "mulval_match_type": "missing_exact_path",
+                "mulval_path_mismatch": true,
+                "path_candidates": [
+                  {
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "sen4_edge2_clouddb",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->cloud_db",
+                    "risk_score": 0.74,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "mulval_policy",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen6"
+                      },
+                      {
+                        "action": "reroute_traffic",
+                        "target": "sen6",
+                        "via": "s_edge2"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen6"
+                      }
+                    ],
+                    "entry_node": "sen6",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen6",
+                      "edge3_gw",
+                      "edge3_vm_s6",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen6_edge3_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "rate_limit",
+                        "kbps": 256,
+                        "target": "edge2_gw"
+                      },
+                      {
+                        "action": "isolate_sensor",
+                        "target": "edge2_gw"
+                      }
+                    ],
+                    "entry_node": "edge2_gw",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "edge2_gateway_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_candidates": [
+                  {
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "sen4_edge2_clouddb",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->cloud_db",
+                    "risk_score": 0.74,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "mulval_policy",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_paths": [
+                  [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ]
+                ],
+                "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+                "policy_scenario_id": "sen4_edge2_clouddb"
+              },
+              "path_stage": 0,
+              "scenario_id": "sen4_edge2_clouddb"
+            }
+          }
+        },
+        "cloud_policy_decision": {
+          "json": {
+            "cloud_policy_observe_only_normalized": false,
+            "decision_source": "llm_defender",
+            "observe_only": false,
+            "policy_mode": "llm_direct_ryu",
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "rate_limit",
+                "decision_source": "llm_defender",
+                "kbps": 128,
+                "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+                "source": "llm_defender",
+                "source_strategy_id": "D2_rate_limit_sen4",
+                "target": "sen4"
+              },
+              "target": "sen4",
+              "type": "rate_limit"
+            }
+          },
+          "reason": "llm_selected_direct_ryu_intent",
+          "status": "skipped"
+        },
+        "defense_event": {
+          "payload": {
+            "defense_action": "rate_limit",
+            "defense_success": true,
+            "event_type": "defense_result",
+            "operation_id": "strategy-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb",
+            "signals": {
+              "active_policy_actions": 1,
+              "controller_action_duration_ms": 18.267092003952712,
+              "counters_stopped": false,
+              "drop_rules_active": false,
+              "flow_rules_installed": 5,
+              "meters_added": 5,
+              "rate_limit_active": true,
+              "target_ips_count": 1
+            },
+            "source_strategy_id": "D2_rate_limit_sen4",
+            "success": true,
+            "target": "sen4",
+            "timestamp": "2026-06-30T01:57:56.829073+00:00",
+            "tool": "ryu_mtd"
+          },
+          "post_result": {
+            "body": "",
+            "error": "<urlopen error [Errno 111] Connection refused>",
+            "ok": false,
+            "status": 0,
+            "url": "http://127.0.0.1:8000/attack/event"
+          },
+          "status": "post_failed"
+        },
+        "payload": {
+          "action": "rate_limit",
+          "decision_source": "llm_defender",
+          "kbps": 128,
+          "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+          "source": "llm_defender",
+          "source_strategy_id": "D2_rate_limit_sen4",
+          "target": "sen4"
+        },
+        "post_result": {
+          "error": "",
+          "ok": true,
+          "status": 202,
+          "url": "http://127.0.0.1:8080/mtd/action"
+        },
+        "status": "executed"
+      }
+    },
+    "execution_summary": {
+      "attacker": {
+        "abilities_ran": 0,
+        "ability_link_count": 0,
+        "adversary_id": "",
+        "adversary_name": "",
+        "adversary_verified": null,
+        "attempted_path": [],
+        "chain_summary": {},
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "execution_valid": null,
+        "expected_effects": [],
+        "links_collected": 0,
+        "live_attack_type": "",
+        "operation_id": "",
+        "operation_status": "",
+        "status": "no_active_attacker_strategy",
+        "strategy_id": "",
+        "strategy_name": "",
+        "successful_link_count": 0,
+        "used_ad_hoc": false,
+        "warnings": []
+      },
+      "defender": {
+        "action": "rate_limit",
+        "cloud_policy": {
+          "accepted_keys": [],
+          "context_http_status": 0,
+          "context_ok": false,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "rate_limit",
+              "decision_source": "llm_defender",
+              "kbps": 128,
+              "llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+              "source": "llm_defender",
+              "source_strategy_id": "D2_rate_limit_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "rate_limit"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {
+            "active_policy_actions": 1,
+            "controller_action_duration_ms": 18.267092003952712,
+            "counters_stopped": false,
+            "drop_rules_active": false,
+            "flow_rules_installed": 5,
+            "meters_added": 5,
+            "rate_limit_active": true,
+            "target_ips_count": 1
+          },
+          "status": "post_failed",
+          "url": "http://127.0.0.1:8000/attack/event"
+        },
+        "ryu_response": {
+          "action": "rate_limit",
+          "active_policy_actions": 1,
+          "apply_duration_ms": 18.267092003952712,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 5,
+          "http_status": 202,
+          "meters_added": 5,
+          "ok": true,
+          "rule": "meter ipv4 source traffic, then continue to default forwarding",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        },
+        "status": "executed",
+        "target": "sen4"
+      }
+    },
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": false,
+        "path_stage": 0,
+        "urgency_level": "low"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D2_rate_limit_sen4",
+      "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4"
+    },
+    "filtered_out_reasons": {
+      "attackers": {
+        "A1_sensor_probe_sen4": "mulval_disallowed",
+        "A2_sensor_http_abuse_sen4": "mulval_disallowed",
+        "A3_dual_homed_http_abuse_sen6": "scenario_mismatch",
+        "A4_edge2_gateway_cloud_probe": "scenario_mismatch",
+        "A5_edge2_gateway_service_abuse": "scenario_mismatch",
+        "A6_sen4_edge_to_cloud_probe": "activation_constraints",
+        "A7_edge3_path_pressure_sen6": "scenario_mismatch",
+        "A8_sen6_alternate_edge2_probe": "scenario_mismatch",
+        "A9_edge2_worker_request_pressure": "scenario_mismatch"
+      },
+      "defenders": {
+        "D3_isolate_edge2_gw_for_sen4": "activation_constraints",
+        "D4_isolate_edge2_vm_s4": "activation_constraints",
+        "D5_quarantine_sen6": "scenario_mismatch",
+        "D6_reroute_sen6_to_edge2": "scenario_mismatch",
+        "D7_rate_limit_sen6": "scenario_mismatch",
+        "D8_rate_limit_edge2_gw": "scenario_mismatch",
+        "D9_isolate_edge2_gw": "scenario_mismatch"
+      }
+    },
+    "final_baseline_alignment": "overrode",
+    "final_decision_alignment_vs_baseline": "overrode",
+    "final_defender_action": "rate_limit",
+    "final_defender_strategy_id": "D2_rate_limit_sen4",
+    "final_defender_target": "sen4",
+    "inference": {
+      "attacker_execution_status": "no_active_attacker_strategy",
+      "attacker_expected_effects": [],
+      "attacker_progressed": false,
+      "attacker_strategy_id": "",
+      "caldera_abilities_ran": 0,
+      "defender_execution_status": "executed",
+      "defender_expected_effects": [
+        "throttled_traffic",
+        "lower_gateway_queue"
+      ],
+      "defender_strategy_id": "D2_rate_limit_sen4",
+      "defense_applied": true,
+      "defense_containment_observed": false,
+      "defense_observed": false,
+      "path_frozen": false,
+      "path_stage_delta": 0
+    },
+    "llm": {
+      "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+      "baseline_top_defender": {
+        "base_cost": 0.2,
+        "population_share": 0.39987404248573216,
+        "strategy_id": "D1_quarantine_sen4",
+        "tiebreak_reason": "utility_tie_highest_population_share",
+        "utility": 0.0
+      },
+      "baseline_top_defender_population_share": 0.39987404248573216,
+      "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+      "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+      "baseline_top_defender_utility": 0.0,
+      "confidence": 0.85,
+      "executed_decision_reason": "llm_selected_strategy",
+      "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+      "executed_decision_source": "llm_defender",
+      "executed_defender_strategy_id": "D2_rate_limit_sen4",
+      "executed_via_fallback": false,
+      "expected_controller_cost": 0.12,
+      "expected_qos_impact": 0.16,
+      "expected_security_gain": 0.58,
+      "fallback_constraint_name": "",
+      "fallback_reason": "",
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": false,
+          "path_stage": 0,
+          "urgency_level": "low"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D2_rate_limit_sen4",
+        "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4"
+      },
+      "fallback_used": false,
+      "final_baseline_alignment": "overrode",
+      "final_decision_alignment_vs_baseline": "overrode",
+      "final_defender_action": "rate_limit",
+      "final_defender_strategy_id": "D2_rate_limit_sen4",
+      "final_defender_target": "sen4",
+      "llm_baseline_alignment": "overrode",
+      "llm_decision_mode": "uncertainty_limited",
+      "llm_override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+      "llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D2_rate_limit_sen4"
+        },
+        {
+          "llm_rank": 2,
+          "strategy_id": "D0_observe"
+        },
+        {
+          "llm_rank": 3,
+          "strategy_id": "D1_quarantine_sen4"
+        }
+      ],
+      "llm_repeat_previous_action": false,
+      "llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+      "llm_stage_memory_used": true,
+      "llm_telemetry_confidence": "medium",
+      "llm_urgency_level": "low",
+      "llm_why_not_observe": "Observation (D0) is too passive when the path relevance and potential threat level are still high, even if not currently active. A minimal defensive action is warranted to maintain posture.",
+      "llm_why_not_quarantine": "Quarantining a sensor (D1) is highly disruptive (high QoS impact 0.32, cost 0.22). Since there is no confirmed active attack and the path stage is 'none', this level of disruption is excessive and disproportionate to the current evidence.",
+      "llm_why_not_rate_limit": "",
+      "model": "gemma4:e4b",
+      "parse_success": true,
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "overrode",
+      "raw_llm_baseline_alignment": "overrode",
+      "raw_llm_override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+      "raw_llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D2_rate_limit_sen4"
+        },
+        {
+          "llm_rank": 2,
+          "strategy_id": "D0_observe"
+        },
+        {
+          "llm_rank": 3,
+          "strategy_id": "D1_quarantine_sen4"
+        }
+      ],
+      "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+      "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+      "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true,
+      "stage_memory": {
+        "previous_attack_effect_success": true,
+        "previous_attack_progression_continued": true,
+        "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+        "previous_defender_execution_status": "executed",
+        "previous_defender_strategy_id": "D1_quarantine_sen4",
+        "previous_defender_strategy_id_note": "",
+        "previous_defense_confirmed": true,
+        "previous_defense_success": true,
+        "previous_stage_id": 21,
+        "previous_stage_success": true,
+        "recent_controller_deltas": {
+          "active_policy_actions_delta": 1.0,
+          "controller_apply_ms_delta": 1.197411,
+          "flow_delete_commands_delta": 0.0,
+          "flow_rules_installed_delta": 20.0,
+          "meters_added_delta": 0.0,
+          "total_cpu_seconds_delta": 11.995089,
+          "total_memory_kb_delta": 0.0
+        },
+        "recent_qos_deltas": {
+          "edge_to_cloud_latency_ms": 0.153,
+          "sensor_to_edge_latency_ms": -1.289,
+          "throughput_bytes_per_second": -14.11
+        }
+      }
+    },
+    "llm_baseline_alignment": "overrode",
+    "llm_decision_mode": "uncertainty_limited",
+    "llm_expected_controller_cost": 0.12,
+    "llm_expected_qos_impact": 0.16,
+    "llm_expected_security_gain": 0.58,
+    "llm_override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D2_rate_limit_sen4"
+      },
+      {
+        "llm_rank": 2,
+        "strategy_id": "D0_observe"
+      },
+      {
+        "llm_rank": 3,
+        "strategy_id": "D1_quarantine_sen4"
+      }
+    ],
+    "llm_repeat_previous_action": false,
+    "llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "low",
+    "llm_why_not_observe": "Observation (D0) is too passive when the path relevance and potential threat level are still high, even if not currently active. A minimal defensive action is warranted to maintain posture.",
+    "llm_why_not_quarantine": "Quarantining a sensor (D1) is highly disruptive (high QoS impact 0.32, cost 0.22). Since there is no confirmed active attack and the path stage is 'none', this level of disruption is excessive and disproportionate to the current evidence.",
+    "llm_why_not_rate_limit": "",
+    "next_state": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "built_at": "2026-06-30T01:57:56.827501+00:00",
+      "counters_stopped": false,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": true,
+      "defense_evidence": {
+        "active_policy_actions": [
+          "rate_limit:sen4"
+        ],
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "flow_rules_deleted": 0,
+        "flow_rules_installed": 45,
+        "meters_added": 5,
+        "rate_limit_active": true,
+        "ryu_counters_stopped": false,
+        "ryu_drop_rules_active": false,
+        "source": "ryu_status",
+        "stale_defense_metrics": false
+      },
+      "defense_success": false,
+      "drop_rules_active": false,
+      "effective_path_stage": 0,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.5,
+        "mulval_match_type": "missing_exact_path",
+        "mulval_path_mismatch": true,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 1,
+        "controller_apply_ms": 18.267092003952712,
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 45,
+        "meters_added": 5,
+        "total_cpu_seconds": 210.37354858999998,
+        "total_memory_kb": 419912.0
+      },
+      "path_evidence": {
+        "cloud_seen": false,
+        "cloud_seen_confidence": 0.1,
+        "cloud_seen_reason": "no_caldera_abilities_ran",
+        "effective_path_stage": 0,
+        "gateway_seen": false,
+        "path_regression_reason": "none",
+        "raw_path_stage": 0,
+        "worker_seen": false
+      },
+      "path_regression_reason": "none",
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "qos": {
+        "edge_to_cloud_latency_ms": 0.829,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 1.149181818181818,
+        "throughput_bytes_per_second": 9497.870517962781
+      },
+      "rate_limit_active": true,
+      "raw_path_stage": 0,
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_exfil_confirmations": 0,
+        "cloud_storage_baseline": 2870.0,
+        "cloud_storage_confirmations": 3209.0,
+        "cloud_storage_delta": 339.0,
+        "cloud_storage_delta_ratio": 0.11811846689895471,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 1444.0,
+        "gateway_received": 1445.0,
+        "generated_total": 1459.0,
+        "worker_requests": 1446.0
+      }
+    },
+    "population_after": {
+      "attacker": {},
+      "defender": {
+        "D0_observe": 0.2958491091214667,
+        "D1_quarantine_sen4": 0.39987404248573216,
+        "D2_rate_limit_sen4": 0.30427684839280117
+      }
+    },
+    "population_before": {
+      "attacker": {},
+      "defender": {
+        "D0_observe": 0.2958491091214667,
+        "D1_quarantine_sen4": 0.39987404248573216,
+        "D2_rate_limit_sen4": 0.30427684839280117
+      }
+    },
+    "pre_stage_reset": {
+      "known_host_diagnostics": {
+        "expected_host_count": 30,
+        "known_host_source": "merged",
+        "merged_known_host_count": 30,
+        "missing_dynamic_host_ips": [],
+        "missing_dynamic_host_nodes": [],
+        "observed_dynamic_host_count": 30
+      },
+      "post_result": {
+        "body": "{\"action\": \"clear_all_policies\", \"flow_delete_commands\": 0, \"flow_rules_installed\": 0, \"meters_added\": 0, \"meters_deleted\": 0, \"removed_actions\": [], \"status\": \"cleared\"}",
+        "error": "",
+        "json": {
+          "action": "clear_all_policies",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "meters_added": 0,
+          "meters_deleted": 0,
+          "removed_actions": [],
+          "status": "cleared"
+        },
+        "ok": true,
+        "status": 202,
+        "url": "http://127.0.0.1:8080/mtd/actions"
+      },
+      "post_teardown_verified": true,
+      "pre_stage_active_policy_count_after": 0,
+      "pre_stage_active_policy_count_before": 0,
+      "pre_stage_reset_attempted": true,
+      "pre_stage_reset_success": true,
+      "reset_mode": "clear_all_policies"
+    },
+    "previous_state": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "built_at": "2026-06-30T01:52:52.206285+00:00",
+      "counters_stopped": false,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": false,
+      "defense_evidence": {
+        "active_policy_actions": [],
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "flow_rules_deleted": 0,
+        "flow_rules_installed": 40,
+        "meters_added": 0,
+        "rate_limit_active": false,
+        "ryu_counters_stopped": false,
+        "ryu_drop_rules_active": false,
+        "source": "none",
+        "stale_defense_metrics": false
+      },
+      "defense_success": false,
+      "drop_rules_active": false,
+      "effective_path_stage": 0,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.5,
+        "mulval_match_type": "missing_exact_path",
+        "mulval_path_mismatch": true,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 0,
+        "controller_apply_ms": 1.6321719740517437,
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 40,
+        "meters_added": 0,
+        "total_cpu_seconds": 198.74739719,
+        "total_memory_kb": 419912.0
+      },
+      "path_evidence": {
+        "cloud_seen": false,
+        "cloud_seen_confidence": 0.1,
+        "cloud_seen_reason": "missing_cloud_storage_baseline",
+        "effective_path_stage": 0,
+        "gateway_seen": false,
+        "path_regression_reason": "none",
+        "raw_path_stage": 0,
+        "worker_seen": false
+      },
+      "path_regression_reason": "none",
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "qos": {
+        "edge_to_cloud_latency_ms": 0.731,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 2.430181818181818,
+        "throughput_bytes_per_second": 9486.68977782343
+      },
+      "rate_limit_active": false,
+      "raw_path_stage": 0,
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_exfil_confirmations": 0,
+        "cloud_storage_baseline": 0.0,
+        "cloud_storage_confirmations": 2870.0,
+        "cloud_storage_delta": 2870.0,
+        "cloud_storage_delta_ratio": 0.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 1291.0,
+        "gateway_received": 1292.0,
+        "generated_total": 1307.0,
+        "worker_requests": 1294.0
+      }
+    },
+    "raw_llm_alignment_vs_baseline": "overrode",
+    "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+    "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+    "recorded_at": "2026-06-30T01:57:56.838653+00:00",
+    "schema_version": "llm-mtd-stage-transition-v2",
+    "selection": {
+      "attacker": {},
+      "defender": {
+        "action": "rate_limit",
+        "action_payload": {
+          "action": "rate_limit",
+          "kbps": 128,
+          "target": "sen4"
+        },
+        "current_utility": 0.0,
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "throttled_traffic",
+          "lower_gateway_queue"
+        ],
+        "id": "D2_rate_limit_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Rate-limit sen4",
+        "path": null,
+        "population_after": 0.30427684839280117,
+        "population_after_rank": 2,
+        "population_before": 0.30427684839280117,
+        "population_before_rank": 2,
+        "population_delta": 0.0,
+        "population_share": 0.30427684839280117,
+        "probability": 0.30427684839280117,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selected_by": "",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "sen4",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 22,
+    "stage_summary": {
+      "attacker_strategy_id": "",
+      "controller_delta": {
+        "active_policy_actions_delta": 1.0,
+        "controller_apply_ms_delta": 16.63492,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 5.0,
+        "meters_added_delta": 5.0,
+        "total_cpu_seconds_delta": 11.626151,
+        "total_memory_kb_delta": 0.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D2_rate_limit_sen4",
+      "execution": {
+        "attacker_status": "no_active_attacker_strategy",
+        "defender_action": "rate_limit",
+        "defender_status": "executed",
+        "defender_target": "sen4",
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": true,
+        "defense_effects_confirmed": false,
+        "defense_executed": true,
+        "defense_selected": true,
+        "executed_via_fallback": false,
+        "operationally_executed_debug_stage": true,
+        "stage_kind": "warmup",
+        "stage_success": true,
+        "stage_valid": false
+      },
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": false,
+          "path_stage": 0,
+          "urgency_level": "low"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D2_rate_limit_sen4",
+        "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4"
+      },
+      "llm": {
+        "baseline_alignment": "overrode",
+        "baseline_top_defender_population_share": 0.39987404248573216,
+        "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+        "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+        "baseline_top_defender_utility": 0.0,
+        "decision_mode": "uncertainty_limited",
+        "executed_decision_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+        "executed_via_fallback": false,
+        "fallback_reason": "",
+        "fallback_used": false,
+        "final_decision_alignment_vs_baseline": "overrode",
+        "final_defender_strategy_id": "D2_rate_limit_sen4",
+        "model": "gemma4:e4b",
+        "override_reason": "No active attack evidence and path stage is 'none', suggesting a low immediate threat. Rate limiting provides moderate security gain (0.58) with manageable QoS impact (0.16) and lower controller cost (0.12) compared to quarantine (D1). This balances the need for some defense posture maintenance without overreacting to stale or absent threat data.",
+        "provider": "ollama",
+        "raw_llm_alignment_vs_baseline": "overrode",
+        "raw_llm_baseline_alignment": "overrode",
+        "raw_llm_reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+        "raw_llm_selected_defender_strategy_id": "D2_rate_limit_sen4",
+        "reasoning_summary": "The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance.",
+        "repeat_previous_action": false,
+        "telemetry_confidence": "medium",
+        "urgency_level": "low",
+        "why_not_observe": "Observation (D0) is too passive when the path relevance and potential threat level are still high, even if not currently active. A minimal defensive action is warranted to maintain posture.",
+        "why_not_quarantine": "Quarantining a sensor (D1) is highly disruptive (high QoS impact 0.32, cost 0.22). Since there is no confirmed active attack and the path stage is 'none', this level of disruption is excessive and disproportionate to the current evidence.",
+        "why_not_rate_limit": ""
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms": 0.1,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 0.321,
+        "throughput_bytes_per_second": -147.22
+      },
+      "recorded_at": "2026-06-30T01:59:52.406971+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_deactivated": false,
+        "attack_effect_success": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": true,
+        "defense_effects_confirmed": false,
+        "defense_executed": true,
+        "defense_selected": true,
+        "defense_success": true,
+        "path_regressed": false,
+        "raw_state_defense_success": false,
+        "security_progression_reduced": false
+      },
+      "stage_id": 22,
+      "stage_validation": {
+        "attack_deactivated": false,
+        "attribution_source": "live_execution",
+        "comparable_stage": false,
+        "defender_execution_status": "executed",
+        "defense_applied": true,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": true,
+        "defense_effect_mismatch": true,
+        "defense_effect_observed": false,
+        "defense_effects_confirmed": false,
+        "defense_executed": true,
+        "defense_selected": true,
+        "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+        "effect_source_conflict": false,
+        "effect_source_details": {
+          "counters_stopped": {
+            "defense_event": false,
+            "ryu_response": false,
+            "state": false
+          },
+          "drop_rules_active": {
+            "defense_event": false,
+            "ryu_response": false,
+            "state": false
+          },
+          "rate_limit_active": {
+            "defense_event": true,
+            "ryu_response": true,
+            "state": true
+          }
+        },
+        "execution_stage_success": true,
+        "expected_defense_effects": [
+          "throttled_traffic",
+          "lower_gateway_queue"
+        ],
+        "invalidity_reasons": [
+          "not_comparable"
+        ],
+        "learning_valid_stage": false,
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_success": true,
+        "llm_stage_valid": false,
+        "missing_defense_effects": [
+          "lower_gateway_queue"
+        ],
+        "normalized_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": false,
+          "rate_limit_active": true
+        },
+        "observed_defense_effects": [
+          "throttled_traffic"
+        ],
+        "operationally_executed_debug_stage": true,
+        "paper_valid_stage": false,
+        "path_regressed": false,
+        "path_stage_after": 0,
+        "path_stage_before": 0,
+        "raw_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": false,
+          "rate_limit_active": true
+        },
+        "security_progression_reduced": false,
+        "security_stage_success": true,
+        "semantic_containment": false,
+        "semantic_effect_mapping_details": {
+          "lower_gateway_queue": {
+            "action": "rate_limit",
+            "active_action_for_target": true,
+            "flow_rules_installed": 45,
+            "installed_status": true,
+            "meters_added": 5,
+            "observed": false,
+            "path_stage_after": 0,
+            "path_stage_before": 0,
+            "target": "sen4",
+            "target_is_gateway": false,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": false
+          },
+          "throttled_traffic": {
+            "action": "rate_limit",
+            "active_action_for_target": true,
+            "flow_rules_installed": 45,
+            "installed_status": true,
+            "meters_added": 5,
+            "observed": true,
+            "path_stage_after": 0,
+            "path_stage_before": 0,
+            "target": "sen4",
+            "target_is_gateway": false,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": false
+          }
+        },
+        "semantic_missing_defense_effects": [
+          "lower_gateway_queue"
+        ],
+        "semantic_observed_defense_effects": [
+          "throttled_traffic"
+        ],
+        "stage_kind": "warmup",
+        "stage_success": true,
+        "state_effect_sources": {
+          "counters_stopped": "",
+          "drop_rules_active": "",
+          "rate_limit_active": "defense_event+ryu+raw_state"
+        }
+      },
+      "summary_text": "Stage 22 for sen4_edge2_clouddb: attacker  met defender D2_rate_limit_sen4. Action rate_limit targeting sen4 ended with status executed; defense_confirmed=True; defense_effects_confirmed=False; defense_success=True. Path stage=0. Outcome: security progression was reduced. Rationale: The current evidence shows no active attack (attack_active: false) and the path stage is 'none' (path_stage: 0). While the previous defense was D1_quarantine_sen4, repeating a high-impact action without fresh threat data is unwarranted. We must choose an uncertainty-limited response. Comparing the available options: D2_rate_limit_sen4 offers a good balance of security gain (0.58) and manageable resource overhead (cost 0.12, QoS 0.16). D0_observe is too passive given the potential for latent threats in the path. D1_quarantine_sen4 provides high security gain but also high cost/QoS impact, which is disproportionate to the current lack of active threat evidence. Therefore, D2 is the optimal balance."
+    },
+    "stage_validation": {
+      "attack_deactivated": false,
+      "attribution_source": "live_execution",
+      "comparable_stage": false,
+      "defender_execution_status": "executed",
+      "defense_applied": true,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": true,
+      "defense_effect_mismatch": true,
+      "defense_effect_observed": false,
+      "defense_effects_confirmed": false,
+      "defense_executed": true,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": false,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": false,
+          "ryu_response": false,
+          "state": false
+        },
+        "drop_rules_active": {
+          "defense_event": false,
+          "ryu_response": false,
+          "state": false
+        },
+        "rate_limit_active": {
+          "defense_event": true,
+          "ryu_response": true,
+          "state": true
+        }
+      },
+      "execution_stage_success": true,
+      "expected_defense_effects": [
+        "throttled_traffic",
+        "lower_gateway_queue"
+      ],
+      "invalidity_reasons": [
+        "not_comparable"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [
+        "lower_gateway_queue"
+      ],
+      "normalized_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": true
+      },
+      "observed_defense_effects": [
+        "throttled_traffic"
+      ],
+      "operationally_executed_debug_stage": true,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 0,
+      "path_stage_before": 0,
+      "raw_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": true
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": true,
+      "semantic_containment": false,
+      "semantic_effect_mapping_details": {
+        "lower_gateway_queue": {
+          "action": "rate_limit",
+          "active_action_for_target": true,
+          "flow_rules_installed": 45,
+          "installed_status": true,
+          "meters_added": 5,
+          "observed": false,
+          "path_stage_after": 0,
+          "path_stage_before": 0,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        },
+        "throttled_traffic": {
+          "action": "rate_limit",
+          "active_action_for_target": true,
+          "flow_rules_installed": 45,
+          "installed_status": true,
+          "meters_added": 5,
+          "observed": true,
+          "path_stage_after": 0,
+          "path_stage_before": 0,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        }
+      },
+      "semantic_missing_defense_effects": [
+        "lower_gateway_queue"
+      ],
+      "semantic_observed_defense_effects": [
+        "throttled_traffic"
+      ],
+      "stage_kind": "warmup",
+      "stage_success": true,
+      "state_effect_sources": {
+        "counters_stopped": "",
+        "drop_rules_active": "",
+        "rate_limit_active": "defense_event+ryu+raw_state"
+      }
+    },
+    "state_summary": {
+      "attack_active": false,
+      "attack_effect_success": false,
+      "attack_success": false,
+      "cloud_seen": false,
+      "cloud_seen_confidence": 0.1,
+      "cloud_seen_reason": "no_caldera_abilities_ran",
+      "controller_active_actions": 1,
+      "counters_stopped": false,
+      "defense_active": true,
+      "defense_success": true,
+      "drop_rules_active": false,
+      "effective_path_stage": 0,
+      "eval_action_applied": true,
+      "eval_action_effect_observed": false,
+      "flow_rules_installed": 45,
+      "gateway_seen": false,
+      "live_environment_has_active_defenses": true,
+      "meters_added": 5,
+      "normalized_counters_stopped": false,
+      "normalized_drop_rules_active": false,
+      "normalized_rate_limit_active": true,
+      "path_stage": 0,
+      "path_stage_label": "none",
+      "rate_limit_active": true,
+      "raw_counters_stopped": false,
+      "raw_drop_rules_active": false,
+      "raw_path_stage": 0,
+      "raw_rate_limit_active": true,
+      "raw_state_defense_success": false,
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": false
+    },
+    "strategy_mismatch": false,
+    "strategy_space_checksum": "e9723a9e27dfefec",
+    "transition_id": "c810bd328bc5454795b84f1d8a9d9883"
+  }
+}

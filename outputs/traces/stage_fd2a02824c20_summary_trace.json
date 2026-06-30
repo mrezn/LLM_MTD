@@ -1,0 +1,8 @@
+{
+  "latency_ms": 38829.04477597913,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"The attacker successfully progressed to the critical 'cloud_db' stage despite the defender attempting to isolate 'edge2_vm_s4'. The attack remains active and successful, indicating a bypass of the defense.\", \"security_outcome\": {\"attack_effect_success\": true, \"defense_success\": false}, \"qos_delta\": {\"controller_active_actions\": 1, \"flow_rules_installed\": 20, \"total_cpu_seconds\": 22.835, \"total_memory_kb\": 1296.0}, \"controller_delta\": {\"controller_active_actions\": 1, \"flow_delete_commands\": 5, \"flow_rules_installed\": 20, \"meters_added\": 0}}",
+  "retries_used": 0
+}

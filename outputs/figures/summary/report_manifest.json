@@ -1,0 +1,56 @@
+{
+  "figure_data": {
+    "attack_defense_outcomes_by_method": "outputs/figures/figures/attack_defense_outcomes_by_method.csv",
+    "controller_overhead_by_method": "outputs/figures/figures/controller_overhead_by_method.csv",
+    "defender_action_distribution": "outputs/figures/figures/defender_action_distribution.csv",
+    "defense_effect_confirmation_breakdown": "outputs/figures/figures/defense_effect_confirmation_breakdown.csv",
+    "llm_baseline_alignment": "outputs/figures/figures/llm_baseline_alignment.csv",
+    "llm_candidate_tradeoff_scatter": "outputs/figures/figures/llm_candidate_tradeoff_scatter.csv",
+    "llm_decision_quality": "outputs/figures/figures/llm_decision_quality.csv",
+    "llm_decision_timing_vs_path_stage": "outputs/figures/figures/llm_decision_timing_vs_path_stage.csv",
+    "llm_latency_distribution": "outputs/figures/figures/llm_latency_distribution.csv",
+    "population_evolution": "outputs/figures/figures/population_evolution.csv",
+    "qos_tradeoff_by_method_edge_to_cloud_latency_delta_ms": "outputs/figures/figures/qos_tradeoff_by_method_edge_to_cloud_latency_delta_ms.csv",
+    "qos_tradeoff_by_method_sensor_to_edge_latency_delta_ms": "outputs/figures/figures/qos_tradeoff_by_method_sensor_to_edge_latency_delta_ms.csv",
+    "qos_tradeoff_by_method_throughput_delta_bps": "outputs/figures/figures/qos_tradeoff_by_method_throughput_delta_bps.csv",
+    "stage_trace_case_study": "outputs/figures/figures/stage_trace_case_study.csv"
+  },
+  "figures": {
+    "attack_defense_outcomes_by_method": "outputs/figures/figures/attack_defense_outcomes_by_method.png",
+    "controller_overhead_by_method": "outputs/figures/figures/controller_overhead_by_method.png",
+    "defender_action_distribution": "outputs/figures/figures/defender_action_distribution.png",
+    "defense_effect_confirmation_breakdown": "outputs/figures/figures/defense_effect_confirmation_breakdown.png",
+    "llm_baseline_alignment": "outputs/figures/figures/llm_baseline_alignment.png",
+    "llm_candidate_tradeoff_scatter": "outputs/figures/figures/llm_candidate_tradeoff_scatter.png",
+    "llm_decision_quality": "outputs/figures/figures/llm_decision_quality.png",
+    "llm_decision_timing_vs_path_stage": "outputs/figures/figures/llm_decision_timing_vs_path_stage.png",
+    "llm_latency_distribution": "outputs/figures/figures/llm_latency_distribution.png",
+    "population_evolution": "outputs/figures/figures/population_evolution.png",
+    "qos_tradeoff_by_method_edge_to_cloud_latency_delta_ms": "outputs/figures/figures/qos_tradeoff_by_method_edge_to_cloud_latency_delta_ms.png",
+    "qos_tradeoff_by_method_sensor_to_edge_latency_delta_ms": "outputs/figures/figures/qos_tradeoff_by_method_sensor_to_edge_latency_delta_ms.png",
+    "qos_tradeoff_by_method_throughput_delta_bps": "outputs/figures/figures/qos_tradeoff_by_method_throughput_delta_bps.png",
+    "stage_trace_case_study": "outputs/figures/figures/stage_trace_case_study.png"
+  },
+  "include_debug_stages": false,
+  "output_dir": "outputs/figures",
+  "row_counts": {
+    "baseline_stage_rows": 47,
+    "combined_stage_rows": 52,
+    "eval_report_stage_rows": 5,
+    "eval_stage_rows": 26
+  },
+  "scenario_filter": [],
+  "summary_files": {
+    "reporting_guide": "outputs/figures/summary/reporting_guide.md"
+  },
+  "tables": {
+    "baseline_vs_llm_summary": "outputs/figures/tables/baseline_vs_llm_summary.csv",
+    "environment_setup": "outputs/figures/tables/environment_setup.csv",
+    "formal_to_observable_mapping": "outputs/figures/tables/formal_to_observable_mapping.csv",
+    "llm_candidate_ranking_case_study": "outputs/figures/tables/llm_candidate_ranking_case_study.csv",
+    "llm_vs_baseline_decision_alignment": "outputs/figures/tables/llm_vs_baseline_decision_alignment.csv",
+    "scenario_attack_setup": "outputs/figures/tables/scenario_attack_setup.csv",
+    "stage_case_study": "outputs/figures/tables/stage_case_study.csv",
+    "stage_validity_summary": "outputs/figures/tables/stage_validity_summary.csv"
+  }
+}

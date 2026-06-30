@@ -1,0 +1,8 @@
+{
+  "latency_ms": 107788.4044010425,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Scenario ID: sen4_edge2_clouddb\nTarget asset: cloud_db\nEntry node: sen4\n\nGame-model defender shortlist:\n[\n  {\n    \"active_pool_update\": {\n      \"demote\": [],\n      \"enabled\": false,\n      \"promote\": []\n    },\n    \"confidence\": 0.7,\n    \"exp",
+  "provider": "ollama",
+  "raw_text": "{\"selected_defender_strategy\": \"quarantine_sensor\", \"target\": \"sen4\", \"parameters\": {}, \"confidence\": 0.9, \"reasoning_summary\": \"High attack pressure (0.96) and high risk score (0.82) necessitate immediate isolation of the entry node sen4 to contain the threat.\", \"expected_security_gain\": 0.75, \"expected_qos_impact\": 0.3, \"active_pool_update\": {\"enabled\": false, \"promote\": [], \"demote\": []}}",
+  "retries_used": 0
+}

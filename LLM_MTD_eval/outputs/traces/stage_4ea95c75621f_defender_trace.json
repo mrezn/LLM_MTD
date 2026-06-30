@@ -1,8 +1,0 @@
-{
-  "latency_ms": 74041.2004020036,
-  "model_name": "gpt-oss:20b",
-  "prompt_preview": "Select one defender strategy ID from the active candidates.\n\nReturn JSON with keys:\n- selected_defender_strategy_id\n- confidence\n- reasoning_summary\n- expected_security_gain\n- expected_qos_impact\n\nLive state and candidates:\n{\n  \"active_defe",
-  "provider": "ollama",
-  "raw_text": "We need to choose one defender strategy ID from active candidates. Attack_active is false, attack_effect_success false. So no active attack. Path_stage 0. We can choose minimal action. Observe is lowest cost 0.02, utility 0.071. Quarantine sen4 cost 0.2, utility 0.032. Rate_limit sen4 cost 0.13, utility 0.054. Since no attack, we might want to observe to log context. So choose D0_observe. Provide confidence high. Provide reasoning summary. expected_security_gain: moderate due to context. expected_qos_impact: minimal. Provide JSON.{\":\":\"}",
-  "retries_used": 0
-}

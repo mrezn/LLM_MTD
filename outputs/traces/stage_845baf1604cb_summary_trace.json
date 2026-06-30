@@ -1,0 +1,8 @@
+{
+  "latency_ms": 112348.04697101936,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"The attacker successfully progressed to the cloud stage (path_stage=3) despite previous defenses. The defender executed a quarantine on sensor sen4 (D1), which was confirmed but did not prevent the attack's progression, requiring immediate containment.\", \"security_outcome\": {\"attack_effect_success\": true, \"defense_success\": false}, \"qos_delta\": {\"edge_to_cloud_latency_ms\": 0.01, \"loss_rate\": 0.0, \"sensor_to_edge_latency_ms\": -1.87}, \"controller_delta\": {\"controller_active_actions\": 1, \"flow_delete_commands\": 0, \"flow_rules_installed\": 20}}",
+  "retries_used": 0
+}

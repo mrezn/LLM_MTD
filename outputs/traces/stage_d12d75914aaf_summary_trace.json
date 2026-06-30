@@ -1,0 +1,8 @@
+{
+  "latency_ms": 72965.64001892693,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"The attacker attempts to abuse the sensor's HTTP interface (A2) while progressing through the network stages. The defender responds by isolating the edge gateway (D3), aiming to contain lateral movement at a critical choke point.\", \"security_outcome\": {\"attack_effect_success\": false, \"defense_success\": false}, \"qos_delta\": {\"edge_to_cloud_latency_ms\": 0.729, \"sensor_to_edge_latency_ms\": -0.723, \"throughput_bytes_per_second\": 100.16}, \"controller_delta\": {\"total_cpu_seconds\": 10.98, \"total_memory_kb\": 427.9}}",
+  "retries_used": 0
+}

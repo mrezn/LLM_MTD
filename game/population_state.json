@@ -1,0 +1,44 @@
+{
+  "active_population": {
+    "attacker": {
+      "A6_sen4_edge_to_cloud_probe": 1.0
+    },
+    "defender": {
+      "D0_observe": 0.23730090872578313,
+      "D1_quarantine_sen4": 0.16849916716867802,
+      "D2_rate_limit_sen4": 0.27155877663620115,
+      "D3_isolate_edge2_gw_for_sen4": 0.1610700758746573,
+      "D4_isolate_edge2_vm_s4": 0.16157107159468034
+    }
+  },
+  "attacker": {
+    "A6_sen4_edge_to_cloud_probe": 1.0
+  },
+  "defender": {
+    "D0_observe": 0.23730090872578313,
+    "D1_quarantine_sen4": 0.16849916716867802,
+    "D2_rate_limit_sen4": 0.27155877663620115,
+    "D3_isolate_edge2_gw_for_sen4": 0.1610700758746573,
+    "D4_isolate_edge2_vm_s4": 0.16157107159468034
+  },
+  "global_population": {
+    "attacker": {
+      "A1_sensor_probe_sen4": 0.07996967426760868,
+      "A2_sensor_http_abuse_sen4": 0.15573818086139896,
+      "A6_sen4_edge_to_cloud_probe": 0.7642921448709923
+    },
+    "defender": {
+      "D0_observe": 0.23543586328949398,
+      "D1_quarantine_sen4": 0.17007420881024413,
+      "D2_rate_limit_sen4": 0.2679808378043911,
+      "D3_isolate_edge2_gw_for_sen4": 0.16301657208092443,
+      "D4_isolate_edge2_vm_s4": 0.16349251801494633
+    }
+  },
+  "last_stage": {
+    "path_stage": 3,
+    "scenario_id": "sen4_edge2_clouddb",
+    "selected_attacker": "A6_sen4_edge_to_cloud_probe",
+    "selected_defender": "D2_rate_limit_sen4"
+  }
+}

@@ -1,0 +1,13 @@
+method,method_label,defender_action,count,share
+baseline_game,Baseline game,observe,6,0.3157894736842105
+baseline_game,Baseline game,quarantine_sensor,13,0.6842105263157895
+baseline_game,Baseline game,rate_limit,0,0.0
+baseline_game,Baseline game,isolate_sensor,0,0.0
+baseline_game,Baseline game,reroute_traffic,0,0.0
+baseline_game,Baseline game,release_sensor,0,0.0
+llm_defender,LLM defender,observe,0,0.0
+llm_defender,LLM defender,quarantine_sensor,4,0.3076923076923077
+llm_defender,LLM defender,rate_limit,2,0.15384615384615385
+llm_defender,LLM defender,isolate_sensor,7,0.5384615384615384
+llm_defender,LLM defender,reroute_traffic,0,0.0
+llm_defender,LLM defender,release_sensor,0,0.0

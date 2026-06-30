@@ -1,0 +1,8 @@
+{
+  "latency_ms": 32850.76312487945,
+  "model_name": "gemma4:e4b",
+  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
+  "provider": "ollama",
+  "raw_text": "{\"summary_text\": \"The attacker (A2) attempts to abuse sensor HTTP services, and the defender responds by attempting to quarantine the sensor ('sen4'). This is a reactive containment measure aimed at halting lateral movement as the attack progresses toward the cloud database.\", \"security_outcome\": {\"attack_effect_success\": false, \"defense_success\": false}, \"qos_delta\": {\"edge_to_cloud_latency_ms\": -2.64, \"sensor_to_edge_latency_ms\": -1.07, \"throughput_bytes_per_second\": 39.81}, \"controller_delta\": {}}",
+  "retries_used": 0
+}

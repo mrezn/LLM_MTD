@@ -1,0 +1,201 @@
+{
+  "issues": [
+    {
+      "affected_files": [
+        "outputs/figures/tables/stage_case_study.csv",
+        "game/state_builder.py",
+        "game/strategy_runtime.py",
+        "eval/runners/run_stage.py"
+      ],
+      "evidence": [
+        "baseline rows at path_stage=3: 8",
+        "baseline-delta source fix present: True"
+      ],
+      "issue_id": "A",
+      "recommended_fix": "Regenerate outputs with the current baseline-delta cloud evidence logic.",
+      "safe_to_fix": true,
+      "status": "partially_confirmed",
+      "title": "path_stage jumps to 3 too early"
+    },
+    {
+      "affected_files": [
+        "outputs/figures/tables/stage_case_study.csv",
+        "game/stage_transition.py",
+        "eval/reports/load_results.py"
+      ],
+      "evidence": [
+        "executed baseline rows: 6",
+        "executed but unconfirmed: 0"
+      ],
+      "issue_id": "B",
+      "recommended_fix": "Persist baseline Ryu confirmation and semantic effects in transition records.",
+      "safe_to_fix": true,
+      "status": "not_reproduced",
+      "title": "baseline defense confirmation remains false"
+    },
+    {
+      "affected_files": [
+        "outputs/figures/tables/baseline_vs_llm_summary.csv",
+        "eval/reports/report_cli.py",
+        "eval/reports/build_tables.py"
+      ],
+      "evidence": [
+        "summary methods: ['Baseline game', 'LLM defender']",
+        "summary rows: 2"
+      ],
+      "issue_id": "C",
+      "recommended_fix": "Build separate baseline and LLM rows from their respective frames.",
+      "safe_to_fix": true,
+      "status": "not_reproduced",
+      "title": "baseline versus LLM summary has one source"
+    },
+    {
+      "affected_files": [
+        "outputs/figures/figures",
+        "eval/reports/load_results.py",
+        "eval/reports/build_figures.py"
+      ],
+      "evidence": [
+        "placeholder figures: []",
+        "stage summaries contain LLM alignment: True"
+      ],
+      "issue_id": "D",
+      "recommended_fix": "Map nested stage-summary LLM fields and candidate rankings into the report frame.",
+      "safe_to_fix": true,
+      "status": "not_reproduced",
+      "title": "LLM figures contain no-data placeholders"
+    },
+    {
+      "affected_files": [
+        "outputs/raw/stage_summaries.jsonl",
+        "eval/runners/run_stage.py",
+        "eval/configs/models/hybrid_game_llm.yaml"
+      ],
+      "evidence": [
+        "paper-valid stages: 2/22 (9.1%)",
+        "stage kinds: {'dry_run': 9, 'experimental': 3, 'warmup': 9, 'defense_applied_but_not_effective': 1}"
+      ],
+      "issue_id": "E",
+      "recommended_fix": "Warn on low validity and stop unhealthy warmup loops; retain explicit dry-run semantics.",
+      "safe_to_fix": true,
+      "status": "partially_confirmed",
+      "title": "low paper-valid LLM stage rate"
+    },
+    {
+      "affected_files": [
+        "outputs/raw/stage_summaries.jsonl",
+        "eval/runners/run_stage.py"
+      ],
+      "evidence": [
+        "inconsistent_outcome stages: 2"
+      ],
+      "issue_id": "F",
+      "recommended_fix": "Treat confirmed containment with path regression/deactivation as consistent.",
+      "safe_to_fix": true,
+      "status": "partially_confirmed",
+      "title": "contained stages marked inconsistent"
+    },
+    {
+      "affected_files": [
+        "outputs/raw/live_population_state.json",
+        "game/population_state.json",
+        "game/game_model.py"
+      ],
+      "evidence": [
+        "stored attacker IDs: ['A2_sensor_http_abuse_sen4', 'A6_sen4_edge_to_cloud_probe']",
+        "stored defender IDs: ['D0_observe', 'D1_quarantine_sen4', 'D2_rate_limit_sen4', 'D3_isolate_edge2_gw_for_sen4', 'D4_isolate_edge2_vm_s4']",
+        "global population absent: True",
+        "epsilon floor marker present: True"
+      ],
+      "issue_id": "G",
+      "recommended_fix": "Apply an explicit floor and persist global and active populations separately.",
+      "safe_to_fix": true,
+      "status": "partially_confirmed",
+      "title": "population extinction or active/global confusion"
+    },
+    {
+      "affected_files": [
+        "outputs/raw/stage_summaries.jsonl",
+        "defender/decision/stage_summarizer.py",
+        "eval/runners/run_stage.py"
+      ],
+      "evidence": [
+        "paper-valid rows: 2",
+        "paper-valid rows with all QoS deltas absent/zero: 2"
+      ],
+      "issue_id": "H",
+      "recommended_fix": "Merge measured QoS deltas into summaries and record snapshot collection flags.",
+      "safe_to_fix": true,
+      "status": "partially_confirmed",
+      "title": "paper-valid QoS deltas are absent or zero"
+    },
+    {
+      "affected_files": [
+        "outputs/raw/stage_summaries.jsonl",
+        "eval/runners/run_stage.py",
+        "attacker/engine/caldera_dispatch_bridge.py"
+      ],
+      "evidence": [
+        "longest consecutive warmup sequence: 8"
+      ],
+      "issue_id": "I",
+      "recommended_fix": "Track consecutive warmups and emit health/re-dispatch diagnostics after three.",
+      "safe_to_fix": true,
+      "status": "partially_confirmed",
+      "title": "fallback followed by warmup loop"
+    },
+    {
+      "affected_files": [
+        "outputs/figures/tables/stage_case_study.csv",
+        "eval/reports/build_tables.py",
+        "defender/decision/stage_summarizer.py"
+      ],
+      "evidence": [
+        "unconfirmed rows saying attack pressure reduced: 0"
+      ],
+      "issue_id": "J",
+      "recommended_fix": "Generate outcome text deterministically from confirmation and progression fields.",
+      "safe_to_fix": true,
+      "status": "not_reproduced",
+      "title": "stage narrative contradicts evidence"
+    },
+    {
+      "affected_files": [
+        "outputs/summaries/trial_summaries.csv",
+        "outputs/raw/stage_summaries.jsonl",
+        "defender/decision/llm_client.py"
+      ],
+      "evidence": [
+        "latency samples: 9",
+        "maximum latency ms: 114015.87550598197",
+        "stage-summary latency missing: True",
+        "Ollama keep_alive missing: False"
+      ],
+      "issue_id": "K",
+      "recommended_fix": "Add keep_alive and propagate timeout/model/latency/warning fields into summaries.",
+      "safe_to_fix": true,
+      "status": "partially_confirmed",
+      "title": "LLM latency is high and under-reported"
+    },
+    {
+      "affected_files": [
+        "outputs/logs.txt"
+      ],
+      "evidence": [
+        "outputs/logs.txt exists: True",
+        "documented consumers: ['DEPLOYMENT.md']"
+      ],
+      "issue_id": "L",
+      "recommended_fix": "Keep JSONL canonical; provide an optional converter for human-readable output.",
+      "safe_to_fix": true,
+      "status": "not_reproduced",
+      "title": "human-readable logs.txt is missing"
+    }
+  ],
+  "project_root": "/home/najafi/Desktop/najafi/LLM_MTD_modular",
+  "schema_version": "llm-mtd-post-fix-audit-v1",
+  "status_counts": {
+    "not_reproduced": 5,
+    "partially_confirmed": 7
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "latency_ms": 144989.31791400537,
-  "model_name": "llama3.1:latest",
-  "prompt_preview": "Rank all active defender candidates and choose one final strategy. Prompt mode: compact.\nAllowed defender IDs only: [\"D4_isolate_edge2_vm_s4\", \"D0_observe\"]\n\nReturn exactly one compact JSON object with keys:\n- selected_defender_strategy_id\n",
-  "provider": "ollama",
-  "raw_text": "{\n  \"selected_defender_strategy_id\": \"D0_observe\",\n  \"ranked_candidates\": [\n    {\n      \"strategy_id\": \"D0_observe\",\n      \"reason\": \"Lowest estimated controller cost and highest defender population share, making it the most efficient choice.\",\n      \"expected_security_gain\": 0.261,\n      \"expected_qos_impact\": -0.04486121212121212\n    },\n    {\n      \"strategy_id\": \"D4_isolate_edge2_vm_s4\",\n      \"reason\": \"High path-breaking relevance score, but higher estimated controller cost and lower defender population share compared to observe.\",\n      \"expected_security_gain\": 0.7293999999999999,\n      \"expected_qos_impact\": -0.33086121212121217\n    }\n  ],\n  \"baseline_alignment\": \"follow\",\n  \"override_reason\": \"\",\n  \"urgency_level\": \"critical\",\n  \"confidence\": 0.8,\n  \"reasoning_summary\": \"Given the active attack at path_stage >= 2, we should avoid observe unless no safe alternative is justified. However, isolate_sensor is not a viable option as it has a high estimated controller cost and lower defender population share compared to observe. Observe is selected due to its low estimated controller cost and highest defender population share.\",\n  \"expected_security_gain\": 0.261,\n  \"expected_qos_impact\": -0.04486121212121212,\n  \"expected_controller_cost\": 0.19221134668138498\n}",
-  "retries_used": 0
-}

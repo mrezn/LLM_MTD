@@ -1,8 +1,0 @@
-{
-  "latency_ms": 114236.19080497883,
-  "model_name": "llama3.1:latest",
-  "prompt_preview": "Summarize this evaluation trial in three short bullets:\n\n- scenario and chosen action\n- expected security effect\n- expected QoS tradeoff\n\nTrial result:\n{trial_result}\n\nReturn strict JSON with keys summary_text, security_outcome, qos_delta, ",
-  "provider": "ollama",
-  "raw_text": "{\n  \"summary_text\": [\n    \"Scenario: Attack on sen4, defender chose to isolate edge2_vm_s4.\",\n    \"Expected security effect: Defense success, attack effect success.\",\n    \"Expected QoS tradeoff: Increased latency (edge_to_cloud_latency_ms: 0.688ms)\"\n  ],\n  \"security_outcome\": {\n    \"attack_effect_success\": true,\n    \"defense_success\": true\n  },\n  \"qos_delta\": {\n    \"edge_to_cloud_latency_ms\": -2.941000000000001,\n    \"loss_rate\": 0.0,\n    \"sensor_to_edge_latency_ms\": -0.2151818181818181,\n    \"throughput_bytes_per_second\": -10.8685889525484\n  },\n  \"controller_delta\": {\n    \"controller_active_actions\": 1,\n    \"controller_apply_ms\": -0.09763400284832885,\n    \"flow_delete_commands\": 0,\n    \"flow_rules_installed\": 20,\n    \"meters_added\": 0,\n    \"total_cpu_seconds\": 4.8595324749999,\n    \"total_memory_kb\": -454932.0\n  }\n}",
-  "retries_used": 0
-}

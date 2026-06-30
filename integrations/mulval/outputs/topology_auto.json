@@ -1,0 +1,1396 @@
+{
+  "attack_goal": {
+    "host": "cloud_db",
+    "predicate": "execCode",
+    "privilege": "root"
+  },
+  "connectivity": [
+    {
+      "dst": "edge1_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen1"
+    },
+    {
+      "dst": "edge1_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen2"
+    },
+    {
+      "dst": "edge1_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen3"
+    },
+    {
+      "dst": "edge2_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen4"
+    },
+    {
+      "dst": "edge2_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen5"
+    },
+    {
+      "dst": "edge2_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen6"
+    },
+    {
+      "dst": "edge3_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen6"
+    },
+    {
+      "dst": "edge3_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen7"
+    },
+    {
+      "dst": "edge3_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen8"
+    },
+    {
+      "dst": "edge3_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen9"
+    },
+    {
+      "dst": "edge3_gw",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "sensor_to_gateway",
+      "src": "sen10"
+    },
+    {
+      "dst": "edge1_vm_s1",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen1",
+      "src": "edge1_gw"
+    },
+    {
+      "dst": "edge1_vm_s2",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen2",
+      "src": "edge1_gw"
+    },
+    {
+      "dst": "edge1_vm_s3",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen3",
+      "src": "edge1_gw"
+    },
+    {
+      "dst": "edge2_vm_s4",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen4",
+      "src": "edge2_gw"
+    },
+    {
+      "dst": "edge2_vm_s5",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen5",
+      "src": "edge2_gw"
+    },
+    {
+      "dst": "edge2_vm_s6",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen6",
+      "src": "edge2_gw"
+    },
+    {
+      "dst": "edge3_vm_s6",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen6",
+      "src": "edge3_gw"
+    },
+    {
+      "dst": "edge3_vm_s7",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen7",
+      "src": "edge3_gw"
+    },
+    {
+      "dst": "edge3_vm_s8",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen8",
+      "src": "edge3_gw"
+    },
+    {
+      "dst": "edge3_vm_s9",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen9",
+      "src": "edge3_gw"
+    },
+    {
+      "dst": "edge3_vm_s10",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "gateway_to_worker_for_sen10",
+      "src": "edge3_gw"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_gw"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_gw"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_gw"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_gw"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_gw"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s1"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s1"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s1"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s1"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s1"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s2"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s2"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s2"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s2"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s2"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s3"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s3"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s3"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s3"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge1_vm_s3"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_gw"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_gw"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_gw"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_gw"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_gw"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s4"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s4"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s4"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s4"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s4"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s5"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s5"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s5"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s5"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s5"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s6"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s6"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s6"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s6"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge2_vm_s6"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_gw"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_gw"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_gw"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_gw"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_gw"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s6"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s6"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s6"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s6"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s6"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s7"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s7"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s7"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s7"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s7"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s8"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s8"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s8"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s8"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s8"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s9"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s9"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s9"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s9"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s9"
+    },
+    {
+      "dst": "cloud_db",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s10"
+    },
+    {
+      "dst": "cloud_object",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s10"
+    },
+    {
+      "dst": "cloud_metrics",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s10"
+    },
+    {
+      "dst": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s10"
+    },
+    {
+      "dst": "cloud_logger",
+      "port": 8000,
+      "protocol": "tcp",
+      "reason": "edge_to_cloud_via_core",
+      "src": "edge3_vm_s10"
+    }
+  ],
+  "critical_targets": [
+    "cloud_db"
+  ],
+  "entry_points": [
+    {
+      "description": "Attacker already controls one sensor.",
+      "id": "external_compromise_sensor",
+      "kind": "compromised_host",
+      "node": "sen4"
+    },
+    {
+      "description": "Exposed edge gateway API surface.",
+      "id": "edge_gateway_facing_service",
+      "kind": "external_service",
+      "node": "edge2_gw",
+      "port": 8000,
+      "protocol": "tcp"
+    },
+    {
+      "description": "Cloud policy endpoint is externally reachable.",
+      "id": "cloud_exposed_endpoint",
+      "kind": "external_service",
+      "node": "cloud_policy",
+      "port": 8000,
+      "protocol": "tcp"
+    }
+  ],
+  "generated_at": "2026-06-22T09:45:30.037193+00:00",
+  "hosts": [
+    {
+      "id": "sen1",
+      "ips": [
+        "10.0.1.11"
+      ],
+      "layer": "sensor",
+      "primary_ip": "10.0.1.11",
+      "role": "sensor"
+    },
+    {
+      "id": "sen2",
+      "ips": [
+        "10.0.1.12"
+      ],
+      "layer": "sensor",
+      "primary_ip": "10.0.1.12",
+      "role": "sensor"
+    },
+    {
+      "id": "sen3",
+      "ips": [
+        "10.0.1.13"
+      ],
+      "layer": "sensor",
+      "primary_ip": "10.0.1.13",
+      "role": "sensor"
+    },
+    {
+      "id": "sen4",
+      "ips": [
+        "10.0.2.14"
+      ],
+      "layer": "sensor",
+      "primary_ip": "10.0.2.14",
+      "role": "sensor"
+    },
+    {
+      "id": "sen5",
+      "ips": [
+        "10.0.2.15"
+      ],
+      "layer": "sensor",
+      "primary_ip": "10.0.2.15",
+      "role": "sensor"
+    },
+    {
+      "id": "sen6",
+      "ips": [
+        "10.0.2.16",
+        "10.0.3.16"
+      ],
+      "layer": "sensor",
+      "primary_ip": "10.0.2.16",
+      "role": "sensor"
+    },
+    {
+      "id": "sen7",
+      "ips": [
+        "10.0.3.17"
+      ],
+      "layer": "sensor",
+      "primary_ip": "10.0.3.17",
+      "role": "sensor"
+    },
+    {
+      "id": "sen8",
+      "ips": [
+        "10.0.3.18"
+      ],
+      "layer": "sensor",
+      "primary_ip": "10.0.3.18",
+      "role": "sensor"
+    },
+    {
+      "id": "sen9",
+      "ips": [
+        "10.0.3.19"
+      ],
+      "layer": "sensor",
+      "primary_ip": "10.0.3.19",
+      "role": "sensor"
+    },
+    {
+      "id": "sen10",
+      "ips": [
+        "10.0.3.20"
+      ],
+      "layer": "sensor",
+      "primary_ip": "10.0.3.20",
+      "role": "sensor"
+    },
+    {
+      "id": "edge1_gw",
+      "ips": [
+        "10.0.1.1"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.1.1",
+      "role": "edge_gateway"
+    },
+    {
+      "id": "edge1_vm_s1",
+      "ips": [
+        "10.0.1.21"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.1.21",
+      "role": "edge_worker"
+    },
+    {
+      "id": "edge1_vm_s2",
+      "ips": [
+        "10.0.1.22"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.1.22",
+      "role": "edge_worker"
+    },
+    {
+      "id": "edge1_vm_s3",
+      "ips": [
+        "10.0.1.23"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.1.23",
+      "role": "edge_worker"
+    },
+    {
+      "id": "edge2_gw",
+      "ips": [
+        "10.0.2.1"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.2.1",
+      "role": "edge_gateway"
+    },
+    {
+      "id": "edge2_vm_s4",
+      "ips": [
+        "10.0.2.24"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.2.24",
+      "role": "edge_worker"
+    },
+    {
+      "id": "edge2_vm_s5",
+      "ips": [
+        "10.0.2.25"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.2.25",
+      "role": "edge_worker"
+    },
+    {
+      "id": "edge2_vm_s6",
+      "ips": [
+        "10.0.2.26"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.2.26",
+      "role": "edge_worker"
+    },
+    {
+      "id": "edge3_gw",
+      "ips": [
+        "10.0.3.1"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.3.1",
+      "role": "edge_gateway"
+    },
+    {
+      "id": "edge3_vm_s6",
+      "ips": [
+        "10.0.3.26"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.3.26",
+      "role": "edge_worker"
+    },
+    {
+      "id": "edge3_vm_s7",
+      "ips": [
+        "10.0.3.27"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.3.27",
+      "role": "edge_worker"
+    },
+    {
+      "id": "edge3_vm_s8",
+      "ips": [
+        "10.0.3.28"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.3.28",
+      "role": "edge_worker"
+    },
+    {
+      "id": "edge3_vm_s9",
+      "ips": [
+        "10.0.3.29"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.3.29",
+      "role": "edge_worker"
+    },
+    {
+      "id": "edge3_vm_s10",
+      "ips": [
+        "10.0.3.30"
+      ],
+      "layer": "edge",
+      "primary_ip": "10.0.3.30",
+      "role": "edge_worker"
+    },
+    {
+      "id": "cloud_db",
+      "ips": [
+        "10.0.10.10"
+      ],
+      "layer": "cloud",
+      "primary_ip": "10.0.10.10",
+      "role": "cloud_service"
+    },
+    {
+      "id": "cloud_object",
+      "ips": [
+        "10.0.10.11"
+      ],
+      "layer": "cloud",
+      "primary_ip": "10.0.10.11",
+      "role": "cloud_service"
+    },
+    {
+      "id": "cloud_metrics",
+      "ips": [
+        "10.0.10.12"
+      ],
+      "layer": "cloud",
+      "primary_ip": "10.0.10.12",
+      "role": "cloud_service"
+    },
+    {
+      "id": "cloud_policy",
+      "ips": [
+        "10.0.10.13"
+      ],
+      "layer": "cloud",
+      "primary_ip": "10.0.10.13",
+      "role": "cloud_service"
+    },
+    {
+      "id": "cloud_logger",
+      "ips": [
+        "10.0.10.14"
+      ],
+      "layer": "cloud",
+      "primary_ip": "10.0.10.14",
+      "role": "cloud_service"
+    },
+    {
+      "id": "ryu_controller",
+      "ips": [
+        "127.0.0.1"
+      ],
+      "layer": "controller",
+      "role": "sdn_controller"
+    }
+  ],
+  "management_visibility": [
+    {
+      "controller": "ryu_controller",
+      "target": "s_edge1"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "s_edge2"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "s_edge3"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "s_core"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "s_cloud"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge1_gw"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge1_vm_s1"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge1_vm_s2"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge1_vm_s3"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge2_gw"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge2_vm_s4"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge2_vm_s5"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge2_vm_s6"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge3_gw"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge3_vm_s6"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge3_vm_s7"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge3_vm_s8"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge3_vm_s9"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "edge3_vm_s10"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "cloud_db"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "cloud_object"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "cloud_metrics"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "cloud_policy"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "cloud_logger"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "sen1"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "sen2"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "sen3"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "sen4"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "sen5"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "sen6"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "sen7"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "sen8"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "sen9"
+    },
+    {
+      "controller": "ryu_controller",
+      "target": "sen10"
+    }
+  ],
+  "scenario_id": "auto_full_topology",
+  "schema_version": "llm-mtd-mulval-topology-v1",
+  "source": "network_model.py",
+  "weaknesses": [
+    {
+      "exploit_class": "remoteExploit",
+      "host": "sen1",
+      "id": "sensor_node_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "sensor_agent_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "sen2",
+      "id": "sensor_node_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "sensor_agent_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "sen3",
+      "id": "sensor_node_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "sensor_agent_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "sen4",
+      "id": "sensor_node_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "sensor_agent_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "sen5",
+      "id": "sensor_node_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "sensor_agent_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "sen6",
+      "id": "sensor_node_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "sensor_agent_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "sen7",
+      "id": "sensor_node_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "sensor_agent_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "sen8",
+      "id": "sensor_node_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "sensor_agent_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "sen9",
+      "id": "sensor_node_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "sensor_agent_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "sen10",
+      "id": "sensor_node_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "sensor_agent_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge1_gw",
+      "id": "weak_auth_on_gateway",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_gateway_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge2_gw",
+      "id": "weak_auth_on_gateway",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_gateway_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge3_gw",
+      "id": "weak_auth_on_gateway",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_gateway_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge1_vm_s1",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge1_vm_s2",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge1_vm_s3",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge2_vm_s4",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge2_vm_s5",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge2_vm_s6",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge3_vm_s6",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge3_vm_s7",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge3_vm_s8",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge3_vm_s9",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "edge3_vm_s10",
+      "id": "worker_service_exposed",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "edge_worker_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "cloud_db",
+      "id": "cloud_api_reachable",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "cloud_db_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "cloud_object",
+      "id": "cloud_api_reachable",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "cloud_object_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "cloud_metrics",
+      "id": "cloud_api_reachable",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "cloud_metrics_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "cloud_policy",
+      "id": "cloud_api_reachable",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "cloud_policy_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "cloud_logger",
+      "id": "cloud_api_reachable",
+      "impact": "privEscalation",
+      "port": 8000,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "cloud_logger_api"
+    },
+    {
+      "exploit_class": "remoteExploit",
+      "host": "ryu_controller",
+      "id": "controller_management_reachable",
+      "impact": "privEscalation",
+      "port": 8080,
+      "privilege": "root",
+      "protocol": "tcp",
+      "service": "ryu_rest_api"
+    }
+  ]
+}

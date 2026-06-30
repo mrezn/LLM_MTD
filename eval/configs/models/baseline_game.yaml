@@ -1,0 +1,47 @@
+model:
+  name: baseline_game
+  mode: game_only
+
+llm:
+  provider: mock
+  model_name: mock-defender-v1
+  temperature: 0.0
+  timeout_seconds: 10.0
+
+trial:
+  dry_run: true
+  offline: true
+  execute_defender: false
+  observe_delay_seconds: 0.0
+  save_trace: true
+
+emulator:
+  core_url: http://127.0.0.1:8088/core
+  experiment_summary_url: http://127.0.0.1:8088/experiment/summary
+  ryu_status_url: http://127.0.0.1:8080/mtd/status
+  ryu_metrics_url: http://127.0.0.1:8080/mtd/metrics
+  ryu_action_url: http://127.0.0.1:8080/mtd/action
+  cloud_policy_url: http://127.0.0.1:8000/context
+  cloud_logger_url: http://127.0.0.1:8000/attack/event
+  timeout_seconds: 3.0
+  retries: 2
+
+data:
+  scenario_registry: attacker/scenarios/attack_scenarios.json
+  mulval_policy: attacker/mulval/outputs/base_edge2_policy.json
+
+prompts:
+  system: eval/configs/prompts/defender_system.txt
+  user_template: eval/configs/prompts/defender_user_template.txt
+  hybrid_user_template: eval/configs/prompts/hybrid_user_template.txt
+  summary_template: eval/configs/prompts/summary_template.txt
+
+schemas:
+  normalized_state: eval/configs/schemas/normalized_state.schema.json
+  llm_decision: eval/configs/schemas/llm_decision.schema.json
+  trial_result: eval/configs/schemas/trial_result.schema.json
+
+active_pool:
+  enabled: false
+  active_strategies: []
+  pool_strategies: []

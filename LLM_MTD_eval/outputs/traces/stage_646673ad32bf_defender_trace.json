@@ -1,8 +1,0 @@
-{
-  "latency_ms": 87512.34384602867,
-  "model_name": "llama3.1:latest",
-  "prompt_preview": "Select one defender strategy ID from the active candidates.\nAllowed defender IDs only: [\"D0_observe\", \"D4_isolate_edge2_vm_s4\"]\n\nReturn exactly one compact JSON object with keys:\n- selected_defender_strategy_id\n- confidence\n- reasoning_summ",
-  "provider": "ollama",
-  "raw_text": "{\n  \"selected_defender_strategy_id\": \"D0_observe\",\n  \"confidence\": 0.607881474472334,\n  \"reasoning_summary\": \"Select D0_observe to observe and log current strategy context, as the attacker has reached the cloud path stage (3) and the first plausible path is sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db.\",\n  \"expected_security_gain\": 0.0,\n  \"expected_qos_impact\": 0.02\n}",
-  "retries_used": 0
-}

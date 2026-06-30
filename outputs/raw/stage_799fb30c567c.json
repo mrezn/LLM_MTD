@@ -1,0 +1,3545 @@
+{
+  "active": {
+    "attacker_ids": [],
+    "attackers": [],
+    "defender_ids": [
+      "D0_observe",
+      "D3_isolate_edge2_gw_for_sen4"
+    ],
+    "defenders": [
+      {
+        "action": "observe",
+        "base_cost": 0.02,
+        "base_reward": 0.05,
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "name": "Observe and log current strategy context",
+        "scenario_id": "*",
+        "target": ""
+      },
+      {
+        "action": "isolate_sensor",
+        "base_cost": 0.42,
+        "base_reward": 0.82,
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_gw"
+      }
+    ]
+  },
+  "decision_source": "llm_defender",
+  "decision_trace": {
+    "average_utility": {
+      "attacker": 0.0,
+      "defender": 0.0
+    },
+    "baseline_game_prior": {
+      "attacker": {},
+      "defender": {
+        "action": "isolate_sensor",
+        "action_payload": {
+          "action": "isolate_sensor",
+          "target": "edge2_gw"
+        },
+        "canonical_baseline_top": {
+          "base_cost": 0.42,
+          "population_share": 0.502206130971298,
+          "strategy_id": "D3_isolate_edge2_gw_for_sen4",
+          "tiebreak_reason": "utility_tie_highest_population_share",
+          "utility": 0.0
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "path": null,
+        "population_after": 0.502206130971298,
+        "population_after_rank": 1,
+        "population_before": 0.502206130971298,
+        "population_before_rank": 1,
+        "population_delta": 0.0,
+        "probability": 0.502206130971298,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "edge2_gw",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "baseline_top_defender_population_share": 0.502206130971298,
+    "baseline_top_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+    "baseline_top_defender_utility": 0.0,
+    "decision_source": "llm_defender",
+    "executed_decision_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+    "executed_via_fallback": false,
+    "execution": {
+      "attacker": {
+        "attempted_path": [],
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "expected_effects": [],
+        "live_attack_type": "",
+        "operation_id": "",
+        "status": "no_active_attacker_strategy",
+        "strategy_id": "",
+        "strategy_name": ""
+      },
+      "defender": {
+        "action": "isolate_sensor",
+        "cloud_policy": {
+          "accepted_keys": [],
+          "context_http_status": 0,
+          "context_ok": false,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "isolate_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+              "source": "llm_defender",
+              "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+              "target": "edge2_gw"
+            },
+            "target": "edge2_gw",
+            "type": "isolate_sensor"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {},
+          "status": "skipped",
+          "url": ""
+        },
+        "ryu_response": {
+          "action": "isolate_sensor",
+          "active_policy_actions": 0,
+          "apply_duration_ms": 0.0,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "http_status": 0,
+          "meters_added": 0,
+          "ok": false,
+          "rule": "",
+          "status": "",
+          "target": "edge2_gw",
+          "target_ips": []
+        },
+        "status": "dry_run",
+        "target": "edge2_gw"
+      }
+    },
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": true,
+        "path_stage": 2,
+        "urgency_level": "high"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+    },
+    "final_baseline_alignment": "followed",
+    "final_decision_alignment_vs_baseline": "followed",
+    "final_defender_action": "isolate_sensor",
+    "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "final_defender_target": "edge2_gw",
+    "llm": {
+      "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+      "baseline_top_defender": {
+        "base_cost": 0.42,
+        "population_share": 0.502206130971298,
+        "strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "tiebreak_reason": "utility_tie_highest_population_share",
+        "utility": 0.0
+      },
+      "baseline_top_defender_population_share": 0.502206130971298,
+      "baseline_top_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+      "baseline_top_defender_utility": 0.0,
+      "confidence": 0.95,
+      "executed_decision_reason": "llm_selected_strategy",
+      "executed_decision_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+      "executed_decision_source": "llm_defender",
+      "executed_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "executed_via_fallback": false,
+      "expected_controller_cost": 0.22,
+      "expected_qos_impact": 0.32,
+      "expected_security_gain": 0.82,
+      "fallback_constraint_name": "",
+      "fallback_reason": "",
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": true,
+          "path_stage": 2,
+          "urgency_level": "high"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+      },
+      "fallback_used": false,
+      "final_baseline_alignment": "followed",
+      "final_decision_alignment_vs_baseline": "followed",
+      "final_defender_action": "isolate_sensor",
+      "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "final_defender_target": "edge2_gw",
+      "llm_baseline_alignment": "followed",
+      "llm_decision_mode": "reactive_containment",
+      "llm_override_reason": "",
+      "llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D3_isolate_edge2_gw_for_sen4"
+        }
+      ],
+      "llm_repeat_previous_action": false,
+      "llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "llm_stage_memory_used": true,
+      "llm_telemetry_confidence": "medium",
+      "llm_urgency_level": "high",
+      "llm_why_not_observe": "Observation (D0_observe) is insufficient when an active attack has successfully reached the worker stage and is targeting critical cloud resources. The threat level requires immediate, decisive containment rather than passive monitoring.",
+      "llm_why_not_quarantine": "Quarantining might be too broad or disruptive without a clearer understanding of the attacker's full scope; targeted isolation (D3) is more precise for this specific path segment.",
+      "llm_why_not_rate_limit": "Rate limiting addresses volume/rate issues, but the primary threat here is unauthorized access and lateral movement through compromised infrastructure components. Isolation is a stronger preventative measure against compromise progression.",
+      "model": "gemma4:e4b",
+      "parse_success": true,
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "followed",
+      "raw_llm_baseline_alignment": "followed",
+      "raw_llm_override_reason": "",
+      "raw_llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D3_isolate_edge2_gw_for_sen4"
+        }
+      ],
+      "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+      "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true,
+      "stage_memory": {
+        "previous_attack_effect_success": true,
+        "previous_attack_progression_continued": true,
+        "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+        "previous_defender_execution_status": "executed",
+        "previous_defender_strategy_id": "",
+        "previous_defender_strategy_id_note": "[stale: 'D4_isolate_edge2_vm_s4' was used in a prior stage but is NOT active at the current path_stage \u2014 do NOT reuse it]",
+        "previous_defense_confirmed": true,
+        "previous_defense_success": false,
+        "previous_stage_id": 17,
+        "previous_stage_success": false,
+        "recent_controller_deltas": {
+          "active_policy_actions_delta": 1.0,
+          "controller_apply_ms_delta": -0.007198,
+          "flow_delete_commands_delta": 0.0,
+          "flow_rules_installed_delta": 20.0,
+          "meters_added_delta": 0.0,
+          "total_cpu_seconds_delta": 1.835062,
+          "total_memory_kb_delta": 128.0
+        },
+        "recent_qos_deltas": {
+          "controller_active_actions": 1,
+          "flow_rules_installed": 20,
+          "total_cpu_seconds": 22.835,
+          "total_memory_kb": 1296.0
+        }
+      }
+    },
+    "llm_baseline_alignment": "followed",
+    "llm_decision_mode": "reactive_containment",
+    "llm_expected_controller_cost": 0.22,
+    "llm_expected_qos_impact": 0.32,
+    "llm_expected_security_gain": 0.82,
+    "llm_override_reason": "",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D3_isolate_edge2_gw_for_sen4"
+      }
+    ],
+    "llm_repeat_previous_action": false,
+    "llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "high",
+    "llm_why_not_observe": "Observation (D0_observe) is insufficient when an active attack has successfully reached the worker stage and is targeting critical cloud resources. The threat level requires immediate, decisive containment rather than passive monitoring.",
+    "llm_why_not_quarantine": "Quarantining might be too broad or disruptive without a clearer understanding of the attacker's full scope; targeted isolation (D3) is more precise for this specific path segment.",
+    "llm_why_not_rate_limit": "Rate limiting addresses volume/rate issues, but the primary threat here is unauthorized access and lateral movement through compromised infrastructure components. Isolation is a stronger preventative measure against compromise progression.",
+    "raw_llm_alignment_vs_baseline": "followed",
+    "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+    "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "recorded_at": "2026-06-26T03:52:31.671829+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "schema_version": "llm-mtd-decision-trace-v1",
+    "selection": {
+      "attacker": {},
+      "defender": {
+        "action": "isolate_sensor",
+        "action_payload": {
+          "action": "isolate_sensor",
+          "target": "edge2_gw"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "path": null,
+        "population_after": 0.502206130971298,
+        "population_after_rank": 1,
+        "population_before": 0.502206130971298,
+        "population_before_rank": 1,
+        "population_delta": 0.0,
+        "probability": 0.502206130971298,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "edge2_gw",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 18,
+    "stage_summary": {
+      "attacker_strategy_id": "",
+      "controller_delta": {
+        "active_policy_actions_delta": 0.0,
+        "controller_apply_ms_delta": 0.0,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 0.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 1.687432,
+        "total_memory_kb_delta": 128.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "execution": {
+        "attacker_status": "no_active_attacker_strategy",
+        "defender_action": "isolate_sensor",
+        "defender_status": "dry_run",
+        "defender_target": "edge2_gw",
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "executed_via_fallback": false,
+        "operationally_executed_debug_stage": false,
+        "stage_kind": "dry_run",
+        "stage_success": false,
+        "stage_valid": false
+      },
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": true,
+          "path_stage": 2,
+          "urgency_level": "high"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+      },
+      "llm": {
+        "baseline_alignment": "followed",
+        "baseline_top_defender_population_share": 0.502206130971298,
+        "baseline_top_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+        "baseline_top_defender_utility": 0.0,
+        "decision_mode": "reactive_containment",
+        "executed_decision_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+        "executed_via_fallback": false,
+        "fallback_reason": "",
+        "fallback_used": false,
+        "final_decision_alignment_vs_baseline": "followed",
+        "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "model": "gemma4:e4b",
+        "override_reason": "",
+        "provider": "ollama",
+        "raw_llm_alignment_vs_baseline": "followed",
+        "raw_llm_baseline_alignment": "followed",
+        "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+        "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+        "repeat_previous_action": false,
+        "telemetry_confidence": "medium",
+        "urgency_level": "high",
+        "why_not_observe": "Observation (D0_observe) is insufficient when an active attack has successfully reached the worker stage and is targeting critical cloud resources. The threat level requires immediate, decisive containment rather than passive monitoring.",
+        "why_not_quarantine": "Quarantining might be too broad or disruptive without a clearer understanding of the attacker's full scope; targeted isolation (D3) is more precise for this specific path segment.",
+        "why_not_rate_limit": "Rate limiting addresses volume/rate issues, but the primary threat here is unauthorized access and lateral movement through compromised infrastructure components. Isolation is a stronger preventative measure against compromise progression."
+      },
+      "qos_delta": {
+        "sensor_to_edge_latency_ms": 1.092,
+        "throughput_bytes_per_second": -182.53
+      },
+      "recorded_at": "2026-06-26T03:53:04.586219+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_deactivated": false,
+        "attack_effect_success": true,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "defense_success": false,
+        "path_regressed": false,
+        "raw_state_defense_success": false,
+        "security_progression_reduced": false
+      },
+      "stage_id": 18,
+      "stage_validation": {
+        "attack_deactivated": false,
+        "comparable_stage": true,
+        "defender_execution_status": "dry_run",
+        "defense_applied": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effect_mismatch": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+        "effect_source_conflict": false,
+        "effect_source_details": {
+          "counters_stopped": {
+            "defense_event": null,
+            "ryu_response": true,
+            "state": true
+          },
+          "drop_rules_active": {
+            "defense_event": null,
+            "ryu_response": true,
+            "state": true
+          },
+          "rate_limit_active": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": null
+          }
+        },
+        "execution_stage_success": false,
+        "expected_defense_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "invalidity_reasons": [
+          "defender_dry_run"
+        ],
+        "learning_valid_stage": false,
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_success": true,
+        "llm_stage_valid": false,
+        "missing_defense_effects": [],
+        "normalized_state_effects": {
+          "counters_stopped": true,
+          "drop_rules_active": true,
+          "rate_limit_active": false
+        },
+        "observed_defense_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "operationally_executed_debug_stage": false,
+        "paper_valid_stage": false,
+        "path_regressed": false,
+        "path_stage_after": 2,
+        "path_stage_before": 2,
+        "raw_state_effects": {
+          "counters_stopped": true,
+          "drop_rules_active": true,
+          "rate_limit_active": false
+        },
+        "security_progression_reduced": false,
+        "security_stage_success": false,
+        "semantic_effect_mapping_details": {
+          "gateway_blocked": {
+            "action": "isolate_sensor",
+            "active_action_for_target": false,
+            "flow_rules_installed": 80,
+            "installed_status": false,
+            "meters_added": 0,
+            "observed": true,
+            "path_stage_after": 2,
+            "path_stage_before": 2,
+            "target": "edge2_gw",
+            "target_is_gateway": true,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": true
+          },
+          "path_broken": {
+            "action": "isolate_sensor",
+            "active_action_for_target": false,
+            "flow_rules_installed": 80,
+            "installed_status": false,
+            "meters_added": 0,
+            "observed": true,
+            "path_stage_after": 2,
+            "path_stage_before": 2,
+            "target": "edge2_gw",
+            "target_is_gateway": true,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": true
+          }
+        },
+        "semantic_missing_defense_effects": [],
+        "semantic_observed_defense_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "stage_kind": "dry_run",
+        "stage_success": false,
+        "state_effect_sources": {
+          "counters_stopped": "ryu+raw_state",
+          "drop_rules_active": "ryu+raw_state",
+          "rate_limit_active": ""
+        }
+      },
+      "summary_text": "Stage 18 for sen4_edge2_clouddb: attacker  met defender D3_isolate_edge2_gw_for_sen4. Action isolate_sensor targeting edge2_gw ended with status dry_run; defense_confirmed=False; defense_effects_confirmed=True; defense_success=False. Path stage=2. Outcome: defense was not confirmed by controller evidence. Rationale: The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db."
+    },
+    "stage_validation": {
+      "attack_deactivated": false,
+      "comparable_stage": true,
+      "defender_execution_status": "dry_run",
+      "defense_applied": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effect_mismatch": false,
+      "defense_effects_confirmed": true,
+      "defense_executed": false,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": false,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": null,
+          "ryu_response": true,
+          "state": true
+        },
+        "drop_rules_active": {
+          "defense_event": null,
+          "ryu_response": true,
+          "state": true
+        },
+        "rate_limit_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": null
+        }
+      },
+      "execution_stage_success": false,
+      "expected_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "invalidity_reasons": [
+        "defender_dry_run"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [],
+      "normalized_state_effects": {
+        "counters_stopped": true,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "observed_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "operationally_executed_debug_stage": false,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 2,
+      "path_stage_before": 2,
+      "raw_state_effects": {
+        "counters_stopped": true,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": false,
+      "semantic_effect_mapping_details": {
+        "gateway_blocked": {
+          "action": "isolate_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 80,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": true,
+          "path_stage_after": 2,
+          "path_stage_before": 2,
+          "target": "edge2_gw",
+          "target_is_gateway": true,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": true
+        },
+        "path_broken": {
+          "action": "isolate_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 80,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": true,
+          "path_stage_after": 2,
+          "path_stage_before": 2,
+          "target": "edge2_gw",
+          "target_is_gateway": true,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": true
+        }
+      },
+      "semantic_missing_defense_effects": [],
+      "semantic_observed_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "stage_kind": "dry_run",
+      "stage_success": false,
+      "state_effect_sources": {
+        "counters_stopped": "ryu+raw_state",
+        "drop_rules_active": "ryu+raw_state",
+        "rate_limit_active": ""
+      }
+    },
+    "state_summary": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "attack_success": true,
+      "cloud_seen": true,
+      "controller_active_actions": 3,
+      "counters_stopped": true,
+      "defense_active": true,
+      "defense_success": false,
+      "drop_rules_active": true,
+      "flow_rules_installed": 80,
+      "gateway_seen": true,
+      "meters_added": 0,
+      "normalized_counters_stopped": true,
+      "normalized_drop_rules_active": true,
+      "normalized_rate_limit_active": false,
+      "path_stage": 2,
+      "path_stage_label": "worker",
+      "rate_limit_active": false,
+      "raw_counters_stopped": true,
+      "raw_drop_rules_active": true,
+      "raw_rate_limit_active": false,
+      "raw_state_defense_success": false,
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": true
+    },
+    "transition_id": "307e901586d44d6c9794f864159fbd81"
+  },
+  "execution": {
+    "attacker": {
+      "status": "no_active_attacker_strategy"
+    },
+    "defender": {
+      "cloud_policy_context": {
+        "body": "{\"cloud_policy_observe_only_normalized\": false, \"cloud_policy_observe_only_raw\": null, \"decision_source\": \"llm_defender\", \"observe_only\": false, \"policy_mode\": \"llm_direct_ryu\", \"selected_action\": {\"reason\": \"LLM-selected defender strategy was sent directly to Ryu.\", \"ryu_intent\": {\"action\": \"isolate_sensor\", \"decision_source\": \"llm_defender\", \"llm_reasoning_summary\": \"The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.\", \"source\": \"llm_defender\", \"source_strategy_id\": \"D3_isolate_edge2_gw_for_sen4\", \"target\": \"edge2_gw\"}, \"target\": \"edge2_gw\", \"type\": \"isolate_sensor\"}}",
+        "docker_fallback": {
+          "body": "",
+          "container": "mn.cloud_policy",
+          "error": "Docker socket is not readable/writable by this user: /var/run/docker.sock. Run `sudo usermod -aG docker $USER && newgrp docker`, or pass `--no-cloud-policy-docker-fallback` / `--no-core-docker-fallback`.",
+          "ok": false,
+          "status": 0,
+          "transport": "docker_exec",
+          "url": "http://127.0.0.1:8000/context"
+        },
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "json": {
+          "cloud_policy_observe_only_normalized": false,
+          "cloud_policy_observe_only_raw": null,
+          "decision_source": "llm_defender",
+          "observe_only": false,
+          "policy_mode": "llm_direct_ryu",
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "isolate_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+              "source": "llm_defender",
+              "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+              "target": "edge2_gw"
+            },
+            "target": "edge2_gw",
+            "type": "isolate_sensor"
+          }
+        },
+        "ok": false,
+        "raw_body": "",
+        "status": 0,
+        "url": "http://127.0.0.1:8000/context"
+      },
+      "cloud_policy_context_payload": {
+        "caldera_result": {
+          "attack_effect_success": true,
+          "attempted_path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "cloud_seen": true,
+          "entry_node": "sen4",
+          "event_type": "attack_result",
+          "gateway_seen": true,
+          "operation_id": "state-sen4_edge2_clouddb",
+          "scenario_id": "sen4_edge2_clouddb",
+          "signals": {
+            "ability_link_count": 2.0,
+            "attack_active": 0.0,
+            "attack_effect_success": 1.0,
+            "cleanup_link_count": 2.0,
+            "cloud_seen": 1.0,
+            "completed_link_count": 2.0,
+            "entry_node_present": 1.0,
+            "events_total": 7.0,
+            "failed_link_count": 0.0,
+            "gateway_seen": 1.0,
+            "link_count": 4.0,
+            "success": 1.0,
+            "successful_link_count": 2.0,
+            "worker_seen": 1.0
+          },
+          "success": true,
+          "target_asset": "cloud_db",
+          "timestamp": "2026-06-26T03:50:50.355314+00:00",
+          "tool": "strategy_state",
+          "worker_seen": true
+        },
+        "defense_result": {
+          "defense_action": "isolate_sensor",
+          "defense_success": false,
+          "event_type": "defense_result",
+          "operation_id": "state-sen4_edge2_clouddb",
+          "scenario_id": "sen4_edge2_clouddb",
+          "signals": {
+            "active_policy_actions": 3,
+            "counters_stopped": true,
+            "drop_rules_active": true,
+            "flow_rules_installed": 80,
+            "meters_added": 0
+          },
+          "success": false,
+          "target": "edge2_vm_s4",
+          "timestamp": "2026-06-26T03:50:50.355314+00:00",
+          "tool": "strategy_state"
+        },
+        "llm_defender_selection": {
+          "attack_dispatch_status": "no_active_attacker_strategy",
+          "caldera_success": false,
+          "decision_source": "llm_defender",
+          "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+          "first_mulval_path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "llm_baseline_alignment": "followed",
+          "llm_fallback_constraint_name": "",
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_model": "gemma4:e4b",
+          "llm_override_reason": "",
+          "llm_provider": "ollama",
+          "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+          "llm_urgency_level": "high",
+          "mulval_path_count": 2,
+          "operation_id": "",
+          "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+          "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+          "selected_attacker_path": [],
+          "selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+        },
+        "selected_attacker_strategy": null,
+        "selected_defender_strategy": {
+          "action": "isolate_sensor",
+          "action_payload": {
+            "action": "isolate_sensor",
+            "target": "edge2_gw"
+          },
+          "decision_source": "llm_defender",
+          "executor": {
+            "type": "ryu_rest"
+          },
+          "expected_effects": [
+            "gateway_blocked",
+            "path_broken"
+          ],
+          "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+          "id": "D3_isolate_edge2_gw_for_sen4",
+          "live_attack_type": null,
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+          "mode": "llm_defender",
+          "name": "Isolate Edge 2 gateway for sen4 path",
+          "path": null,
+          "probability": 0.502206130971298,
+          "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+          "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+          "scenario_id": "sen4_edge2_clouddb",
+          "target": "edge2_gw",
+          "utility": 0.0
+        },
+        "strategy_layer": {
+          "selection": {
+            "attacker": null,
+            "defender": {
+              "action": "isolate_sensor",
+              "action_payload": {
+                "action": "isolate_sensor",
+                "target": "edge2_gw"
+              },
+              "executor": {
+                "type": "ryu_rest"
+              },
+              "expected_effects": [
+                "gateway_blocked",
+                "path_broken"
+              ],
+              "id": "D3_isolate_edge2_gw_for_sen4",
+              "live_attack_type": null,
+              "mode": "llm_defender",
+              "name": "Isolate Edge 2 gateway for sen4 path",
+              "path": null,
+              "probability": 0.502206130971298,
+              "scenario_id": "sen4_edge2_clouddb",
+              "target": "edge2_gw",
+              "utility": 0.0
+            }
+          },
+          "state": {
+            "attack_active": true,
+            "current_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "defense_active": true,
+            "mulval": {
+              "current_path_risk": 0.74,
+              "path_candidates": [
+                {
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "sen4_edge2_clouddb",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->cloud_db",
+                  "risk_score": 0.74,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "mulval_policy",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen6"
+                    },
+                    {
+                      "action": "reroute_traffic",
+                      "target": "sen6",
+                      "via": "s_edge2"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen6"
+                    }
+                  ],
+                  "entry_node": "sen6",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen6",
+                    "edge3_gw",
+                    "edge3_vm_s6",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen6_edge3_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "rate_limit",
+                      "kbps": 256,
+                      "target": "edge2_gw"
+                    },
+                    {
+                      "action": "isolate_sensor",
+                      "target": "edge2_gw"
+                    }
+                  ],
+                  "entry_node": "edge2_gw",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "edge2_gateway_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_candidates": [
+                {
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "sen4_edge2_clouddb",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->cloud_db",
+                  "risk_score": 0.74,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "mulval_policy",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_paths": [
+                [
+                  "sen4",
+                  "edge2_gw",
+                  "cloud_db"
+                ],
+                [
+                  "sen4",
+                  "edge2_gw",
+                  "edge2_vm_s4",
+                  "cloud_db"
+                ]
+              ],
+              "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+              "policy_scenario_id": "sen4_edge2_clouddb"
+            },
+            "path_stage": 2,
+            "scenario_id": "sen4_edge2_clouddb"
+          }
+        }
+      },
+      "cloud_policy_decision": {
+        "json": {
+          "cloud_policy_observe_only_normalized": false,
+          "decision_source": "llm_defender",
+          "observe_only": false,
+          "policy_mode": "llm_direct_ryu",
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "isolate_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+              "source": "llm_defender",
+              "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+              "target": "edge2_gw"
+            },
+            "target": "edge2_gw",
+            "type": "isolate_sensor"
+          }
+        },
+        "reason": "llm_selected_direct_ryu_intent",
+        "status": "skipped"
+      },
+      "defense_event": {
+        "reason": "defender action was not confirmed by Ryu/controller metrics",
+        "status": "skipped"
+      },
+      "payload": {
+        "action": "isolate_sensor",
+        "decision_source": "llm_defender",
+        "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+        "source": "llm_defender",
+        "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "target": "edge2_gw"
+      },
+      "status": "dry_run"
+    }
+  },
+  "fallback_resolution": {
+    "constraint_name": "",
+    "constraint_trigger": {
+      "attack_active": true,
+      "path_stage": 2,
+      "urgency_level": "high"
+    },
+    "fallback_explanation": "",
+    "fallback_reason": "",
+    "fallback_selection_policy": "",
+    "fallback_used": false,
+    "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+  },
+  "game": {
+    "attacker_average_utility": 0.0,
+    "attacker_payoffs": {},
+    "attacker_population": {},
+    "attacker_population_before": {},
+    "attacker_utilities": {},
+    "defender_average_utility": 0.0,
+    "defender_payoffs": {},
+    "defender_population": {
+      "D0_observe": 0.49779386902870215,
+      "D3_isolate_edge2_gw_for_sen4": 0.502206130971298
+    },
+    "defender_population_before": {
+      "D0_observe": 0.49779386902870215,
+      "D3_isolate_edge2_gw_for_sen4": 0.502206130971298
+    },
+    "defender_utilities": {
+      "D0_observe": 0,
+      "D3_isolate_edge2_gw_for_sen4": 0
+    },
+    "parameters": {
+      "eta_attacker": 0.18,
+      "eta_defender": 0.22,
+      "omega_ac": 0.65,
+      "omega_dc": 0.4,
+      "omega_gp": 0.25,
+      "omega_r": 0.25,
+      "regulatory_beta": 0.18
+    }
+  },
+  "llm": {
+    "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+    "baseline_top_defender": {
+      "base_cost": 0.42,
+      "population_share": 0.502206130971298,
+      "strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "tiebreak_reason": "utility_tie_highest_population_share",
+      "utility": 0.0
+    },
+    "baseline_top_defender_population_share": 0.502206130971298,
+    "baseline_top_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+    "baseline_top_defender_utility": 0.0,
+    "confidence": 0.95,
+    "executed_decision_reason": "llm_selected_strategy",
+    "executed_decision_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+    "executed_decision_source": "llm_defender",
+    "executed_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "executed_via_fallback": false,
+    "expected_controller_cost": 0.22,
+    "expected_qos_impact": 0.32,
+    "expected_security_gain": 0.82,
+    "fallback_constraint_name": "",
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": true,
+        "path_stage": 2,
+        "urgency_level": "high"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+    },
+    "fallback_used": false,
+    "final_baseline_alignment": "followed",
+    "final_decision_alignment_vs_baseline": "followed",
+    "final_defender_action": "isolate_sensor",
+    "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "final_defender_target": "edge2_gw",
+    "latency_ms": 101303.44804300694,
+    "llm_baseline_alignment": "followed",
+    "llm_decision_mode": "reactive_containment",
+    "llm_override_reason": "",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D3_isolate_edge2_gw_for_sen4"
+      }
+    ],
+    "llm_repeat_previous_action": false,
+    "llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "high",
+    "llm_why_not_observe": "Observation (D0_observe) is insufficient when an active attack has successfully reached the worker stage and is targeting critical cloud resources. The threat level requires immediate, decisive containment rather than passive monitoring.",
+    "llm_why_not_quarantine": "Quarantining might be too broad or disruptive without a clearer understanding of the attacker's full scope; targeted isolation (D3) is more precise for this specific path segment.",
+    "llm_why_not_rate_limit": "Rate limiting addresses volume/rate issues, but the primary threat here is unauthorized access and lateral movement through compromised infrastructure components. Isolation is a stronger preventative measure against compromise progression.",
+    "model": "gemma4:e4b",
+    "parse_success": true,
+    "prompt_preview": "Prompt mode: full\n\n{\n  \"active_defender_candidates\": [\n    {\n      \"action\": \"observe\",\n      \"baseline_utility_prior\": 0.0,\n      \"defender_population_share\": 0.497794,\n      \"expected_controller_cost\": 0.0,\n      \"expected_qos_impact\": 0.",
+    "provider": "ollama",
+    "raw_llm_alignment_vs_baseline": "followed",
+    "raw_llm_baseline_alignment": "followed",
+    "raw_llm_override_reason": "",
+    "raw_llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D3_isolate_edge2_gw_for_sen4"
+      }
+    ],
+    "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+    "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "raw_response": {
+      "baseline_alignment": "followed",
+      "confidence": 0.95,
+      "decision_mode": "reactive_containment",
+      "expected_controller_cost": 0.22,
+      "expected_qos_impact": 0.32,
+      "expected_security_gain": 0.82,
+      "override_reason": null,
+      "ranked_candidates": [
+        "D3_isolate_edge2_gw_for_sen4"
+      ],
+      "reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+      "repeat_previous_action": false,
+      "selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "telemetry_confidence": "medium",
+      "urgency_level": "high",
+      "why_not_observe": "Observation (D0_observe) is insufficient when an active attack has successfully reached the worker stage and is targeting critical cloud resources. The threat level requires immediate, decisive containment rather than passive monitoring.",
+      "why_not_quarantine": "Quarantining might be too broad or disruptive without a clearer understanding of the attacker's full scope; targeted isolation (D3) is more precise for this specific path segment.",
+      "why_not_rate_limit": "Rate limiting addresses volume/rate issues, but the primary threat here is unauthorized access and lateral movement through compromised infrastructure components. Isolation is a stronger preventative measure against compromise progression."
+    },
+    "reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+    "recovery_used": false,
+    "request_error": "",
+    "request_success": true,
+    "retries_used": 0,
+    "stage_memory": {
+      "previous_attack_effect_success": true,
+      "previous_attack_progression_continued": true,
+      "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "previous_defender_execution_status": "executed",
+      "previous_defender_strategy_id": "",
+      "previous_defender_strategy_id_note": "[stale: 'D4_isolate_edge2_vm_s4' was used in a prior stage but is NOT active at the current path_stage \u2014 do NOT reuse it]",
+      "previous_defense_confirmed": true,
+      "previous_defense_success": false,
+      "previous_stage_id": 17,
+      "previous_stage_success": false,
+      "recent_controller_deltas": {
+        "active_policy_actions_delta": 1.0,
+        "controller_apply_ms_delta": -0.007198,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 20.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 1.835062,
+        "total_memory_kb_delta": 128.0
+      },
+      "recent_qos_deltas": {
+        "controller_active_actions": 1,
+        "flow_rules_installed": 20,
+        "total_cpu_seconds": 22.835,
+        "total_memory_kb": 1296.0
+      }
+    }
+  },
+  "next_state": {
+    "attack_active": true,
+    "attack_effect_success": true,
+    "attack_success": true,
+    "attacker_observation": {
+      "estimated_containment": 0.9,
+      "estimated_risk": 0.67,
+      "estimated_success_probability": 0.42000000000000004,
+      "foothold": "sen4",
+      "observed_blocking": true,
+      "observed_path_stage": 2
+    },
+    "built_at": "2026-06-26T03:52:31.671371+00:00",
+    "controller": {
+      "active_actions": [
+        {
+          "action": "isolate_sensor",
+          "active_policy_actions": 2,
+          "cookie": "0xa11cfdef6ded5f7b",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "meters_added": 0,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "ryu_apply_duration_ms": 1.44948301021941,
+          "ryu_flow_mods_enqueued_at": "2026-06-26T03:37:20.135189+00:00",
+          "ryu_request_received_at": "2026-06-26T03:37:20.133732+00:00",
+          "status": "installed",
+          "target": "edge2_vm_s4",
+          "target_ips": [
+            "10.0.2.24"
+          ]
+        },
+        {
+          "action": "quarantine_sensor",
+          "active_policy_actions": 1,
+          "cookie": "0xa11cfe322140bf3f",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "meters_added": 0,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "ryu_apply_duration_ms": 1.4566809986718,
+          "ryu_flow_mods_enqueued_at": "2026-06-26T03:35:17.294129+00:00",
+          "ryu_request_received_at": "2026-06-26T03:35:17.292663+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        },
+        {
+          "action": "quarantine_sensor",
+          "active_policy_actions": 3,
+          "cookie": "0xa11ce14378e3df0b",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "meters_added": 0,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "ryu_apply_duration_ms": 7.780920015648007,
+          "ryu_flow_mods_enqueued_at": "2026-06-26T03:45:29.379763+00:00",
+          "ryu_request_received_at": "2026-06-26T03:45:29.371947+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        }
+      ]
+    },
+    "controller_reachable": true,
+    "counters_stopped": true,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {
+        "ability_link_count": 2.0,
+        "attack_active": 0.0,
+        "attack_effect_success": 1.0,
+        "cleanup_link_count": 2.0,
+        "cloud_seen": 1.0,
+        "completed_link_count": 2.0,
+        "entry_node_present": 1.0,
+        "events_total": 7.0,
+        "failed_link_count": 0.0,
+        "gateway_seen": 1.0,
+        "link_count": 4.0,
+        "success": 1.0,
+        "successful_link_count": 2.0,
+        "worker_seen": 1.0
+      },
+      "cloud_seen": true,
+      "defense_metrics": {},
+      "gateway_seen": true,
+      "topology": {
+        "active_action_count": 3,
+        "active_actions": [
+          {
+            "action": "isolate_sensor",
+            "active_policy_actions": 2,
+            "cookie": "0xa11cfdef6ded5f7b",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rule": "drop ipv4 and arp traffic to/from target on all switches",
+            "ryu_apply_duration_ms": 1.44948301021941,
+            "ryu_flow_mods_enqueued_at": "2026-06-26T03:37:20.135189+00:00",
+            "ryu_request_received_at": "2026-06-26T03:37:20.133732+00:00",
+            "status": "installed",
+            "target": "edge2_vm_s4",
+            "target_ips": [
+              "10.0.2.24"
+            ]
+          },
+          {
+            "action": "quarantine_sensor",
+            "active_policy_actions": 1,
+            "cookie": "0xa11cfe322140bf3f",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rule": "drop ipv4 and arp traffic to/from target on all switches",
+            "ryu_apply_duration_ms": 1.4566809986718,
+            "ryu_flow_mods_enqueued_at": "2026-06-26T03:35:17.294129+00:00",
+            "ryu_request_received_at": "2026-06-26T03:35:17.292663+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          },
+          {
+            "action": "quarantine_sensor",
+            "active_policy_actions": 3,
+            "cookie": "0xa11ce14378e3df0b",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rule": "drop ipv4 and arp traffic to/from target on all switches",
+            "ryu_apply_duration_ms": 7.780920015648007,
+            "ryu_flow_mods_enqueued_at": "2026-06-26T03:45:29.379763+00:00",
+            "ryu_request_received_at": "2026-06-26T03:45:29.371947+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          }
+        ],
+        "connected_switch_count": 5,
+        "known_host_count": 30,
+        "switch_count": 5
+      },
+      "worker_seen": true
+    },
+    "defense_active": true,
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": true,
+    "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.74,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "cloud_db"
+        ],
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "sen4_edge2_clouddb"
+    },
+    "normalized_counters_stopped": true,
+    "normalized_drop_rules_active": true,
+    "normalized_rate_limit_active": false,
+    "normalized_state_effects": {
+      "counters_stopped": true,
+      "drop_rules_active": true,
+      "rate_limit_active": false
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 3,
+      "controller_apply_ms": 7.780920015648007,
+      "flow_delete_commands": 5,
+      "flow_rules_installed": 80,
+      "meters_added": 0,
+      "total_cpu_seconds": 94.08910504299999,
+      "total_memory_kb": 424352.0
+    },
+    "path_stage": 2,
+    "path_stage_label": "worker",
+    "qos": {
+      "edge_to_cloud_latency_ms": 0.598,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 0.8457272727272728,
+      "throughput_bytes_per_second": 9313.372480053311
+    },
+    "rate_limit_active": false,
+    "raw_counters_stopped": true,
+    "raw_drop_rules_active": true,
+    "raw_rate_limit_active": false,
+    "raw_state_effects": {
+      "counters_stopped": true,
+      "drop_rules_active": true,
+      "rate_limit_active": false
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "state_effect_sources": {
+      "counters_stopped": "ryu+raw_state",
+      "drop_rules_active": "ryu+raw_state",
+      "rate_limit_active": ""
+    },
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 1971.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 455.0,
+      "gateway_received": 455.0,
+      "generated_total": 423.0,
+      "worker_requests": 455.0
+    }
+  },
+  "persistence": {
+    "decision_trace_logged": true,
+    "learning_eligible": false,
+    "learning_skipped_reason": "defender_dry_run",
+    "paper_valid_stage": false,
+    "population_saved": false,
+    "reason": "",
+    "skipped": false,
+    "stage_logged": true,
+    "summary_logged": true,
+    "valid_stage_for_learning": false
+  },
+  "recorded_at": "2026-06-26T03:53:04.588053+00:00",
+  "run_id": "stage_799fb30c567c",
+  "schema_version": "llm-mtd-live-stage-result-v1",
+  "selection": {
+    "attacker": null,
+    "defender": {
+      "action": "isolate_sensor",
+      "action_payload": {
+        "action": "isolate_sensor",
+        "target": "edge2_gw"
+      },
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "expected_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "id": "D3_isolate_edge2_gw_for_sen4",
+      "live_attack_type": null,
+      "mode": "llm_defender",
+      "name": "Isolate Edge 2 gateway for sen4 path",
+      "path": null,
+      "probability": 0.502206130971298,
+      "scenario_id": "sen4_edge2_clouddb",
+      "target": "edge2_gw",
+      "utility": 0.0
+    }
+  },
+  "stage_summary": {
+    "attacker_strategy_id": "",
+    "controller_delta": {
+      "active_policy_actions_delta": 0.0,
+      "controller_apply_ms_delta": 0.0,
+      "flow_delete_commands_delta": 0.0,
+      "flow_rules_installed_delta": 0.0,
+      "meters_added_delta": 0.0,
+      "total_cpu_seconds_delta": 1.687432,
+      "total_memory_kb_delta": 128.0
+    },
+    "decision_source": "llm_defender",
+    "defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "execution": {
+      "attacker_status": "no_active_attacker_strategy",
+      "defender_action": "isolate_sensor",
+      "defender_status": "dry_run",
+      "defender_target": "edge2_gw",
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effects_confirmed": true,
+      "defense_executed": false,
+      "defense_selected": true,
+      "executed_via_fallback": false,
+      "operationally_executed_debug_stage": false,
+      "stage_kind": "dry_run",
+      "stage_success": false,
+      "stage_valid": false
+    },
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": true,
+        "path_stage": 2,
+        "urgency_level": "high"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+    },
+    "llm": {
+      "baseline_alignment": "followed",
+      "baseline_top_defender_population_share": 0.502206130971298,
+      "baseline_top_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+      "baseline_top_defender_utility": 0.0,
+      "decision_mode": "reactive_containment",
+      "executed_decision_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+      "executed_via_fallback": false,
+      "fallback_reason": "",
+      "fallback_used": false,
+      "final_decision_alignment_vs_baseline": "followed",
+      "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "model": "gemma4:e4b",
+      "override_reason": "",
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "followed",
+      "raw_llm_baseline_alignment": "followed",
+      "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+      "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+      "repeat_previous_action": false,
+      "telemetry_confidence": "medium",
+      "urgency_level": "high",
+      "why_not_observe": "Observation (D0_observe) is insufficient when an active attack has successfully reached the worker stage and is targeting critical cloud resources. The threat level requires immediate, decisive containment rather than passive monitoring.",
+      "why_not_quarantine": "Quarantining might be too broad or disruptive without a clearer understanding of the attacker's full scope; targeted isolation (D3) is more precise for this specific path segment.",
+      "why_not_rate_limit": "Rate limiting addresses volume/rate issues, but the primary threat here is unauthorized access and lateral movement through compromised infrastructure components. Isolation is a stronger preventative measure against compromise progression."
+    },
+    "qos_delta": {
+      "sensor_to_edge_latency_ms": 1.092,
+      "throughput_bytes_per_second": -182.53
+    },
+    "recorded_at": "2026-06-26T03:53:04.586219+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "security_outcome": {
+      "attack_deactivated": false,
+      "attack_effect_success": true,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effects_confirmed": true,
+      "defense_executed": false,
+      "defense_selected": true,
+      "defense_success": false,
+      "path_regressed": false,
+      "raw_state_defense_success": false,
+      "security_progression_reduced": false
+    },
+    "stage_id": 18,
+    "stage_validation": {
+      "attack_deactivated": false,
+      "comparable_stage": true,
+      "defender_execution_status": "dry_run",
+      "defense_applied": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effect_mismatch": false,
+      "defense_effects_confirmed": true,
+      "defense_executed": false,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": false,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": null,
+          "ryu_response": true,
+          "state": true
+        },
+        "drop_rules_active": {
+          "defense_event": null,
+          "ryu_response": true,
+          "state": true
+        },
+        "rate_limit_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": null
+        }
+      },
+      "execution_stage_success": false,
+      "expected_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "invalidity_reasons": [
+        "defender_dry_run"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [],
+      "normalized_state_effects": {
+        "counters_stopped": true,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "observed_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "operationally_executed_debug_stage": false,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 2,
+      "path_stage_before": 2,
+      "raw_state_effects": {
+        "counters_stopped": true,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": false,
+      "semantic_effect_mapping_details": {
+        "gateway_blocked": {
+          "action": "isolate_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 80,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": true,
+          "path_stage_after": 2,
+          "path_stage_before": 2,
+          "target": "edge2_gw",
+          "target_is_gateway": true,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": true
+        },
+        "path_broken": {
+          "action": "isolate_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 80,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": true,
+          "path_stage_after": 2,
+          "path_stage_before": 2,
+          "target": "edge2_gw",
+          "target_is_gateway": true,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": true
+        }
+      },
+      "semantic_missing_defense_effects": [],
+      "semantic_observed_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "stage_kind": "dry_run",
+      "stage_success": false,
+      "state_effect_sources": {
+        "counters_stopped": "ryu+raw_state",
+        "drop_rules_active": "ryu+raw_state",
+        "rate_limit_active": ""
+      }
+    },
+    "summary_text": "Stage 18 for sen4_edge2_clouddb: attacker  met defender D3_isolate_edge2_gw_for_sen4. Action isolate_sensor targeting edge2_gw ended with status dry_run; defense_confirmed=False; defense_effects_confirmed=True; defense_success=False. Path stage=2. Outcome: defense was not confirmed by controller evidence. Rationale: The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db."
+  },
+  "stage_validation": {
+    "attack_deactivated": false,
+    "comparable_stage": true,
+    "defender_execution_status": "dry_run",
+    "defense_applied": false,
+    "defense_applied_but_not_effective": false,
+    "defense_confirmed": false,
+    "defense_effect_mismatch": false,
+    "defense_effects_confirmed": true,
+    "defense_executed": false,
+    "defense_selected": true,
+    "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+    "effect_source_conflict": false,
+    "effect_source_details": {
+      "counters_stopped": {
+        "defense_event": null,
+        "ryu_response": true,
+        "state": true
+      },
+      "drop_rules_active": {
+        "defense_event": null,
+        "ryu_response": true,
+        "state": true
+      },
+      "rate_limit_active": {
+        "defense_event": null,
+        "ryu_response": false,
+        "state": null
+      }
+    },
+    "execution_stage_success": false,
+    "expected_defense_effects": [
+      "gateway_blocked",
+      "path_broken"
+    ],
+    "invalidity_reasons": [
+      "defender_dry_run"
+    ],
+    "learning_valid_stage": false,
+    "llm_parse_success": true,
+    "llm_recovery_used": false,
+    "llm_request_error": "",
+    "llm_request_success": true,
+    "llm_stage_success": true,
+    "llm_stage_valid": false,
+    "missing_defense_effects": [],
+    "normalized_state_effects": {
+      "counters_stopped": true,
+      "drop_rules_active": true,
+      "rate_limit_active": false
+    },
+    "observed_defense_effects": [
+      "gateway_blocked",
+      "path_broken"
+    ],
+    "operationally_executed_debug_stage": false,
+    "paper_valid_stage": false,
+    "path_regressed": false,
+    "path_stage_after": 2,
+    "path_stage_before": 2,
+    "raw_state_effects": {
+      "counters_stopped": true,
+      "drop_rules_active": true,
+      "rate_limit_active": false
+    },
+    "security_progression_reduced": false,
+    "security_stage_success": false,
+    "semantic_effect_mapping_details": {
+      "gateway_blocked": {
+        "action": "isolate_sensor",
+        "active_action_for_target": false,
+        "flow_rules_installed": 80,
+        "installed_status": false,
+        "meters_added": 0,
+        "observed": true,
+        "path_stage_after": 2,
+        "path_stage_before": 2,
+        "target": "edge2_gw",
+        "target_is_gateway": true,
+        "target_is_worker": false,
+        "target_on_path": true,
+        "traffic_blocking": true
+      },
+      "path_broken": {
+        "action": "isolate_sensor",
+        "active_action_for_target": false,
+        "flow_rules_installed": 80,
+        "installed_status": false,
+        "meters_added": 0,
+        "observed": true,
+        "path_stage_after": 2,
+        "path_stage_before": 2,
+        "target": "edge2_gw",
+        "target_is_gateway": true,
+        "target_is_worker": false,
+        "target_on_path": true,
+        "traffic_blocking": true
+      }
+    },
+    "semantic_missing_defense_effects": [],
+    "semantic_observed_defense_effects": [
+      "gateway_blocked",
+      "path_broken"
+    ],
+    "stage_kind": "dry_run",
+    "stage_success": false,
+    "state_effect_sources": {
+      "counters_stopped": "ryu+raw_state",
+      "drop_rules_active": "ryu+raw_state",
+      "rate_limit_active": ""
+    }
+  },
+  "state": {
+    "attack_active": true,
+    "attack_effect_success": true,
+    "attack_success": true,
+    "attacker_observation": {
+      "estimated_containment": 0.9,
+      "estimated_risk": 0.67,
+      "estimated_success_probability": 0.42000000000000004,
+      "foothold": "sen4",
+      "observed_blocking": true,
+      "observed_path_stage": 2
+    },
+    "built_at": "2026-06-26T03:50:50.355314+00:00",
+    "controller": {
+      "active_actions": [
+        {
+          "action": "isolate_sensor",
+          "active_policy_actions": 2,
+          "cookie": "0xa11cfdef6ded5f7b",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "meters_added": 0,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "ryu_apply_duration_ms": 1.44948301021941,
+          "ryu_flow_mods_enqueued_at": "2026-06-26T03:37:20.135189+00:00",
+          "ryu_request_received_at": "2026-06-26T03:37:20.133732+00:00",
+          "status": "installed",
+          "target": "edge2_vm_s4",
+          "target_ips": [
+            "10.0.2.24"
+          ]
+        },
+        {
+          "action": "quarantine_sensor",
+          "active_policy_actions": 1,
+          "cookie": "0xa11cfe322140bf3f",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "meters_added": 0,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "ryu_apply_duration_ms": 1.4566809986718,
+          "ryu_flow_mods_enqueued_at": "2026-06-26T03:35:17.294129+00:00",
+          "ryu_request_received_at": "2026-06-26T03:35:17.292663+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        },
+        {
+          "action": "quarantine_sensor",
+          "active_policy_actions": 3,
+          "cookie": "0xa11ce14378e3df0b",
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 20,
+          "meters_added": 0,
+          "rule": "drop ipv4 and arp traffic to/from target on all switches",
+          "ryu_apply_duration_ms": 7.780920015648007,
+          "ryu_flow_mods_enqueued_at": "2026-06-26T03:45:29.379763+00:00",
+          "ryu_request_received_at": "2026-06-26T03:45:29.371947+00:00",
+          "status": "installed",
+          "target": "sen4",
+          "target_ips": [
+            "10.0.2.14"
+          ]
+        }
+      ]
+    },
+    "controller_reachable": true,
+    "counters_stopped": true,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {
+        "ability_link_count": 2.0,
+        "attack_active": 0.0,
+        "attack_effect_success": 1.0,
+        "cleanup_link_count": 2.0,
+        "cloud_seen": 1.0,
+        "completed_link_count": 2.0,
+        "entry_node_present": 1.0,
+        "events_total": 7.0,
+        "failed_link_count": 0.0,
+        "gateway_seen": 1.0,
+        "link_count": 4.0,
+        "success": 1.0,
+        "successful_link_count": 2.0,
+        "worker_seen": 1.0
+      },
+      "cloud_seen": true,
+      "defense_metrics": {},
+      "gateway_seen": true,
+      "topology": {
+        "active_action_count": 3,
+        "active_actions": [
+          {
+            "action": "isolate_sensor",
+            "active_policy_actions": 2,
+            "cookie": "0xa11cfdef6ded5f7b",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rule": "drop ipv4 and arp traffic to/from target on all switches",
+            "ryu_apply_duration_ms": 1.44948301021941,
+            "ryu_flow_mods_enqueued_at": "2026-06-26T03:37:20.135189+00:00",
+            "ryu_request_received_at": "2026-06-26T03:37:20.133732+00:00",
+            "status": "installed",
+            "target": "edge2_vm_s4",
+            "target_ips": [
+              "10.0.2.24"
+            ]
+          },
+          {
+            "action": "quarantine_sensor",
+            "active_policy_actions": 1,
+            "cookie": "0xa11cfe322140bf3f",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rule": "drop ipv4 and arp traffic to/from target on all switches",
+            "ryu_apply_duration_ms": 1.4566809986718,
+            "ryu_flow_mods_enqueued_at": "2026-06-26T03:35:17.294129+00:00",
+            "ryu_request_received_at": "2026-06-26T03:35:17.292663+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          },
+          {
+            "action": "quarantine_sensor",
+            "active_policy_actions": 3,
+            "cookie": "0xa11ce14378e3df0b",
+            "flow_delete_commands": 0,
+            "flow_rules_installed": 20,
+            "meters_added": 0,
+            "rule": "drop ipv4 and arp traffic to/from target on all switches",
+            "ryu_apply_duration_ms": 7.780920015648007,
+            "ryu_flow_mods_enqueued_at": "2026-06-26T03:45:29.379763+00:00",
+            "ryu_request_received_at": "2026-06-26T03:45:29.371947+00:00",
+            "status": "installed",
+            "target": "sen4",
+            "target_ips": [
+              "10.0.2.14"
+            ]
+          }
+        ],
+        "connected_switch_count": 5,
+        "known_host_count": 30,
+        "switch_count": 5
+      },
+      "worker_seen": true
+    },
+    "defense_active": true,
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": true,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.74,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "cloud_db"
+        ],
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "sen4_edge2_clouddb"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 3,
+      "controller_apply_ms": 7.780920015648007,
+      "flow_delete_commands": 5,
+      "flow_rules_installed": 80,
+      "meters_added": 0,
+      "total_cpu_seconds": 92.40167322899998,
+      "total_memory_kb": 424224.0
+    },
+    "path_stage": 2,
+    "path_stage_label": "worker",
+    "qos": {
+      "edge_to_cloud_latency_ms": 1.8619999999999999,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 1.8872727272727274,
+      "throughput_bytes_per_second": 9323.853081741243
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 1871.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 455.0,
+      "gateway_received": 455.0,
+      "generated_total": 423.0,
+      "worker_requests": 455.0
+    }
+  },
+  "strategy_space_checksum": "4d631e5db5b1e80c",
+  "transition": {
+    "average_utility": {
+      "attacker": 0.0,
+      "defender": 0.0
+    },
+    "baseline_game_prior": {
+      "attacker": {},
+      "defender": {
+        "action": "isolate_sensor",
+        "action_payload": {
+          "action": "isolate_sensor",
+          "target": "edge2_gw"
+        },
+        "canonical_baseline_top": {
+          "base_cost": 0.42,
+          "population_share": 0.502206130971298,
+          "strategy_id": "D3_isolate_edge2_gw_for_sen4",
+          "tiebreak_reason": "utility_tie_highest_population_share",
+          "utility": 0.0
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "path": null,
+        "population_after": 0.502206130971298,
+        "population_after_rank": 1,
+        "population_before": 0.502206130971298,
+        "population_before_rank": 1,
+        "population_delta": 0.0,
+        "probability": 0.502206130971298,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "edge2_gw",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "baseline_top_defender_population_share": 0.502206130971298,
+    "baseline_top_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+    "baseline_top_defender_utility": 0.0,
+    "decision_source": "llm_defender",
+    "executed_decision_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+    "executed_via_fallback": false,
+    "execution": {
+      "attacker": {
+        "status": "no_active_attacker_strategy"
+      },
+      "defender": {
+        "cloud_policy_context": {
+          "body": "{\"cloud_policy_observe_only_normalized\": false, \"cloud_policy_observe_only_raw\": null, \"decision_source\": \"llm_defender\", \"observe_only\": false, \"policy_mode\": \"llm_direct_ryu\", \"selected_action\": {\"reason\": \"LLM-selected defender strategy was sent directly to Ryu.\", \"ryu_intent\": {\"action\": \"isolate_sensor\", \"decision_source\": \"llm_defender\", \"llm_reasoning_summary\": \"The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.\", \"source\": \"llm_defender\", \"source_strategy_id\": \"D3_isolate_edge2_gw_for_sen4\", \"target\": \"edge2_gw\"}, \"target\": \"edge2_gw\", \"type\": \"isolate_sensor\"}}",
+          "docker_fallback": {
+            "body": "",
+            "container": "mn.cloud_policy",
+            "error": "Docker socket is not readable/writable by this user: /var/run/docker.sock. Run `sudo usermod -aG docker $USER && newgrp docker`, or pass `--no-cloud-policy-docker-fallback` / `--no-core-docker-fallback`.",
+            "ok": false,
+            "status": 0,
+            "transport": "docker_exec",
+            "url": "http://127.0.0.1:8000/context"
+          },
+          "error": "<urlopen error [Errno 111] Connection refused>",
+          "json": {
+            "cloud_policy_observe_only_normalized": false,
+            "cloud_policy_observe_only_raw": null,
+            "decision_source": "llm_defender",
+            "observe_only": false,
+            "policy_mode": "llm_direct_ryu",
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "isolate_sensor",
+                "decision_source": "llm_defender",
+                "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+                "source": "llm_defender",
+                "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+                "target": "edge2_gw"
+              },
+              "target": "edge2_gw",
+              "type": "isolate_sensor"
+            }
+          },
+          "ok": false,
+          "raw_body": "",
+          "status": 0,
+          "url": "http://127.0.0.1:8000/context"
+        },
+        "cloud_policy_context_payload": {
+          "caldera_result": {
+            "attack_effect_success": true,
+            "attempted_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "cloud_seen": true,
+            "entry_node": "sen4",
+            "event_type": "attack_result",
+            "gateway_seen": true,
+            "operation_id": "state-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb",
+            "signals": {
+              "ability_link_count": 2.0,
+              "attack_active": 0.0,
+              "attack_effect_success": 1.0,
+              "cleanup_link_count": 2.0,
+              "cloud_seen": 1.0,
+              "completed_link_count": 2.0,
+              "entry_node_present": 1.0,
+              "events_total": 7.0,
+              "failed_link_count": 0.0,
+              "gateway_seen": 1.0,
+              "link_count": 4.0,
+              "success": 1.0,
+              "successful_link_count": 2.0,
+              "worker_seen": 1.0
+            },
+            "success": true,
+            "target_asset": "cloud_db",
+            "timestamp": "2026-06-26T03:50:50.355314+00:00",
+            "tool": "strategy_state",
+            "worker_seen": true
+          },
+          "defense_result": {
+            "defense_action": "isolate_sensor",
+            "defense_success": false,
+            "event_type": "defense_result",
+            "operation_id": "state-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb",
+            "signals": {
+              "active_policy_actions": 3,
+              "counters_stopped": true,
+              "drop_rules_active": true,
+              "flow_rules_installed": 80,
+              "meters_added": 0
+            },
+            "success": false,
+            "target": "edge2_vm_s4",
+            "timestamp": "2026-06-26T03:50:50.355314+00:00",
+            "tool": "strategy_state"
+          },
+          "llm_defender_selection": {
+            "attack_dispatch_status": "no_active_attacker_strategy",
+            "caldera_success": false,
+            "decision_source": "llm_defender",
+            "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+            "first_mulval_path": [
+              "sen4",
+              "edge2_gw",
+              "cloud_db"
+            ],
+            "llm_baseline_alignment": "followed",
+            "llm_fallback_constraint_name": "",
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_model": "gemma4:e4b",
+            "llm_override_reason": "",
+            "llm_provider": "ollama",
+            "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+            "llm_urgency_level": "high",
+            "mulval_path_count": 2,
+            "operation_id": "",
+            "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+            "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+            "selected_attacker_path": [],
+            "selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+          },
+          "selected_attacker_strategy": null,
+          "selected_defender_strategy": {
+            "action": "isolate_sensor",
+            "action_payload": {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            },
+            "decision_source": "llm_defender",
+            "executor": {
+              "type": "ryu_rest"
+            },
+            "expected_effects": [
+              "gateway_blocked",
+              "path_broken"
+            ],
+            "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+            "id": "D3_isolate_edge2_gw_for_sen4",
+            "live_attack_type": null,
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+            "mode": "llm_defender",
+            "name": "Isolate Edge 2 gateway for sen4 path",
+            "path": null,
+            "probability": 0.502206130971298,
+            "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+            "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+            "scenario_id": "sen4_edge2_clouddb",
+            "target": "edge2_gw",
+            "utility": 0.0
+          },
+          "strategy_layer": {
+            "selection": {
+              "attacker": null,
+              "defender": {
+                "action": "isolate_sensor",
+                "action_payload": {
+                  "action": "isolate_sensor",
+                  "target": "edge2_gw"
+                },
+                "executor": {
+                  "type": "ryu_rest"
+                },
+                "expected_effects": [
+                  "gateway_blocked",
+                  "path_broken"
+                ],
+                "id": "D3_isolate_edge2_gw_for_sen4",
+                "live_attack_type": null,
+                "mode": "llm_defender",
+                "name": "Isolate Edge 2 gateway for sen4 path",
+                "path": null,
+                "probability": 0.502206130971298,
+                "scenario_id": "sen4_edge2_clouddb",
+                "target": "edge2_gw",
+                "utility": 0.0
+              }
+            },
+            "state": {
+              "attack_active": true,
+              "current_path": [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ],
+              "defense_active": true,
+              "mulval": {
+                "current_path_risk": 0.74,
+                "path_candidates": [
+                  {
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "sen4_edge2_clouddb",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->cloud_db",
+                    "risk_score": 0.74,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "mulval_policy",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen6"
+                      },
+                      {
+                        "action": "reroute_traffic",
+                        "target": "sen6",
+                        "via": "s_edge2"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen6"
+                      }
+                    ],
+                    "entry_node": "sen6",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen6",
+                      "edge3_gw",
+                      "edge3_vm_s6",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen6_edge3_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "rate_limit",
+                        "kbps": 256,
+                        "target": "edge2_gw"
+                      },
+                      {
+                        "action": "isolate_sensor",
+                        "target": "edge2_gw"
+                      }
+                    ],
+                    "entry_node": "edge2_gw",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "edge2_gateway_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_candidates": [
+                  {
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "sen4_edge2_clouddb",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->cloud_db",
+                    "risk_score": 0.74,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "mulval_policy",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_paths": [
+                  [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ]
+                ],
+                "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+                "policy_scenario_id": "sen4_edge2_clouddb"
+              },
+              "path_stage": 2,
+              "scenario_id": "sen4_edge2_clouddb"
+            }
+          }
+        },
+        "cloud_policy_decision": {
+          "json": {
+            "cloud_policy_observe_only_normalized": false,
+            "decision_source": "llm_defender",
+            "observe_only": false,
+            "policy_mode": "llm_direct_ryu",
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "isolate_sensor",
+                "decision_source": "llm_defender",
+                "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+                "source": "llm_defender",
+                "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+                "target": "edge2_gw"
+              },
+              "target": "edge2_gw",
+              "type": "isolate_sensor"
+            }
+          },
+          "reason": "llm_selected_direct_ryu_intent",
+          "status": "skipped"
+        },
+        "defense_event": {
+          "reason": "defender action was not confirmed by Ryu/controller metrics",
+          "status": "skipped"
+        },
+        "payload": {
+          "action": "isolate_sensor",
+          "decision_source": "llm_defender",
+          "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+          "source": "llm_defender",
+          "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+          "target": "edge2_gw"
+        },
+        "status": "dry_run"
+      }
+    },
+    "execution_summary": {
+      "attacker": {
+        "attempted_path": [],
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "expected_effects": [],
+        "live_attack_type": "",
+        "operation_id": "",
+        "status": "no_active_attacker_strategy",
+        "strategy_id": "",
+        "strategy_name": ""
+      },
+      "defender": {
+        "action": "isolate_sensor",
+        "cloud_policy": {
+          "accepted_keys": [],
+          "context_http_status": 0,
+          "context_ok": false,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "isolate_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+              "source": "llm_defender",
+              "source_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+              "target": "edge2_gw"
+            },
+            "target": "edge2_gw",
+            "type": "isolate_sensor"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {},
+          "status": "skipped",
+          "url": ""
+        },
+        "ryu_response": {
+          "action": "isolate_sensor",
+          "active_policy_actions": 0,
+          "apply_duration_ms": 0.0,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "http_status": 0,
+          "meters_added": 0,
+          "ok": false,
+          "rule": "",
+          "status": "",
+          "target": "edge2_gw",
+          "target_ips": []
+        },
+        "status": "dry_run",
+        "target": "edge2_gw"
+      }
+    },
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": true,
+        "path_stage": 2,
+        "urgency_level": "high"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+    },
+    "final_baseline_alignment": "followed",
+    "final_decision_alignment_vs_baseline": "followed",
+    "final_defender_action": "isolate_sensor",
+    "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "final_defender_target": "edge2_gw",
+    "inference": {
+      "attacker_execution_status": "no_active_attacker_strategy",
+      "attacker_expected_effects": [],
+      "attacker_progressed": false,
+      "attacker_strategy_id": "",
+      "caldera_abilities_ran": 0,
+      "defender_execution_status": "dry_run",
+      "defender_expected_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "defense_applied": false,
+      "defense_containment_observed": true,
+      "defense_observed": false,
+      "path_frozen": true,
+      "path_stage_delta": 0
+    },
+    "llm": {
+      "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+      "baseline_top_defender": {
+        "base_cost": 0.42,
+        "population_share": 0.502206130971298,
+        "strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "tiebreak_reason": "utility_tie_highest_population_share",
+        "utility": 0.0
+      },
+      "baseline_top_defender_population_share": 0.502206130971298,
+      "baseline_top_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+      "baseline_top_defender_utility": 0.0,
+      "confidence": 0.95,
+      "executed_decision_reason": "llm_selected_strategy",
+      "executed_decision_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+      "executed_decision_source": "llm_defender",
+      "executed_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "executed_via_fallback": false,
+      "expected_controller_cost": 0.22,
+      "expected_qos_impact": 0.32,
+      "expected_security_gain": 0.82,
+      "fallback_constraint_name": "",
+      "fallback_reason": "",
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": true,
+          "path_stage": 2,
+          "urgency_level": "high"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+      },
+      "fallback_used": false,
+      "final_baseline_alignment": "followed",
+      "final_decision_alignment_vs_baseline": "followed",
+      "final_defender_action": "isolate_sensor",
+      "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "final_defender_target": "edge2_gw",
+      "llm_baseline_alignment": "followed",
+      "llm_decision_mode": "reactive_containment",
+      "llm_override_reason": "",
+      "llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D3_isolate_edge2_gw_for_sen4"
+        }
+      ],
+      "llm_repeat_previous_action": false,
+      "llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "llm_stage_memory_used": true,
+      "llm_telemetry_confidence": "medium",
+      "llm_urgency_level": "high",
+      "llm_why_not_observe": "Observation (D0_observe) is insufficient when an active attack has successfully reached the worker stage and is targeting critical cloud resources. The threat level requires immediate, decisive containment rather than passive monitoring.",
+      "llm_why_not_quarantine": "Quarantining might be too broad or disruptive without a clearer understanding of the attacker's full scope; targeted isolation (D3) is more precise for this specific path segment.",
+      "llm_why_not_rate_limit": "Rate limiting addresses volume/rate issues, but the primary threat here is unauthorized access and lateral movement through compromised infrastructure components. Isolation is a stronger preventative measure against compromise progression.",
+      "model": "gemma4:e4b",
+      "parse_success": true,
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "followed",
+      "raw_llm_baseline_alignment": "followed",
+      "raw_llm_override_reason": "",
+      "raw_llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D3_isolate_edge2_gw_for_sen4"
+        }
+      ],
+      "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+      "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true,
+      "stage_memory": {
+        "previous_attack_effect_success": true,
+        "previous_attack_progression_continued": true,
+        "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+        "previous_defender_execution_status": "executed",
+        "previous_defender_strategy_id": "",
+        "previous_defender_strategy_id_note": "[stale: 'D4_isolate_edge2_vm_s4' was used in a prior stage but is NOT active at the current path_stage \u2014 do NOT reuse it]",
+        "previous_defense_confirmed": true,
+        "previous_defense_success": false,
+        "previous_stage_id": 17,
+        "previous_stage_success": false,
+        "recent_controller_deltas": {
+          "active_policy_actions_delta": 1.0,
+          "controller_apply_ms_delta": -0.007198,
+          "flow_delete_commands_delta": 0.0,
+          "flow_rules_installed_delta": 20.0,
+          "meters_added_delta": 0.0,
+          "total_cpu_seconds_delta": 1.835062,
+          "total_memory_kb_delta": 128.0
+        },
+        "recent_qos_deltas": {
+          "controller_active_actions": 1,
+          "flow_rules_installed": 20,
+          "total_cpu_seconds": 22.835,
+          "total_memory_kb": 1296.0
+        }
+      }
+    },
+    "llm_baseline_alignment": "followed",
+    "llm_decision_mode": "reactive_containment",
+    "llm_expected_controller_cost": 0.22,
+    "llm_expected_qos_impact": 0.32,
+    "llm_expected_security_gain": 0.82,
+    "llm_override_reason": "",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D3_isolate_edge2_gw_for_sen4"
+      }
+    ],
+    "llm_repeat_previous_action": false,
+    "llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "high",
+    "llm_why_not_observe": "Observation (D0_observe) is insufficient when an active attack has successfully reached the worker stage and is targeting critical cloud resources. The threat level requires immediate, decisive containment rather than passive monitoring.",
+    "llm_why_not_quarantine": "Quarantining might be too broad or disruptive without a clearer understanding of the attacker's full scope; targeted isolation (D3) is more precise for this specific path segment.",
+    "llm_why_not_rate_limit": "Rate limiting addresses volume/rate issues, but the primary threat here is unauthorized access and lateral movement through compromised infrastructure components. Isolation is a stronger preventative measure against compromise progression.",
+    "next_state": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "built_at": "2026-06-26T03:52:31.671371+00:00",
+      "counters_stopped": true,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": true,
+      "defense_success": false,
+      "drop_rules_active": true,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.74,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 3,
+        "controller_apply_ms": 7.780920015648007,
+        "flow_delete_commands": 5,
+        "flow_rules_installed": 80,
+        "meters_added": 0,
+        "total_cpu_seconds": 94.08910504299999,
+        "total_memory_kb": 424352.0
+      },
+      "path_stage": 2,
+      "path_stage_label": "worker",
+      "qos": {
+        "edge_to_cloud_latency_ms": 0.598,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 0.8457272727272728,
+        "throughput_bytes_per_second": 9313.372480053311
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 1971.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 455.0,
+        "gateway_received": 455.0,
+        "generated_total": 423.0,
+        "worker_requests": 455.0
+      }
+    },
+    "population_after": {
+      "attacker": {},
+      "defender": {
+        "D0_observe": 0.49779386902870215,
+        "D3_isolate_edge2_gw_for_sen4": 0.502206130971298
+      }
+    },
+    "population_before": {
+      "attacker": {},
+      "defender": {
+        "D0_observe": 0.49779386902870215,
+        "D3_isolate_edge2_gw_for_sen4": 0.502206130971298
+      }
+    },
+    "previous_state": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "built_at": "2026-06-26T03:50:50.355314+00:00",
+      "counters_stopped": true,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": true,
+      "defense_success": false,
+      "drop_rules_active": true,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.74,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 3,
+        "controller_apply_ms": 7.780920015648007,
+        "flow_delete_commands": 5,
+        "flow_rules_installed": 80,
+        "meters_added": 0,
+        "total_cpu_seconds": 92.40167322899998,
+        "total_memory_kb": 424224.0
+      },
+      "path_stage": 2,
+      "path_stage_label": "worker",
+      "qos": {
+        "edge_to_cloud_latency_ms": 1.8619999999999999,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 1.8872727272727274,
+        "throughput_bytes_per_second": 9323.853081741243
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 1871.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 455.0,
+        "gateway_received": 455.0,
+        "generated_total": 423.0,
+        "worker_requests": 455.0
+      }
+    },
+    "raw_llm_alignment_vs_baseline": "followed",
+    "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+    "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+    "recorded_at": "2026-06-26T03:52:31.671777+00:00",
+    "schema_version": "llm-mtd-stage-transition-v2",
+    "selection": {
+      "attacker": {},
+      "defender": {
+        "action": "isolate_sensor",
+        "action_payload": {
+          "action": "isolate_sensor",
+          "target": "edge2_gw"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "path": null,
+        "population_after": 0.502206130971298,
+        "population_after_rank": 1,
+        "population_before": 0.502206130971298,
+        "population_before_rank": 1,
+        "population_delta": 0.0,
+        "probability": 0.502206130971298,
+        "scenario_id": "sen4_edge2_clouddb",
+        "selection_mode": "llm_defender",
+        "selection_note": "selected by highest population share (EGT replicator dynamic), not by current-round utility",
+        "target": "edge2_gw",
+        "utility": 0.0,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 18,
+    "stage_summary": {
+      "attacker_strategy_id": "",
+      "controller_delta": {
+        "active_policy_actions_delta": 0.0,
+        "controller_apply_ms_delta": 0.0,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 0.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 1.687432,
+        "total_memory_kb_delta": 128.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+      "execution": {
+        "attacker_status": "no_active_attacker_strategy",
+        "defender_action": "isolate_sensor",
+        "defender_status": "dry_run",
+        "defender_target": "edge2_gw",
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "executed_via_fallback": false,
+        "operationally_executed_debug_stage": false,
+        "stage_kind": "dry_run",
+        "stage_success": false,
+        "stage_valid": false
+      },
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": true,
+          "path_stage": 2,
+          "urgency_level": "high"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4"
+      },
+      "llm": {
+        "baseline_alignment": "followed",
+        "baseline_top_defender_population_share": 0.502206130971298,
+        "baseline_top_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "baseline_top_defender_tiebreak_reason": "utility_tie_highest_population_share",
+        "baseline_top_defender_utility": 0.0,
+        "decision_mode": "reactive_containment",
+        "executed_decision_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+        "executed_via_fallback": false,
+        "fallback_reason": "",
+        "fallback_used": false,
+        "final_decision_alignment_vs_baseline": "followed",
+        "final_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "model": "gemma4:e4b",
+        "override_reason": "",
+        "provider": "ollama",
+        "raw_llm_alignment_vs_baseline": "followed",
+        "raw_llm_baseline_alignment": "followed",
+        "raw_llm_reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+        "raw_llm_selected_defender_strategy_id": "D3_isolate_edge2_gw_for_sen4",
+        "reasoning_summary": "The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db.",
+        "repeat_previous_action": false,
+        "telemetry_confidence": "medium",
+        "urgency_level": "high",
+        "why_not_observe": "Observation (D0_observe) is insufficient when an active attack has successfully reached the worker stage and is targeting critical cloud resources. The threat level requires immediate, decisive containment rather than passive monitoring.",
+        "why_not_quarantine": "Quarantining might be too broad or disruptive without a clearer understanding of the attacker's full scope; targeted isolation (D3) is more precise for this specific path segment.",
+        "why_not_rate_limit": "Rate limiting addresses volume/rate issues, but the primary threat here is unauthorized access and lateral movement through compromised infrastructure components. Isolation is a stronger preventative measure against compromise progression."
+      },
+      "qos_delta": {
+        "sensor_to_edge_latency_ms": 1.092,
+        "throughput_bytes_per_second": -182.53
+      },
+      "recorded_at": "2026-06-26T03:53:04.586219+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_deactivated": false,
+        "attack_effect_success": true,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "defense_success": false,
+        "path_regressed": false,
+        "raw_state_defense_success": false,
+        "security_progression_reduced": false
+      },
+      "stage_id": 18,
+      "stage_validation": {
+        "attack_deactivated": false,
+        "comparable_stage": true,
+        "defender_execution_status": "dry_run",
+        "defense_applied": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effect_mismatch": false,
+        "defense_effects_confirmed": true,
+        "defense_executed": false,
+        "defense_selected": true,
+        "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+        "effect_source_conflict": false,
+        "effect_source_details": {
+          "counters_stopped": {
+            "defense_event": null,
+            "ryu_response": true,
+            "state": true
+          },
+          "drop_rules_active": {
+            "defense_event": null,
+            "ryu_response": true,
+            "state": true
+          },
+          "rate_limit_active": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": null
+          }
+        },
+        "execution_stage_success": false,
+        "expected_defense_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "invalidity_reasons": [
+          "defender_dry_run"
+        ],
+        "learning_valid_stage": false,
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_success": true,
+        "llm_stage_valid": false,
+        "missing_defense_effects": [],
+        "normalized_state_effects": {
+          "counters_stopped": true,
+          "drop_rules_active": true,
+          "rate_limit_active": false
+        },
+        "observed_defense_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "operationally_executed_debug_stage": false,
+        "paper_valid_stage": false,
+        "path_regressed": false,
+        "path_stage_after": 2,
+        "path_stage_before": 2,
+        "raw_state_effects": {
+          "counters_stopped": true,
+          "drop_rules_active": true,
+          "rate_limit_active": false
+        },
+        "security_progression_reduced": false,
+        "security_stage_success": false,
+        "semantic_effect_mapping_details": {
+          "gateway_blocked": {
+            "action": "isolate_sensor",
+            "active_action_for_target": false,
+            "flow_rules_installed": 80,
+            "installed_status": false,
+            "meters_added": 0,
+            "observed": true,
+            "path_stage_after": 2,
+            "path_stage_before": 2,
+            "target": "edge2_gw",
+            "target_is_gateway": true,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": true
+          },
+          "path_broken": {
+            "action": "isolate_sensor",
+            "active_action_for_target": false,
+            "flow_rules_installed": 80,
+            "installed_status": false,
+            "meters_added": 0,
+            "observed": true,
+            "path_stage_after": 2,
+            "path_stage_before": 2,
+            "target": "edge2_gw",
+            "target_is_gateway": true,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": true
+          }
+        },
+        "semantic_missing_defense_effects": [],
+        "semantic_observed_defense_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "stage_kind": "dry_run",
+        "stage_success": false,
+        "state_effect_sources": {
+          "counters_stopped": "ryu+raw_state",
+          "drop_rules_active": "ryu+raw_state",
+          "rate_limit_active": ""
+        }
+      },
+      "summary_text": "Stage 18 for sen4_edge2_clouddb: attacker  met defender D3_isolate_edge2_gw_for_sen4. Action isolate_sensor targeting edge2_gw ended with status dry_run; defense_confirmed=False; defense_effects_confirmed=True; defense_success=False. Path stage=2. Outcome: defense was not confirmed by controller evidence. Rationale: The current evidence shows an active attack (attack_active: true) progressing through the critical path stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The attacker has successfully progressed to the worker stage (path_stage=2, label='worker') and is targeting high-value assets like 'cloud_db'. Given the confirmed attack activity and the immediate threat of lateral movement towards critical backend resources, a strong reactive containment measure is necessary. D3_isolate_edge2_gw_for_sen4 provides significant security gain (0.82) by isolating the gateway at edge2_gw, which is a key choke point in the observed attack path. This action directly addresses the immediate threat of lateral movement and potential data exfiltration from the cloud_db."
+    },
+    "stage_validation": {
+      "attack_deactivated": false,
+      "comparable_stage": true,
+      "defender_execution_status": "dry_run",
+      "defense_applied": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effect_mismatch": false,
+      "defense_effects_confirmed": true,
+      "defense_executed": false,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": false,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": null,
+          "ryu_response": true,
+          "state": true
+        },
+        "drop_rules_active": {
+          "defense_event": null,
+          "ryu_response": true,
+          "state": true
+        },
+        "rate_limit_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": null
+        }
+      },
+      "execution_stage_success": false,
+      "expected_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "invalidity_reasons": [
+        "defender_dry_run"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [],
+      "normalized_state_effects": {
+        "counters_stopped": true,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "observed_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "operationally_executed_debug_stage": false,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 2,
+      "path_stage_before": 2,
+      "raw_state_effects": {
+        "counters_stopped": true,
+        "drop_rules_active": true,
+        "rate_limit_active": false
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": false,
+      "semantic_effect_mapping_details": {
+        "gateway_blocked": {
+          "action": "isolate_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 80,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": true,
+          "path_stage_after": 2,
+          "path_stage_before": 2,
+          "target": "edge2_gw",
+          "target_is_gateway": true,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": true
+        },
+        "path_broken": {
+          "action": "isolate_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 80,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": true,
+          "path_stage_after": 2,
+          "path_stage_before": 2,
+          "target": "edge2_gw",
+          "target_is_gateway": true,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": true
+        }
+      },
+      "semantic_missing_defense_effects": [],
+      "semantic_observed_defense_effects": [
+        "gateway_blocked",
+        "path_broken"
+      ],
+      "stage_kind": "dry_run",
+      "stage_success": false,
+      "state_effect_sources": {
+        "counters_stopped": "ryu+raw_state",
+        "drop_rules_active": "ryu+raw_state",
+        "rate_limit_active": ""
+      }
+    },
+    "state_summary": {
+      "attack_active": true,
+      "attack_effect_success": true,
+      "attack_success": true,
+      "cloud_seen": true,
+      "controller_active_actions": 3,
+      "counters_stopped": true,
+      "defense_active": true,
+      "defense_success": false,
+      "drop_rules_active": true,
+      "flow_rules_installed": 80,
+      "gateway_seen": true,
+      "meters_added": 0,
+      "normalized_counters_stopped": true,
+      "normalized_drop_rules_active": true,
+      "normalized_rate_limit_active": false,
+      "path_stage": 2,
+      "path_stage_label": "worker",
+      "rate_limit_active": false,
+      "raw_counters_stopped": true,
+      "raw_drop_rules_active": true,
+      "raw_rate_limit_active": false,
+      "raw_state_defense_success": false,
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": true
+    },
+    "transition_id": "307e901586d44d6c9794f864159fbd81"
+  }
+}

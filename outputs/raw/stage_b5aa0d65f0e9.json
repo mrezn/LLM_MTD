@@ -1,0 +1,3930 @@
+{
+  "active": {
+    "attacker_ids": [
+      "A2_sensor_http_abuse_sen4",
+      "A6_sen4_edge_to_cloud_probe"
+    ],
+    "attackers": [
+      {
+        "action": "sensor_to_edge_http_abuse",
+        "base_cost": 0.35,
+        "base_reward": 0.82,
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db"
+      },
+      {
+        "action": "edge_to_cloud_probe",
+        "base_cost": 0.28,
+        "base_reward": 0.58,
+        "expected_effects": [
+          "cloud_seen",
+          "cloud_summary_rate_changes"
+        ],
+        "id": "A6_sen4_edge_to_cloud_probe",
+        "name": "Probe cloud reachability after sen4 Edge 2 pivot",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db"
+      }
+    ],
+    "defender_ids": [
+      "D0_observe",
+      "D1_quarantine_sen4",
+      "D2_rate_limit_sen4",
+      "D3_isolate_edge2_gw_for_sen4",
+      "D4_isolate_edge2_vm_s4"
+    ],
+    "defenders": [
+      {
+        "action": "observe",
+        "base_cost": 0.02,
+        "base_reward": 0.05,
+        "expected_effects": [
+          "strategy_context_recorded"
+        ],
+        "id": "D0_observe",
+        "name": "Observe and log current strategy context",
+        "scenario_id": "*",
+        "target": ""
+      },
+      {
+        "action": "quarantine_sensor",
+        "base_cost": 0.2,
+        "base_reward": 0.75,
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "name": "Quarantine sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4"
+      },
+      {
+        "action": "rate_limit",
+        "base_cost": 0.13,
+        "base_reward": 0.55,
+        "expected_effects": [
+          "throttled_traffic",
+          "lower_gateway_queue"
+        ],
+        "id": "D2_rate_limit_sen4",
+        "name": "Rate-limit sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4"
+      },
+      {
+        "action": "isolate_sensor",
+        "base_cost": 0.42,
+        "base_reward": 0.82,
+        "expected_effects": [
+          "gateway_blocked",
+          "path_broken"
+        ],
+        "id": "D3_isolate_edge2_gw_for_sen4",
+        "name": "Isolate Edge 2 gateway for sen4 path",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_gw"
+      },
+      {
+        "action": "isolate_sensor",
+        "base_cost": 0.32,
+        "base_reward": 0.74,
+        "expected_effects": [
+          "worker_blocked",
+          "cloud_progression_suppressed"
+        ],
+        "id": "D4_isolate_edge2_vm_s4",
+        "name": "Isolate Edge 2 worker for sen4",
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "edge2_vm_s4"
+      }
+    ]
+  },
+  "decision_source": "llm_defender",
+  "decision_trace": {
+    "average_utility": {
+      "attacker": 0.27056238160000007,
+      "defender": 0.4453631493939394
+    },
+    "baseline_game_prior": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.502532577896,
+        "population_after_rank": 1,
+        "population_before": 0.5,
+        "population_before_rank": 1,
+        "population_delta": 0.0025325778960000322,
+        "probability": 0.502532577896,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.2987021360000001,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "action_payload": {
+          "action": "quarantine_sensor",
+          "target": "sen4"
+        },
+        "canonical_baseline_top": {
+          "base_cost": 0.2,
+          "population_share": 0.20379772323333334,
+          "strategy_id": "D1_quarantine_sen4",
+          "tiebreak_reason": "highest_utility",
+          "utility": 0.531675041060606
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Quarantine sen4",
+        "path": null,
+        "population_after": 0.20379772323333334,
+        "population_after_rank": 1,
+        "population_before": 0.2,
+        "population_before_rank": 1,
+        "population_delta": 0.0037977232333333277,
+        "probability": 0.20379772323333334,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4",
+        "utility": 0.531675041060606,
+        "utility_rank": 1
+      }
+    },
+    "baseline_top_defender_population_share": 0.20379772323333334,
+    "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+    "baseline_top_defender_tiebreak_reason": "highest_utility",
+    "baseline_top_defender_utility": 0.531675041060606,
+    "decision_source": "llm_defender",
+    "executed_decision_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+    "executed_via_fallback": false,
+    "execution": {
+      "attacker": {
+        "attempted_path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "operation_id": "",
+        "status": "dry_run",
+        "strategy_id": "A2_sensor_http_abuse_sen4",
+        "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "cloud_policy": {
+          "accepted_keys": [],
+          "context_http_status": 0,
+          "context_ok": false,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "quarantine_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+              "source": "llm_defender",
+              "source_strategy_id": "D1_quarantine_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "quarantine_sensor"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {},
+          "status": "skipped",
+          "url": ""
+        },
+        "ryu_response": {
+          "action": "quarantine_sensor",
+          "active_policy_actions": 0,
+          "apply_duration_ms": 0.0,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "http_status": 0,
+          "meters_added": 0,
+          "ok": false,
+          "rule": "",
+          "status": "",
+          "target": "sen4",
+          "target_ips": []
+        },
+        "status": "dry_run",
+        "target": "sen4"
+      }
+    },
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": true,
+        "path_stage": 3,
+        "urgency_level": "high"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D1_quarantine_sen4",
+      "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4"
+    },
+    "final_baseline_alignment": "followed",
+    "final_decision_alignment_vs_baseline": "followed",
+    "final_defender_action": "quarantine_sensor",
+    "final_defender_strategy_id": "D1_quarantine_sen4",
+    "final_defender_target": "sen4",
+    "llm": {
+      "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+      "baseline_top_defender": {
+        "base_cost": 0.2,
+        "population_share": 0.20379772323333334,
+        "strategy_id": "D1_quarantine_sen4",
+        "tiebreak_reason": "highest_utility",
+        "utility": 0.531675041060606
+      },
+      "baseline_top_defender_population_share": 0.20379772323333334,
+      "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+      "baseline_top_defender_tiebreak_reason": "highest_utility",
+      "baseline_top_defender_utility": 0.531675041060606,
+      "confidence": 0.95,
+      "executed_decision_reason": "llm_selected_strategy",
+      "executed_decision_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+      "executed_decision_source": "llm_defender",
+      "executed_defender_strategy_id": "D1_quarantine_sen4",
+      "executed_via_fallback": false,
+      "expected_controller_cost": 0.22,
+      "expected_qos_impact": 0.32,
+      "expected_security_gain": 0.82,
+      "fallback_constraint_name": "",
+      "fallback_reason": "",
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": true,
+          "path_stage": 3,
+          "urgency_level": "high"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D1_quarantine_sen4",
+        "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4"
+      },
+      "fallback_used": false,
+      "final_baseline_alignment": "followed",
+      "final_decision_alignment_vs_baseline": "followed",
+      "final_defender_action": "quarantine_sensor",
+      "final_defender_strategy_id": "D1_quarantine_sen4",
+      "final_defender_target": "sen4",
+      "llm_baseline_alignment": "followed",
+      "llm_decision_mode": "reactive_containment",
+      "llm_override_reason": "",
+      "llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D1_quarantine_sen4"
+        },
+        {
+          "llm_rank": 2,
+          "strategy_id": "D4_isolate_edge2_vm_s4"
+        }
+      ],
+      "llm_repeat_previous_action": false,
+      "llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+      "llm_stage_memory_used": true,
+      "llm_telemetry_confidence": "medium",
+      "llm_urgency_level": "high",
+      "llm_why_not_observe": "Observation is insufficient when an active attack has reached a critical stage (cloud) and previous defenses failed to fully contain the threat. The risk of data loss outweighs the minimal QoS impact.",
+      "llm_why_not_quarantine": "Quarantining sen4 provides maximum upstream control, effectively cutting off the attacker's access point at the source, which is more decisive than rate limiting or isolating a single intermediate component when the goal is immediate containment.",
+      "llm_why_not_rate_limit": "Rate limiting (D2) offers significantly lower security gain compared to full quarantine/isolation actions (D1, D3, D4). Given the high urgency and active threat status, maximum disruption of the attack path is required.",
+      "model": "gemma4:e4b",
+      "parse_success": true,
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "followed",
+      "raw_llm_baseline_alignment": "followed",
+      "raw_llm_override_reason": "",
+      "raw_llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D1_quarantine_sen4"
+        },
+        {
+          "llm_rank": 2,
+          "strategy_id": "D4_isolate_edge2_vm_s4"
+        }
+      ],
+      "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+      "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+      "reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true,
+      "stage_memory": {
+        "previous_attack_effect_success": false,
+        "previous_attack_progression_continued": true,
+        "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+        "previous_defender_execution_status": "dry_run",
+        "previous_defender_strategy_id": "D4_isolate_edge2_vm_s4",
+        "previous_defense_confirmed": false,
+        "previous_defense_success": true,
+        "previous_stage_id": 2,
+        "previous_stage_success": true,
+        "recent_controller_deltas": {
+          "active_policy_actions_delta": 0.0,
+          "controller_apply_ms_delta": 0.0,
+          "flow_delete_commands_delta": 0.0,
+          "flow_rules_installed_delta": 0.0,
+          "meters_added_delta": 0.0,
+          "total_cpu_seconds_delta": 13.007051,
+          "total_memory_kb_delta": 252.0
+        },
+        "recent_qos_deltas": {
+          "edge_to_cloud_latency_ms": -0.152,
+          "sensor_to_edge_latency_ms": 0.073
+        }
+      }
+    },
+    "llm_baseline_alignment": "followed",
+    "llm_decision_mode": "reactive_containment",
+    "llm_expected_controller_cost": 0.22,
+    "llm_expected_qos_impact": 0.32,
+    "llm_expected_security_gain": 0.82,
+    "llm_override_reason": "",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D1_quarantine_sen4"
+      },
+      {
+        "llm_rank": 2,
+        "strategy_id": "D4_isolate_edge2_vm_s4"
+      }
+    ],
+    "llm_repeat_previous_action": false,
+    "llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "high",
+    "llm_why_not_observe": "Observation is insufficient when an active attack has reached a critical stage (cloud) and previous defenses failed to fully contain the threat. The risk of data loss outweighs the minimal QoS impact.",
+    "llm_why_not_quarantine": "Quarantining sen4 provides maximum upstream control, effectively cutting off the attacker's access point at the source, which is more decisive than rate limiting or isolating a single intermediate component when the goal is immediate containment.",
+    "llm_why_not_rate_limit": "Rate limiting (D2) offers significantly lower security gain compared to full quarantine/isolation actions (D1, D3, D4). Given the high urgency and active threat status, maximum disruption of the attack path is required.",
+    "raw_llm_alignment_vs_baseline": "followed",
+    "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+    "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+    "recorded_at": "2026-06-23T04:43:17.424717+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "schema_version": "llm-mtd-decision-trace-v1",
+    "selection": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.502532577896,
+        "population_after_rank": 1,
+        "population_before": 0.5,
+        "population_before_rank": 1,
+        "population_delta": 0.0025325778960000322,
+        "probability": 0.502532577896,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.2987021360000001,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "action_payload": {
+          "action": "quarantine_sensor",
+          "target": "sen4"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Quarantine sen4",
+        "path": null,
+        "population_after": 0.20379772323333334,
+        "population_after_rank": 1,
+        "population_before": 0.2,
+        "population_before_rank": 1,
+        "population_delta": 0.0037977232333333277,
+        "probability": 0.20379772323333334,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4",
+        "utility": 0.531675041060606,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 4,
+    "stage_summary": {
+      "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "controller_delta": {
+        "active_policy_actions_delta": 0.0,
+        "controller_apply_ms_delta": 0.0,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 0.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 6.396117,
+        "total_memory_kb_delta": 120.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D1_quarantine_sen4",
+      "execution": {
+        "attacker_status": "dry_run",
+        "defender_action": "quarantine_sensor",
+        "defender_status": "dry_run",
+        "defender_target": "sen4",
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": false,
+        "defense_executed": false,
+        "defense_selected": true,
+        "executed_via_fallback": false,
+        "operationally_executed_debug_stage": false,
+        "stage_kind": "dry_run",
+        "stage_success": true,
+        "stage_valid": false
+      },
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": true,
+          "path_stage": 3,
+          "urgency_level": "high"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D1_quarantine_sen4",
+        "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4"
+      },
+      "llm": {
+        "baseline_alignment": "followed",
+        "baseline_top_defender_population_share": 0.20379772323333334,
+        "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+        "baseline_top_defender_tiebreak_reason": "highest_utility",
+        "baseline_top_defender_utility": 0.531675041060606,
+        "decision_mode": "reactive_containment",
+        "executed_decision_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+        "executed_via_fallback": false,
+        "fallback_reason": "",
+        "fallback_used": false,
+        "final_decision_alignment_vs_baseline": "followed",
+        "final_defender_strategy_id": "D1_quarantine_sen4",
+        "model": "gemma4:e4b",
+        "override_reason": "",
+        "provider": "ollama",
+        "raw_llm_alignment_vs_baseline": "followed",
+        "raw_llm_baseline_alignment": "followed",
+        "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+        "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+        "reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+        "repeat_previous_action": false,
+        "telemetry_confidence": "medium",
+        "urgency_level": "high",
+        "why_not_observe": "Observation is insufficient when an active attack has reached a critical stage (cloud) and previous defenses failed to fully contain the threat. The risk of data loss outweighs the minimal QoS impact.",
+        "why_not_quarantine": "Quarantining sen4 provides maximum upstream control, effectively cutting off the attacker's access point at the source, which is more decisive than rate limiting or isolating a single intermediate component when the goal is immediate containment.",
+        "why_not_rate_limit": "Rate limiting (D2) offers significantly lower security gain compared to full quarantine/isolation actions (D1, D3, D4). Given the high urgency and active threat status, maximum disruption of the attack path is required."
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms": -2.64,
+        "sensor_to_edge_latency_ms": -1.07,
+        "throughput_bytes_per_second": 39.81
+      },
+      "recorded_at": "2026-06-23T04:43:50.276136+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_deactivated": false,
+        "attack_effect_success": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": false,
+        "defense_executed": false,
+        "defense_selected": true,
+        "defense_success": true,
+        "path_regressed": false,
+        "raw_state_defense_success": false,
+        "security_progression_reduced": false
+      },
+      "stage_id": 4,
+      "stage_validation": {
+        "attack_deactivated": false,
+        "comparable_stage": true,
+        "defender_execution_status": "dry_run",
+        "defense_applied": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effect_mismatch": false,
+        "defense_effects_confirmed": false,
+        "defense_executed": false,
+        "defense_selected": true,
+        "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+        "effect_source_conflict": false,
+        "effect_source_details": {
+          "counters_stopped": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": false
+          },
+          "drop_rules_active": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": false
+          },
+          "rate_limit_active": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": null
+          }
+        },
+        "execution_stage_success": false,
+        "expected_defense_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "invalidity_reasons": [
+          "defender_dry_run"
+        ],
+        "learning_valid_stage": false,
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_success": true,
+        "llm_stage_valid": false,
+        "missing_defense_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "normalized_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": false,
+          "rate_limit_active": false
+        },
+        "observed_defense_effects": [],
+        "operationally_executed_debug_stage": false,
+        "paper_valid_stage": false,
+        "path_regressed": false,
+        "path_stage_after": 3,
+        "path_stage_before": 3,
+        "raw_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": false,
+          "rate_limit_active": false
+        },
+        "security_progression_reduced": false,
+        "security_stage_success": true,
+        "semantic_effect_mapping_details": {
+          "counters_stopped": {
+            "action": "quarantine_sensor",
+            "active_action_for_target": false,
+            "flow_rules_installed": 0,
+            "installed_status": false,
+            "meters_added": 0,
+            "observed": false,
+            "path_stage_after": 3,
+            "path_stage_before": 3,
+            "target": "sen4",
+            "target_is_gateway": false,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": false
+          },
+          "drop_rules_active": {
+            "action": "quarantine_sensor",
+            "active_action_for_target": false,
+            "flow_rules_installed": 0,
+            "installed_status": false,
+            "meters_added": 0,
+            "observed": false,
+            "path_stage_after": 3,
+            "path_stage_before": 3,
+            "target": "sen4",
+            "target_is_gateway": false,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": false
+          }
+        },
+        "semantic_missing_defense_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "semantic_observed_defense_effects": [],
+        "stage_kind": "dry_run",
+        "stage_success": true,
+        "state_effect_sources": {
+          "counters_stopped": "",
+          "drop_rules_active": "",
+          "rate_limit_active": ""
+        }
+      },
+      "summary_text": "Stage 4 for sen4_edge2_clouddb: attacker A2_sensor_http_abuse_sen4 met defender D1_quarantine_sen4. Action quarantine_sensor targeting sen4 ended with status dry_run; defense_confirmed=False; defense_effects_confirmed=False; defense_success=True. Path stage=3. Outcome: security progression was reduced. Rationale: The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts."
+    },
+    "stage_validation": {
+      "attack_deactivated": false,
+      "comparable_stage": true,
+      "defender_execution_status": "dry_run",
+      "defense_applied": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effect_mismatch": false,
+      "defense_effects_confirmed": false,
+      "defense_executed": false,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": false,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": false
+        },
+        "drop_rules_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": false
+        },
+        "rate_limit_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": null
+        }
+      },
+      "execution_stage_success": false,
+      "expected_defense_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "invalidity_reasons": [
+        "defender_dry_run"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "normalized_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": false
+      },
+      "observed_defense_effects": [],
+      "operationally_executed_debug_stage": false,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 3,
+      "path_stage_before": 3,
+      "raw_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": false
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": true,
+      "semantic_effect_mapping_details": {
+        "counters_stopped": {
+          "action": "quarantine_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 0,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": false,
+          "path_stage_after": 3,
+          "path_stage_before": 3,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        },
+        "drop_rules_active": {
+          "action": "quarantine_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 0,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": false,
+          "path_stage_after": 3,
+          "path_stage_before": 3,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        }
+      },
+      "semantic_missing_defense_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "semantic_observed_defense_effects": [],
+      "stage_kind": "dry_run",
+      "stage_success": true,
+      "state_effect_sources": {
+        "counters_stopped": "",
+        "drop_rules_active": "",
+        "rate_limit_active": ""
+      }
+    },
+    "state_summary": {
+      "attack_active": true,
+      "attack_effect_success": false,
+      "attack_success": false,
+      "cloud_seen": true,
+      "controller_active_actions": 0,
+      "counters_stopped": false,
+      "defense_active": false,
+      "defense_success": true,
+      "drop_rules_active": false,
+      "flow_rules_installed": 0,
+      "gateway_seen": true,
+      "meters_added": 0,
+      "normalized_counters_stopped": false,
+      "normalized_drop_rules_active": false,
+      "normalized_rate_limit_active": false,
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "rate_limit_active": false,
+      "raw_counters_stopped": false,
+      "raw_drop_rules_active": false,
+      "raw_rate_limit_active": false,
+      "raw_state_defense_success": false,
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": true
+    },
+    "transition_id": "cfb616030091471eb43d8082189bb467"
+  },
+  "execution": {
+    "attacker": {
+      "plan": {
+        "bridge_logger_url": "http://127.0.0.1:8000/attack/event",
+        "bridge_policy_url": "http://127.0.0.1:8000/context",
+        "caldera_adversary": "sensor_to_edge",
+        "caldera_adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+        "caldera_adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+        "caldera_env": {
+          "ATTACK_SENSOR_ID": "sen4",
+          "ENTRY_NODE": "sen4",
+          "SCENARIO_ID": "sen4_edge2_clouddb",
+          "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+        },
+        "caldera_target_hosts": [
+          "sen4"
+        ],
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mulval": {
+          "current_path_risk": 0.74,
+          "plausible_paths": [
+            [
+              "sen4",
+              "edge2_gw",
+              "cloud_db"
+            ],
+            [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ]
+          ]
+        },
+        "note": "Dispatch this plan to Caldera manually or through --attacker-dispatch-url. The first lab workflow still keeps Caldera operation launch outside this repo.",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "scenario_id": "sen4_edge2_clouddb",
+        "strategy_id": "A2_sensor_http_abuse_sen4",
+        "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+      },
+      "status": "dry_run"
+    },
+    "defender": {
+      "cloud_policy_context": {
+        "body": "{\"cloud_policy_observe_only_normalized\": false, \"cloud_policy_observe_only_raw\": null, \"decision_source\": \"llm_defender\", \"observe_only\": false, \"policy_mode\": \"llm_direct_ryu\", \"selected_action\": {\"reason\": \"LLM-selected defender strategy was sent directly to Ryu.\", \"ryu_intent\": {\"action\": \"quarantine_sensor\", \"decision_source\": \"llm_defender\", \"llm_reasoning_summary\": \"The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.\", \"source\": \"llm_defender\", \"source_strategy_id\": \"D1_quarantine_sen4\", \"target\": \"sen4\"}, \"target\": \"sen4\", \"type\": \"quarantine_sensor\"}}",
+        "docker_fallback": {
+          "body": "",
+          "container": "mn.cloud_policy",
+          "error": "python3: permission denied while trying to connect to the docker API at unix:///var/run/docker.sock | python: permission denied while trying to connect to the docker API at unix:///var/run/docker.sock",
+          "ok": false,
+          "status": 0,
+          "transport": "docker_exec",
+          "url": "http://127.0.0.1:8000/context"
+        },
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "json": {
+          "cloud_policy_observe_only_normalized": false,
+          "cloud_policy_observe_only_raw": null,
+          "decision_source": "llm_defender",
+          "observe_only": false,
+          "policy_mode": "llm_direct_ryu",
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "quarantine_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+              "source": "llm_defender",
+              "source_strategy_id": "D1_quarantine_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "quarantine_sensor"
+          }
+        },
+        "ok": false,
+        "raw_body": "",
+        "status": 0,
+        "url": "http://127.0.0.1:8000/context"
+      },
+      "cloud_policy_context_payload": {
+        "caldera_result": {
+          "adversary_id": "sensor_to_edge",
+          "attack_effect_success": false,
+          "attempted_path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "cloud_seen": true,
+          "entry_node": "sen4",
+          "event_type": "attack_result",
+          "gateway_seen": true,
+          "live_attack_type": "sensor_to_edge_http_abuse",
+          "operation_id": "state-sen4_edge2_clouddb",
+          "scenario_id": "sen4_edge2_clouddb",
+          "signals": {
+            "ability_link_count": 0.0,
+            "attack_active": 0.0,
+            "attack_effect_success": 0.0,
+            "cleanup_link_count": 0.0,
+            "cloud_seen": 0.0,
+            "completed_link_count": 0.0,
+            "entry_node_present": 1.0,
+            "events_total": 2.0,
+            "failed_link_count": 0.0,
+            "gateway_seen": 0.0,
+            "link_count": 0.0,
+            "success": 0.0,
+            "successful_link_count": 0.0,
+            "worker_seen": 0.0
+          },
+          "success": false,
+          "target_asset": "cloud_db",
+          "timestamp": "2026-06-23T04:37:25.771579+00:00",
+          "tool": "strategy_state",
+          "worker_seen": true
+        },
+        "llm_defender_selection": {
+          "attack_dispatch_status": "dry_run",
+          "caldera_success": false,
+          "decision_source": "llm_defender",
+          "final_defender_strategy_id": "D1_quarantine_sen4",
+          "first_mulval_path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "llm_baseline_alignment": "followed",
+          "llm_fallback_constraint_name": "",
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_model": "gemma4:e4b",
+          "llm_override_reason": "",
+          "llm_provider": "ollama",
+          "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+          "llm_urgency_level": "high",
+          "mulval_path_count": 2,
+          "operation_id": "",
+          "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+          "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+          "selected_attacker_path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "selected_defender_strategy_id": "D1_quarantine_sen4"
+        },
+        "selected_attacker_strategy": {
+          "action": "sensor_to_edge_http_abuse",
+          "action_payload": null,
+          "executor": {
+            "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+            "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+            "env": {
+              "ATTACK_SENSOR_ID": "sen4",
+              "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+            },
+            "name": "sensor_to_edge",
+            "type": "caldera_adversary"
+          },
+          "expected_effects": [
+            "gateway_seen",
+            "worker_seen",
+            "cloud_seen",
+            "attack_effect_success"
+          ],
+          "id": "A2_sensor_http_abuse_sen4",
+          "live_attack_type": "sensor_to_edge_http_abuse",
+          "mode": "dominant",
+          "name": "Controlled sen4 HTTP telemetry abuse",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "probability": 0.502532577896,
+          "scenario_id": "sen4_edge2_clouddb",
+          "target": "cloud_db",
+          "utility": 0.2987021360000001
+        },
+        "selected_defender_strategy": {
+          "action": "quarantine_sensor",
+          "action_payload": {
+            "action": "quarantine_sensor",
+            "target": "sen4"
+          },
+          "decision_source": "llm_defender",
+          "executor": {
+            "type": "ryu_rest"
+          },
+          "expected_effects": [
+            "drop_rules_active",
+            "counters_stopped"
+          ],
+          "final_defender_strategy_id": "D1_quarantine_sen4",
+          "id": "D1_quarantine_sen4",
+          "live_attack_type": null,
+          "llm_fallback_reason": "",
+          "llm_fallback_used": false,
+          "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+          "mode": "llm_defender",
+          "name": "Quarantine sen4",
+          "path": null,
+          "probability": 0.20379772323333334,
+          "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+          "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+          "scenario_id": "sen4_edge2_clouddb",
+          "target": "sen4",
+          "utility": 0.531675041060606
+        },
+        "strategy_layer": {
+          "selection": {
+            "attacker": {
+              "action": "sensor_to_edge_http_abuse",
+              "action_payload": null,
+              "executor": {
+                "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+                "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+                "env": {
+                  "ATTACK_SENSOR_ID": "sen4",
+                  "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+                },
+                "name": "sensor_to_edge",
+                "type": "caldera_adversary"
+              },
+              "expected_effects": [
+                "gateway_seen",
+                "worker_seen",
+                "cloud_seen",
+                "attack_effect_success"
+              ],
+              "id": "A2_sensor_http_abuse_sen4",
+              "live_attack_type": "sensor_to_edge_http_abuse",
+              "mode": "dominant",
+              "name": "Controlled sen4 HTTP telemetry abuse",
+              "path": [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ],
+              "probability": 0.502532577896,
+              "scenario_id": "sen4_edge2_clouddb",
+              "target": "cloud_db",
+              "utility": 0.2987021360000001
+            },
+            "defender": {
+              "action": "quarantine_sensor",
+              "action_payload": {
+                "action": "quarantine_sensor",
+                "target": "sen4"
+              },
+              "executor": {
+                "type": "ryu_rest"
+              },
+              "expected_effects": [
+                "drop_rules_active",
+                "counters_stopped"
+              ],
+              "id": "D1_quarantine_sen4",
+              "live_attack_type": null,
+              "mode": "llm_defender",
+              "name": "Quarantine sen4",
+              "path": null,
+              "probability": 0.20379772323333334,
+              "scenario_id": "sen4_edge2_clouddb",
+              "target": "sen4",
+              "utility": 0.531675041060606
+            }
+          },
+          "state": {
+            "attack_active": true,
+            "current_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "defense_active": false,
+            "mulval": {
+              "current_path_risk": 0.74,
+              "path_candidates": [
+                {
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "sen4_edge2_clouddb",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->cloud_db",
+                  "risk_score": 0.74,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "mulval_policy",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen6"
+                    },
+                    {
+                      "action": "reroute_traffic",
+                      "target": "sen6",
+                      "via": "s_edge2"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen6"
+                    }
+                  ],
+                  "entry_node": "sen6",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen6",
+                    "edge3_gw",
+                    "edge3_vm_s6",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen6_edge3_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "rate_limit",
+                      "kbps": 256,
+                      "target": "edge2_gw"
+                    },
+                    {
+                      "action": "isolate_sensor",
+                      "target": "edge2_gw"
+                    }
+                  ],
+                  "entry_node": "edge2_gw",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "edge2_gateway_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_candidates": [
+                {
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "sen4_edge2_clouddb",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->cloud_db",
+                  "risk_score": 0.74,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "mulval_policy",
+                  "target_asset": "cloud_db"
+                },
+                {
+                  "candidate_defender_actions": [
+                    {
+                      "action": "quarantine_sensor",
+                      "target": "sen4"
+                    },
+                    {
+                      "action": "rate_limit",
+                      "kbps": 128,
+                      "target": "sen4"
+                    }
+                  ],
+                  "entry_node": "sen4",
+                  "mulval_scenario_id": "",
+                  "path": [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ],
+                  "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                  "risk_score": 0.5,
+                  "scenario_id": "sen4_edge2_clouddb",
+                  "source": "scenario_registry_seed",
+                  "target_asset": "cloud_db"
+                }
+              ],
+              "plausible_paths": [
+                [
+                  "sen4",
+                  "edge2_gw",
+                  "cloud_db"
+                ],
+                [
+                  "sen4",
+                  "edge2_gw",
+                  "edge2_vm_s4",
+                  "cloud_db"
+                ]
+              ],
+              "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+              "policy_scenario_id": "sen4_edge2_clouddb"
+            },
+            "path_stage": 3,
+            "scenario_id": "sen4_edge2_clouddb"
+          }
+        }
+      },
+      "cloud_policy_decision": {
+        "json": {
+          "cloud_policy_observe_only_normalized": false,
+          "decision_source": "llm_defender",
+          "observe_only": false,
+          "policy_mode": "llm_direct_ryu",
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "quarantine_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+              "source": "llm_defender",
+              "source_strategy_id": "D1_quarantine_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "quarantine_sensor"
+          }
+        },
+        "reason": "llm_selected_direct_ryu_intent",
+        "status": "skipped"
+      },
+      "defense_event": {
+        "reason": "defender action was not confirmed by Ryu/controller metrics",
+        "status": "skipped"
+      },
+      "payload": {
+        "action": "quarantine_sensor",
+        "decision_source": "llm_defender",
+        "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+        "source": "llm_defender",
+        "source_strategy_id": "D1_quarantine_sen4",
+        "target": "sen4"
+      },
+      "status": "dry_run"
+    }
+  },
+  "fallback_resolution": {
+    "constraint_name": "",
+    "constraint_trigger": {
+      "attack_active": true,
+      "path_stage": 3,
+      "urgency_level": "high"
+    },
+    "fallback_explanation": "",
+    "fallback_reason": "",
+    "fallback_selection_policy": "",
+    "fallback_used": false,
+    "final_defender_strategy_id": "D1_quarantine_sen4",
+    "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4"
+  },
+  "game": {
+    "attacker_average_utility": 0.27056238160000007,
+    "attacker_payoffs": {
+      "A2_sensor_http_abuse_sen4": {
+        "D0_observe": 0.5715909200000002,
+        "D1_quarantine_sen4": 0.181475264,
+        "D2_rate_limit_sen4": 0.3000748160000002,
+        "D3_isolate_edge2_gw_for_sen4": 0.2103015440000001,
+        "D4_isolate_edge2_vm_s4": 0.2300681360000001
+      },
+      "A6_sen4_edge_to_cloud_probe": {
+        "D0_observe": 0.4633959839999999,
+        "D1_quarantine_sen4": 0.14749745279999996,
+        "D2_rate_limit_sen4": 0.24353416320000007,
+        "D3_isolate_edge2_gw_for_sen4": 0.17083970880000002,
+        "D4_isolate_edge2_vm_s4": 0.1868458272
+      }
+    },
+    "attacker_population": {
+      "A2_sensor_http_abuse_sen4": 0.502532577896,
+      "A6_sen4_edge_to_cloud_probe": 0.49746742210399997
+    },
+    "attacker_population_before": {
+      "A2_sensor_http_abuse_sen4": 0.5,
+      "A6_sen4_edge_to_cloud_probe": 0.5
+    },
+    "attacker_utilities": {
+      "A2_sensor_http_abuse_sen4": 0.2987021360000001,
+      "A6_sen4_edge_to_cloud_probe": 0.24242262720000002
+    },
+    "defender_average_utility": 0.4453631493939394,
+    "defender_payoffs": {
+      "A2_sensor_http_abuse_sen4": {
+        "D0_observe": 0.3623048660606061,
+        "D1_quarantine_sen4": 0.531675041060606,
+        "D2_rate_limit_sen4": 0.49003810772727263,
+        "D3_isolate_edge2_gw_for_sen4": 0.40204916606060603,
+        "D4_isolate_edge2_vm_s4": 0.4407485660606061
+      },
+      "A6_sen4_edge_to_cloud_probe": {
+        "D0_observe": 0.3623048660606061,
+        "D1_quarantine_sen4": 0.531675041060606,
+        "D2_rate_limit_sen4": 0.49003810772727263,
+        "D3_isolate_edge2_gw_for_sen4": 0.40204916606060603,
+        "D4_isolate_edge2_vm_s4": 0.4407485660606061
+      }
+    },
+    "defender_population": {
+      "D0_observe": 0.19634543553333333,
+      "D1_quarantine_sen4": 0.20379772323333334,
+      "D2_rate_limit_sen4": 0.20196569816666668,
+      "D3_isolate_edge2_gw_for_sen4": 0.19809418473333334,
+      "D4_isolate_edge2_vm_s4": 0.19979695833333336
+    },
+    "defender_population_before": {
+      "D0_observe": 0.2,
+      "D1_quarantine_sen4": 0.2,
+      "D2_rate_limit_sen4": 0.2,
+      "D3_isolate_edge2_gw_for_sen4": 0.2,
+      "D4_isolate_edge2_vm_s4": 0.2
+    },
+    "defender_utilities": {
+      "D0_observe": 0.3623048660606061,
+      "D1_quarantine_sen4": 0.531675041060606,
+      "D2_rate_limit_sen4": 0.49003810772727263,
+      "D3_isolate_edge2_gw_for_sen4": 0.40204916606060603,
+      "D4_isolate_edge2_vm_s4": 0.4407485660606061
+    },
+    "parameters": {
+      "eta_attacker": 0.18,
+      "eta_defender": 0.22,
+      "omega_ac": 0.65,
+      "omega_dc": 0.7,
+      "omega_gp": 0.25,
+      "omega_r": 0.1,
+      "regulatory_beta": 0.18
+    }
+  },
+  "llm": {
+    "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+    "baseline_top_defender": {
+      "base_cost": 0.2,
+      "population_share": 0.20379772323333334,
+      "strategy_id": "D1_quarantine_sen4",
+      "tiebreak_reason": "highest_utility",
+      "utility": 0.531675041060606
+    },
+    "baseline_top_defender_population_share": 0.20379772323333334,
+    "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+    "baseline_top_defender_tiebreak_reason": "highest_utility",
+    "baseline_top_defender_utility": 0.531675041060606,
+    "confidence": 0.95,
+    "executed_decision_reason": "llm_selected_strategy",
+    "executed_decision_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+    "executed_decision_source": "llm_defender",
+    "executed_defender_strategy_id": "D1_quarantine_sen4",
+    "executed_via_fallback": false,
+    "expected_controller_cost": 0.22,
+    "expected_qos_impact": 0.32,
+    "expected_security_gain": 0.82,
+    "fallback_constraint_name": "",
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": true,
+        "path_stage": 3,
+        "urgency_level": "high"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D1_quarantine_sen4",
+      "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4"
+    },
+    "fallback_used": false,
+    "final_baseline_alignment": "followed",
+    "final_decision_alignment_vs_baseline": "followed",
+    "final_defender_action": "quarantine_sensor",
+    "final_defender_strategy_id": "D1_quarantine_sen4",
+    "final_defender_target": "sen4",
+    "latency_ms": 351614.7363439668,
+    "llm_baseline_alignment": "followed",
+    "llm_decision_mode": "reactive_containment",
+    "llm_override_reason": "",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D1_quarantine_sen4"
+      },
+      {
+        "llm_rank": 2,
+        "strategy_id": "D4_isolate_edge2_vm_s4"
+      }
+    ],
+    "llm_repeat_previous_action": false,
+    "llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "high",
+    "llm_why_not_observe": "Observation is insufficient when an active attack has reached a critical stage (cloud) and previous defenses failed to fully contain the threat. The risk of data loss outweighs the minimal QoS impact.",
+    "llm_why_not_quarantine": "Quarantining sen4 provides maximum upstream control, effectively cutting off the attacker's access point at the source, which is more decisive than rate limiting or isolating a single intermediate component when the goal is immediate containment.",
+    "llm_why_not_rate_limit": "Rate limiting (D2) offers significantly lower security gain compared to full quarantine/isolation actions (D1, D3, D4). Given the high urgency and active threat status, maximum disruption of the attack path is required.",
+    "model": "gemma4:e4b",
+    "parse_success": true,
+    "prompt_preview": "Prompt mode: full\n\n{\n  \"active_defender_candidates\": [\n    {\n      \"action\": \"observe\",\n      \"baseline_utility_prior\": 0.362305,\n      \"defender_population_share\": 0.196345,\n      \"expected_controller_cost\": 0.0,\n      \"expected_qos_impact",
+    "provider": "ollama",
+    "raw_llm_alignment_vs_baseline": "followed",
+    "raw_llm_baseline_alignment": "followed",
+    "raw_llm_override_reason": "",
+    "raw_llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D1_quarantine_sen4"
+      },
+      {
+        "llm_rank": 2,
+        "strategy_id": "D4_isolate_edge2_vm_s4"
+      }
+    ],
+    "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+    "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+    "raw_response": {
+      "baseline_alignment": "followed",
+      "confidence": 0.95,
+      "decision_mode": "reactive_containment",
+      "expected_controller_cost": 0.22,
+      "expected_qos_impact": 0.32,
+      "expected_security_gain": 0.82,
+      "override_reason": null,
+      "ranked_candidates": [
+        "D1_quarantine_sen4",
+        "D4_isolate_edge2_vm_s4"
+      ],
+      "reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+      "repeat_previous_action": false,
+      "selected_defender_strategy_id": "D1_quarantine_sen4",
+      "telemetry_confidence": "medium",
+      "urgency_level": "high",
+      "why_not_observe": "Observation is insufficient when an active attack has reached a critical stage (cloud) and previous defenses failed to fully contain the threat. The risk of data loss outweighs the minimal QoS impact.",
+      "why_not_quarantine": "Quarantining sen4 provides maximum upstream control, effectively cutting off the attacker's access point at the source, which is more decisive than rate limiting or isolating a single intermediate component when the goal is immediate containment.",
+      "why_not_rate_limit": "Rate limiting (D2) offers significantly lower security gain compared to full quarantine/isolation actions (D1, D3, D4). Given the high urgency and active threat status, maximum disruption of the attack path is required."
+    },
+    "reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+    "recovery_used": false,
+    "request_error": "",
+    "request_success": true,
+    "retries_used": 2,
+    "stage_memory": {
+      "previous_attack_effect_success": false,
+      "previous_attack_progression_continued": true,
+      "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "previous_defender_execution_status": "dry_run",
+      "previous_defender_strategy_id": "D4_isolate_edge2_vm_s4",
+      "previous_defense_confirmed": false,
+      "previous_defense_success": true,
+      "previous_stage_id": 2,
+      "previous_stage_success": true,
+      "recent_controller_deltas": {
+        "active_policy_actions_delta": 0.0,
+        "controller_apply_ms_delta": 0.0,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 0.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 13.007051,
+        "total_memory_kb_delta": 252.0
+      },
+      "recent_qos_deltas": {
+        "edge_to_cloud_latency_ms": -0.152,
+        "sensor_to_edge_latency_ms": 0.073
+      }
+    }
+  },
+  "next_state": {
+    "attack_active": true,
+    "attack_effect_success": false,
+    "attack_success": false,
+    "attacker_observation": {
+      "estimated_containment": 0.0,
+      "estimated_risk": 0.12,
+      "estimated_success_probability": 0.76,
+      "foothold": "sen4",
+      "observed_blocking": false,
+      "observed_path_stage": 3
+    },
+    "built_at": "2026-06-23T04:43:17.424453+00:00",
+    "controller": {
+      "active_actions": []
+    },
+    "controller_reachable": true,
+    "counters_stopped": false,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {
+        "ability_link_count": 0.0,
+        "attack_active": 0.0,
+        "attack_effect_success": 0.0,
+        "cleanup_link_count": 0.0,
+        "cloud_seen": 0.0,
+        "completed_link_count": 0.0,
+        "entry_node_present": 1.0,
+        "events_total": 2.0,
+        "failed_link_count": 0.0,
+        "gateway_seen": 0.0,
+        "link_count": 0.0,
+        "success": 0.0,
+        "successful_link_count": 0.0,
+        "worker_seen": 0.0
+      },
+      "cloud_seen": true,
+      "defense_metrics": {},
+      "gateway_seen": true,
+      "topology": {
+        "active_action_count": 0,
+        "active_actions": [],
+        "connected_switch_count": 5,
+        "known_host_count": 29,
+        "switch_count": 5
+      },
+      "worker_seen": true
+    },
+    "defense_active": false,
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": false,
+    "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.74,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "cloud_db"
+        ],
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "sen4_edge2_clouddb"
+    },
+    "normalized_counters_stopped": false,
+    "normalized_drop_rules_active": false,
+    "normalized_rate_limit_active": false,
+    "normalized_state_effects": {
+      "counters_stopped": false,
+      "drop_rules_active": false,
+      "rate_limit_active": false
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 0,
+      "controller_apply_ms": 0.0,
+      "flow_delete_commands": 0,
+      "flow_rules_installed": 0,
+      "meters_added": 0,
+      "total_cpu_seconds": 384.677711043,
+      "total_memory_kb": 428464.0
+    },
+    "path_stage": 3,
+    "path_stage_label": "cloud",
+    "qos": {
+      "edge_to_cloud_latency_ms": 0.627,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 0.6232727272727273,
+      "throughput_bytes_per_second": 9563.587720203368
+    },
+    "rate_limit_active": false,
+    "raw_counters_stopped": false,
+    "raw_drop_rules_active": false,
+    "raw_rate_limit_active": false,
+    "raw_state_effects": {
+      "counters_stopped": false,
+      "drop_rules_active": false,
+      "rate_limit_active": false
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "state_effect_sources": {
+      "counters_stopped": "",
+      "drop_rules_active": "",
+      "rate_limit_active": ""
+    },
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 8303.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 3775.0,
+      "gateway_received": 3775.0,
+      "generated_total": 3778.0,
+      "worker_requests": 3775.0
+    }
+  },
+  "persistence": {
+    "decision_trace_logged": true,
+    "learning_eligible": false,
+    "learning_skipped_reason": "defender_dry_run",
+    "paper_valid_stage": false,
+    "population_saved": false,
+    "reason": "",
+    "skipped": false,
+    "stage_logged": true,
+    "summary_logged": true,
+    "valid_stage_for_learning": false
+  },
+  "recorded_at": "2026-06-23T04:43:50.277611+00:00",
+  "run_id": "stage_b5aa0d65f0e9",
+  "schema_version": "llm-mtd-live-stage-result-v1",
+  "selection": {
+    "attacker": {
+      "action": "sensor_to_edge_http_abuse",
+      "action_payload": null,
+      "executor": {
+        "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+        "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+        "env": {
+          "ATTACK_SENSOR_ID": "sen4",
+          "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+        },
+        "name": "sensor_to_edge",
+        "type": "caldera_adversary"
+      },
+      "expected_effects": [
+        "gateway_seen",
+        "worker_seen",
+        "cloud_seen",
+        "attack_effect_success"
+      ],
+      "id": "A2_sensor_http_abuse_sen4",
+      "live_attack_type": "sensor_to_edge_http_abuse",
+      "mode": "dominant",
+      "name": "Controlled sen4 HTTP telemetry abuse",
+      "path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "probability": 0.502532577896,
+      "scenario_id": "sen4_edge2_clouddb",
+      "target": "cloud_db",
+      "utility": 0.2987021360000001
+    },
+    "defender": {
+      "action": "quarantine_sensor",
+      "action_payload": {
+        "action": "quarantine_sensor",
+        "target": "sen4"
+      },
+      "executor": {
+        "type": "ryu_rest"
+      },
+      "expected_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "id": "D1_quarantine_sen4",
+      "live_attack_type": null,
+      "mode": "llm_defender",
+      "name": "Quarantine sen4",
+      "path": null,
+      "probability": 0.20379772323333334,
+      "scenario_id": "sen4_edge2_clouddb",
+      "target": "sen4",
+      "utility": 0.531675041060606
+    }
+  },
+  "stage_summary": {
+    "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+    "controller_delta": {
+      "active_policy_actions_delta": 0.0,
+      "controller_apply_ms_delta": 0.0,
+      "flow_delete_commands_delta": 0.0,
+      "flow_rules_installed_delta": 0.0,
+      "meters_added_delta": 0.0,
+      "total_cpu_seconds_delta": 6.396117,
+      "total_memory_kb_delta": 120.0
+    },
+    "decision_source": "llm_defender",
+    "defender_strategy_id": "D1_quarantine_sen4",
+    "execution": {
+      "attacker_status": "dry_run",
+      "defender_action": "quarantine_sensor",
+      "defender_status": "dry_run",
+      "defender_target": "sen4",
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effects_confirmed": false,
+      "defense_executed": false,
+      "defense_selected": true,
+      "executed_via_fallback": false,
+      "operationally_executed_debug_stage": false,
+      "stage_kind": "dry_run",
+      "stage_success": true,
+      "stage_valid": false
+    },
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": true,
+        "path_stage": 3,
+        "urgency_level": "high"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D1_quarantine_sen4",
+      "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4"
+    },
+    "llm": {
+      "baseline_alignment": "followed",
+      "baseline_top_defender_population_share": 0.20379772323333334,
+      "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+      "baseline_top_defender_tiebreak_reason": "highest_utility",
+      "baseline_top_defender_utility": 0.531675041060606,
+      "decision_mode": "reactive_containment",
+      "executed_decision_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+      "executed_via_fallback": false,
+      "fallback_reason": "",
+      "fallback_used": false,
+      "final_decision_alignment_vs_baseline": "followed",
+      "final_defender_strategy_id": "D1_quarantine_sen4",
+      "model": "gemma4:e4b",
+      "override_reason": "",
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "followed",
+      "raw_llm_baseline_alignment": "followed",
+      "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+      "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+      "reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+      "repeat_previous_action": false,
+      "telemetry_confidence": "medium",
+      "urgency_level": "high",
+      "why_not_observe": "Observation is insufficient when an active attack has reached a critical stage (cloud) and previous defenses failed to fully contain the threat. The risk of data loss outweighs the minimal QoS impact.",
+      "why_not_quarantine": "Quarantining sen4 provides maximum upstream control, effectively cutting off the attacker's access point at the source, which is more decisive than rate limiting or isolating a single intermediate component when the goal is immediate containment.",
+      "why_not_rate_limit": "Rate limiting (D2) offers significantly lower security gain compared to full quarantine/isolation actions (D1, D3, D4). Given the high urgency and active threat status, maximum disruption of the attack path is required."
+    },
+    "qos_delta": {
+      "edge_to_cloud_latency_ms": -2.64,
+      "sensor_to_edge_latency_ms": -1.07,
+      "throughput_bytes_per_second": 39.81
+    },
+    "recorded_at": "2026-06-23T04:43:50.276136+00:00",
+    "scenario_id": "sen4_edge2_clouddb",
+    "security_outcome": {
+      "attack_deactivated": false,
+      "attack_effect_success": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effects_confirmed": false,
+      "defense_executed": false,
+      "defense_selected": true,
+      "defense_success": true,
+      "path_regressed": false,
+      "raw_state_defense_success": false,
+      "security_progression_reduced": false
+    },
+    "stage_id": 4,
+    "stage_validation": {
+      "attack_deactivated": false,
+      "comparable_stage": true,
+      "defender_execution_status": "dry_run",
+      "defense_applied": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effect_mismatch": false,
+      "defense_effects_confirmed": false,
+      "defense_executed": false,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": false,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": false
+        },
+        "drop_rules_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": false
+        },
+        "rate_limit_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": null
+        }
+      },
+      "execution_stage_success": false,
+      "expected_defense_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "invalidity_reasons": [
+        "defender_dry_run"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "normalized_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": false
+      },
+      "observed_defense_effects": [],
+      "operationally_executed_debug_stage": false,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 3,
+      "path_stage_before": 3,
+      "raw_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": false
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": true,
+      "semantic_effect_mapping_details": {
+        "counters_stopped": {
+          "action": "quarantine_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 0,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": false,
+          "path_stage_after": 3,
+          "path_stage_before": 3,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        },
+        "drop_rules_active": {
+          "action": "quarantine_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 0,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": false,
+          "path_stage_after": 3,
+          "path_stage_before": 3,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        }
+      },
+      "semantic_missing_defense_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "semantic_observed_defense_effects": [],
+      "stage_kind": "dry_run",
+      "stage_success": true,
+      "state_effect_sources": {
+        "counters_stopped": "",
+        "drop_rules_active": "",
+        "rate_limit_active": ""
+      }
+    },
+    "summary_text": "Stage 4 for sen4_edge2_clouddb: attacker A2_sensor_http_abuse_sen4 met defender D1_quarantine_sen4. Action quarantine_sensor targeting sen4 ended with status dry_run; defense_confirmed=False; defense_effects_confirmed=False; defense_success=True. Path stage=3. Outcome: security progression was reduced. Rationale: The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts."
+  },
+  "stage_validation": {
+    "attack_deactivated": false,
+    "comparable_stage": true,
+    "defender_execution_status": "dry_run",
+    "defense_applied": false,
+    "defense_applied_but_not_effective": false,
+    "defense_confirmed": false,
+    "defense_effect_mismatch": false,
+    "defense_effects_confirmed": false,
+    "defense_executed": false,
+    "defense_selected": true,
+    "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+    "effect_source_conflict": false,
+    "effect_source_details": {
+      "counters_stopped": {
+        "defense_event": null,
+        "ryu_response": false,
+        "state": false
+      },
+      "drop_rules_active": {
+        "defense_event": null,
+        "ryu_response": false,
+        "state": false
+      },
+      "rate_limit_active": {
+        "defense_event": null,
+        "ryu_response": false,
+        "state": null
+      }
+    },
+    "execution_stage_success": false,
+    "expected_defense_effects": [
+      "drop_rules_active",
+      "counters_stopped"
+    ],
+    "invalidity_reasons": [
+      "defender_dry_run"
+    ],
+    "learning_valid_stage": false,
+    "llm_parse_success": true,
+    "llm_recovery_used": false,
+    "llm_request_error": "",
+    "llm_request_success": true,
+    "llm_stage_success": true,
+    "llm_stage_valid": false,
+    "missing_defense_effects": [
+      "drop_rules_active",
+      "counters_stopped"
+    ],
+    "normalized_state_effects": {
+      "counters_stopped": false,
+      "drop_rules_active": false,
+      "rate_limit_active": false
+    },
+    "observed_defense_effects": [],
+    "operationally_executed_debug_stage": false,
+    "paper_valid_stage": false,
+    "path_regressed": false,
+    "path_stage_after": 3,
+    "path_stage_before": 3,
+    "raw_state_effects": {
+      "counters_stopped": false,
+      "drop_rules_active": false,
+      "rate_limit_active": false
+    },
+    "security_progression_reduced": false,
+    "security_stage_success": true,
+    "semantic_effect_mapping_details": {
+      "counters_stopped": {
+        "action": "quarantine_sensor",
+        "active_action_for_target": false,
+        "flow_rules_installed": 0,
+        "installed_status": false,
+        "meters_added": 0,
+        "observed": false,
+        "path_stage_after": 3,
+        "path_stage_before": 3,
+        "target": "sen4",
+        "target_is_gateway": false,
+        "target_is_worker": false,
+        "target_on_path": true,
+        "traffic_blocking": false
+      },
+      "drop_rules_active": {
+        "action": "quarantine_sensor",
+        "active_action_for_target": false,
+        "flow_rules_installed": 0,
+        "installed_status": false,
+        "meters_added": 0,
+        "observed": false,
+        "path_stage_after": 3,
+        "path_stage_before": 3,
+        "target": "sen4",
+        "target_is_gateway": false,
+        "target_is_worker": false,
+        "target_on_path": true,
+        "traffic_blocking": false
+      }
+    },
+    "semantic_missing_defense_effects": [
+      "drop_rules_active",
+      "counters_stopped"
+    ],
+    "semantic_observed_defense_effects": [],
+    "stage_kind": "dry_run",
+    "stage_success": true,
+    "state_effect_sources": {
+      "counters_stopped": "",
+      "drop_rules_active": "",
+      "rate_limit_active": ""
+    }
+  },
+  "state": {
+    "attack_active": true,
+    "attack_effect_success": false,
+    "attack_success": false,
+    "attacker_observation": {
+      "estimated_containment": 0.0,
+      "estimated_risk": 0.12,
+      "estimated_success_probability": 0.76,
+      "foothold": "sen4",
+      "observed_blocking": false,
+      "observed_path_stage": 3
+    },
+    "built_at": "2026-06-23T04:37:25.771579+00:00",
+    "controller": {
+      "active_actions": []
+    },
+    "controller_reachable": true,
+    "counters_stopped": false,
+    "current_path": [
+      "sen4",
+      "edge2_gw",
+      "edge2_vm_s4",
+      "cloud_db"
+    ],
+    "defender_observation": {
+      "attack_metrics": {
+        "ability_link_count": 0.0,
+        "attack_active": 0.0,
+        "attack_effect_success": 0.0,
+        "cleanup_link_count": 0.0,
+        "cloud_seen": 0.0,
+        "completed_link_count": 0.0,
+        "entry_node_present": 1.0,
+        "events_total": 2.0,
+        "failed_link_count": 0.0,
+        "gateway_seen": 0.0,
+        "link_count": 0.0,
+        "success": 0.0,
+        "successful_link_count": 0.0,
+        "worker_seen": 0.0
+      },
+      "cloud_seen": true,
+      "defense_metrics": {},
+      "gateway_seen": true,
+      "topology": {
+        "active_action_count": 0,
+        "active_actions": [],
+        "connected_switch_count": 5,
+        "known_host_count": 29,
+        "switch_count": 5
+      },
+      "worker_seen": true
+    },
+    "defense_active": false,
+    "defense_metrics_stale": false,
+    "defense_success": false,
+    "drop_rules_active": false,
+    "entry_node": "sen4",
+    "mulval": {
+      "current_path_risk": 0.74,
+      "path_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen6"
+            },
+            {
+              "action": "reroute_traffic",
+              "target": "sen6",
+              "via": "s_edge2"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen6"
+            }
+          ],
+          "entry_node": "sen6",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen6",
+            "edge3_gw",
+            "edge3_vm_s6",
+            "cloud_db"
+          ],
+          "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen6_edge3_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "rate_limit",
+              "kbps": 256,
+              "target": "edge2_gw"
+            },
+            {
+              "action": "isolate_sensor",
+              "target": "edge2_gw"
+            }
+          ],
+          "entry_node": "edge2_gw",
+          "mulval_scenario_id": "",
+          "path": [
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "edge2_gateway_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_candidates": [
+        {
+          "entry_node": "sen4",
+          "mulval_scenario_id": "sen4_edge2_clouddb",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->cloud_db",
+          "risk_score": 0.74,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "mulval_policy",
+          "target_asset": "cloud_db"
+        },
+        {
+          "candidate_defender_actions": [
+            {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            {
+              "action": "rate_limit",
+              "kbps": 128,
+              "target": "sen4"
+            }
+          ],
+          "entry_node": "sen4",
+          "mulval_scenario_id": "",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+          "risk_score": 0.5,
+          "scenario_id": "sen4_edge2_clouddb",
+          "source": "scenario_registry_seed",
+          "target_asset": "cloud_db"
+        }
+      ],
+      "plausible_paths": [
+        [
+          "sen4",
+          "edge2_gw",
+          "cloud_db"
+        ],
+        [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ]
+      ],
+      "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+      "policy_scenario_id": "sen4_edge2_clouddb"
+    },
+    "observability": {
+      "attacker": "partial_local_and_inferred_state",
+      "defender": "full_system_state"
+    },
+    "operational_constraints": {
+      "allow_disruptive_defense": true,
+      "max_attack_cost": 1.0,
+      "max_defense_cost": 1.0,
+      "strict_preconditions": false
+    },
+    "overhead": {
+      "controller_active_actions": 0,
+      "controller_apply_ms": 0.0,
+      "flow_delete_commands": 0,
+      "flow_rules_installed": 0,
+      "meters_added": 0,
+      "total_cpu_seconds": 378.2815938,
+      "total_memory_kb": 428344.0
+    },
+    "path_stage": 3,
+    "path_stage_label": "cloud",
+    "qos": {
+      "edge_to_cloud_latency_ms": 3.266,
+      "loss_rate": 0.0,
+      "sensor_to_edge_latency_ms": 1.697818181818182,
+      "throughput_bytes_per_second": 9562.707637655403
+    },
+    "scenario_id": "sen4_edge2_clouddb",
+    "scenario_known": true,
+    "schema_version": "llm-mtd-game-state-v1",
+    "source_errors": [],
+    "source_notes": [],
+    "target_asset": "cloud_db",
+    "workload": {
+      "cloud_storage_confirmations": 7918.0,
+      "gateway_dropped": 0.0,
+      "gateway_forwarded": 3598.0,
+      "gateway_received": 3598.0,
+      "generated_total": 3600.0,
+      "worker_requests": 3600.0
+    }
+  },
+  "transition": {
+    "average_utility": {
+      "attacker": 0.27056238160000007,
+      "defender": 0.4453631493939394
+    },
+    "baseline_game_prior": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.502532577896,
+        "population_after_rank": 1,
+        "population_before": 0.5,
+        "population_before_rank": 1,
+        "population_delta": 0.0025325778960000322,
+        "probability": 0.502532577896,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.2987021360000001,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "action_payload": {
+          "action": "quarantine_sensor",
+          "target": "sen4"
+        },
+        "canonical_baseline_top": {
+          "base_cost": 0.2,
+          "population_share": 0.20379772323333334,
+          "strategy_id": "D1_quarantine_sen4",
+          "tiebreak_reason": "highest_utility",
+          "utility": 0.531675041060606
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Quarantine sen4",
+        "path": null,
+        "population_after": 0.20379772323333334,
+        "population_after_rank": 1,
+        "population_before": 0.2,
+        "population_before_rank": 1,
+        "population_delta": 0.0037977232333333277,
+        "probability": 0.20379772323333334,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4",
+        "utility": 0.531675041060606,
+        "utility_rank": 1
+      }
+    },
+    "baseline_top_defender_population_share": 0.20379772323333334,
+    "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+    "baseline_top_defender_tiebreak_reason": "highest_utility",
+    "baseline_top_defender_utility": 0.531675041060606,
+    "decision_source": "llm_defender",
+    "executed_decision_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+    "executed_via_fallback": false,
+    "execution": {
+      "attacker": {
+        "plan": {
+          "bridge_logger_url": "http://127.0.0.1:8000/attack/event",
+          "bridge_policy_url": "http://127.0.0.1:8000/context",
+          "caldera_adversary": "sensor_to_edge",
+          "caldera_adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "caldera_adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "caldera_env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "ENTRY_NODE": "sen4",
+            "SCENARIO_ID": "sen4_edge2_clouddb",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "caldera_target_hosts": [
+            "sen4"
+          ],
+          "executor": {
+            "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+            "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+            "env": {
+              "ATTACK_SENSOR_ID": "sen4",
+              "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+            },
+            "name": "sensor_to_edge",
+            "type": "caldera_adversary"
+          },
+          "expected_effects": [
+            "gateway_seen",
+            "worker_seen",
+            "cloud_seen",
+            "attack_effect_success"
+          ],
+          "live_attack_type": "sensor_to_edge_http_abuse",
+          "mulval": {
+            "current_path_risk": 0.74,
+            "plausible_paths": [
+              [
+                "sen4",
+                "edge2_gw",
+                "cloud_db"
+              ],
+              [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ]
+            ]
+          },
+          "note": "Dispatch this plan to Caldera manually or through --attacker-dispatch-url. The first lab workflow still keeps Caldera operation launch outside this repo.",
+          "path": [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ],
+          "scenario_id": "sen4_edge2_clouddb",
+          "strategy_id": "A2_sensor_http_abuse_sen4",
+          "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+        },
+        "status": "dry_run"
+      },
+      "defender": {
+        "cloud_policy_context": {
+          "body": "{\"cloud_policy_observe_only_normalized\": false, \"cloud_policy_observe_only_raw\": null, \"decision_source\": \"llm_defender\", \"observe_only\": false, \"policy_mode\": \"llm_direct_ryu\", \"selected_action\": {\"reason\": \"LLM-selected defender strategy was sent directly to Ryu.\", \"ryu_intent\": {\"action\": \"quarantine_sensor\", \"decision_source\": \"llm_defender\", \"llm_reasoning_summary\": \"The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.\", \"source\": \"llm_defender\", \"source_strategy_id\": \"D1_quarantine_sen4\", \"target\": \"sen4\"}, \"target\": \"sen4\", \"type\": \"quarantine_sensor\"}}",
+          "docker_fallback": {
+            "body": "",
+            "container": "mn.cloud_policy",
+            "error": "python3: permission denied while trying to connect to the docker API at unix:///var/run/docker.sock | python: permission denied while trying to connect to the docker API at unix:///var/run/docker.sock",
+            "ok": false,
+            "status": 0,
+            "transport": "docker_exec",
+            "url": "http://127.0.0.1:8000/context"
+          },
+          "error": "<urlopen error [Errno 111] Connection refused>",
+          "json": {
+            "cloud_policy_observe_only_normalized": false,
+            "cloud_policy_observe_only_raw": null,
+            "decision_source": "llm_defender",
+            "observe_only": false,
+            "policy_mode": "llm_direct_ryu",
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "quarantine_sensor",
+                "decision_source": "llm_defender",
+                "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+                "source": "llm_defender",
+                "source_strategy_id": "D1_quarantine_sen4",
+                "target": "sen4"
+              },
+              "target": "sen4",
+              "type": "quarantine_sensor"
+            }
+          },
+          "ok": false,
+          "raw_body": "",
+          "status": 0,
+          "url": "http://127.0.0.1:8000/context"
+        },
+        "cloud_policy_context_payload": {
+          "caldera_result": {
+            "adversary_id": "sensor_to_edge",
+            "attack_effect_success": false,
+            "attempted_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "cloud_seen": true,
+            "entry_node": "sen4",
+            "event_type": "attack_result",
+            "gateway_seen": true,
+            "live_attack_type": "sensor_to_edge_http_abuse",
+            "operation_id": "state-sen4_edge2_clouddb",
+            "scenario_id": "sen4_edge2_clouddb",
+            "signals": {
+              "ability_link_count": 0.0,
+              "attack_active": 0.0,
+              "attack_effect_success": 0.0,
+              "cleanup_link_count": 0.0,
+              "cloud_seen": 0.0,
+              "completed_link_count": 0.0,
+              "entry_node_present": 1.0,
+              "events_total": 2.0,
+              "failed_link_count": 0.0,
+              "gateway_seen": 0.0,
+              "link_count": 0.0,
+              "success": 0.0,
+              "successful_link_count": 0.0,
+              "worker_seen": 0.0
+            },
+            "success": false,
+            "target_asset": "cloud_db",
+            "timestamp": "2026-06-23T04:37:25.771579+00:00",
+            "tool": "strategy_state",
+            "worker_seen": true
+          },
+          "llm_defender_selection": {
+            "attack_dispatch_status": "dry_run",
+            "caldera_success": false,
+            "decision_source": "llm_defender",
+            "final_defender_strategy_id": "D1_quarantine_sen4",
+            "first_mulval_path": [
+              "sen4",
+              "edge2_gw",
+              "cloud_db"
+            ],
+            "llm_baseline_alignment": "followed",
+            "llm_fallback_constraint_name": "",
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_model": "gemma4:e4b",
+            "llm_override_reason": "",
+            "llm_provider": "ollama",
+            "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+            "llm_urgency_level": "high",
+            "mulval_path_count": 2,
+            "operation_id": "",
+            "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+            "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+            "selected_attacker_path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "selected_defender_strategy_id": "D1_quarantine_sen4"
+          },
+          "selected_attacker_strategy": {
+            "action": "sensor_to_edge_http_abuse",
+            "action_payload": null,
+            "executor": {
+              "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+              "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+              "env": {
+                "ATTACK_SENSOR_ID": "sen4",
+                "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+              },
+              "name": "sensor_to_edge",
+              "type": "caldera_adversary"
+            },
+            "expected_effects": [
+              "gateway_seen",
+              "worker_seen",
+              "cloud_seen",
+              "attack_effect_success"
+            ],
+            "id": "A2_sensor_http_abuse_sen4",
+            "live_attack_type": "sensor_to_edge_http_abuse",
+            "mode": "dominant",
+            "name": "Controlled sen4 HTTP telemetry abuse",
+            "path": [
+              "sen4",
+              "edge2_gw",
+              "edge2_vm_s4",
+              "cloud_db"
+            ],
+            "probability": 0.502532577896,
+            "scenario_id": "sen4_edge2_clouddb",
+            "target": "cloud_db",
+            "utility": 0.2987021360000001
+          },
+          "selected_defender_strategy": {
+            "action": "quarantine_sensor",
+            "action_payload": {
+              "action": "quarantine_sensor",
+              "target": "sen4"
+            },
+            "decision_source": "llm_defender",
+            "executor": {
+              "type": "ryu_rest"
+            },
+            "expected_effects": [
+              "drop_rules_active",
+              "counters_stopped"
+            ],
+            "final_defender_strategy_id": "D1_quarantine_sen4",
+            "id": "D1_quarantine_sen4",
+            "live_attack_type": null,
+            "llm_fallback_reason": "",
+            "llm_fallback_used": false,
+            "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+            "mode": "llm_defender",
+            "name": "Quarantine sen4",
+            "path": null,
+            "probability": 0.20379772323333334,
+            "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+            "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+            "scenario_id": "sen4_edge2_clouddb",
+            "target": "sen4",
+            "utility": 0.531675041060606
+          },
+          "strategy_layer": {
+            "selection": {
+              "attacker": {
+                "action": "sensor_to_edge_http_abuse",
+                "action_payload": null,
+                "executor": {
+                  "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+                  "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+                  "env": {
+                    "ATTACK_SENSOR_ID": "sen4",
+                    "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+                  },
+                  "name": "sensor_to_edge",
+                  "type": "caldera_adversary"
+                },
+                "expected_effects": [
+                  "gateway_seen",
+                  "worker_seen",
+                  "cloud_seen",
+                  "attack_effect_success"
+                ],
+                "id": "A2_sensor_http_abuse_sen4",
+                "live_attack_type": "sensor_to_edge_http_abuse",
+                "mode": "dominant",
+                "name": "Controlled sen4 HTTP telemetry abuse",
+                "path": [
+                  "sen4",
+                  "edge2_gw",
+                  "edge2_vm_s4",
+                  "cloud_db"
+                ],
+                "probability": 0.502532577896,
+                "scenario_id": "sen4_edge2_clouddb",
+                "target": "cloud_db",
+                "utility": 0.2987021360000001
+              },
+              "defender": {
+                "action": "quarantine_sensor",
+                "action_payload": {
+                  "action": "quarantine_sensor",
+                  "target": "sen4"
+                },
+                "executor": {
+                  "type": "ryu_rest"
+                },
+                "expected_effects": [
+                  "drop_rules_active",
+                  "counters_stopped"
+                ],
+                "id": "D1_quarantine_sen4",
+                "live_attack_type": null,
+                "mode": "llm_defender",
+                "name": "Quarantine sen4",
+                "path": null,
+                "probability": 0.20379772323333334,
+                "scenario_id": "sen4_edge2_clouddb",
+                "target": "sen4",
+                "utility": 0.531675041060606
+              }
+            },
+            "state": {
+              "attack_active": true,
+              "current_path": [
+                "sen4",
+                "edge2_gw",
+                "edge2_vm_s4",
+                "cloud_db"
+              ],
+              "defense_active": false,
+              "mulval": {
+                "current_path_risk": 0.74,
+                "path_candidates": [
+                  {
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "sen4_edge2_clouddb",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->cloud_db",
+                    "risk_score": 0.74,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "mulval_policy",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen6"
+                      },
+                      {
+                        "action": "reroute_traffic",
+                        "target": "sen6",
+                        "via": "s_edge2"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen6"
+                      }
+                    ],
+                    "entry_node": "sen6",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen6",
+                      "edge3_gw",
+                      "edge3_vm_s6",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen6->edge3_gw->edge3_vm_s6->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen6_edge3_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "rate_limit",
+                        "kbps": 256,
+                        "target": "edge2_gw"
+                      },
+                      {
+                        "action": "isolate_sensor",
+                        "target": "edge2_gw"
+                      }
+                    ],
+                    "entry_node": "edge2_gw",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "edge2_gateway_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_candidates": [
+                  {
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "sen4_edge2_clouddb",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->cloud_db",
+                    "risk_score": 0.74,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "mulval_policy",
+                    "target_asset": "cloud_db"
+                  },
+                  {
+                    "candidate_defender_actions": [
+                      {
+                        "action": "quarantine_sensor",
+                        "target": "sen4"
+                      },
+                      {
+                        "action": "rate_limit",
+                        "kbps": 128,
+                        "target": "sen4"
+                      }
+                    ],
+                    "entry_node": "sen4",
+                    "mulval_scenario_id": "",
+                    "path": [
+                      "sen4",
+                      "edge2_gw",
+                      "edge2_vm_s4",
+                      "cloud_db"
+                    ],
+                    "path_key": "sen4->edge2_gw->edge2_vm_s4->cloud_db",
+                    "risk_score": 0.5,
+                    "scenario_id": "sen4_edge2_clouddb",
+                    "source": "scenario_registry_seed",
+                    "target_asset": "cloud_db"
+                  }
+                ],
+                "plausible_paths": [
+                  [
+                    "sen4",
+                    "edge2_gw",
+                    "cloud_db"
+                  ],
+                  [
+                    "sen4",
+                    "edge2_gw",
+                    "edge2_vm_s4",
+                    "cloud_db"
+                  ]
+                ],
+                "policy_path": "/home/najafi/Desktop/najafi/LLM_MTD_modular/attacker/mulval/outputs/base_edge2_policy.json",
+                "policy_scenario_id": "sen4_edge2_clouddb"
+              },
+              "path_stage": 3,
+              "scenario_id": "sen4_edge2_clouddb"
+            }
+          }
+        },
+        "cloud_policy_decision": {
+          "json": {
+            "cloud_policy_observe_only_normalized": false,
+            "decision_source": "llm_defender",
+            "observe_only": false,
+            "policy_mode": "llm_direct_ryu",
+            "selected_action": {
+              "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+              "ryu_intent": {
+                "action": "quarantine_sensor",
+                "decision_source": "llm_defender",
+                "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+                "source": "llm_defender",
+                "source_strategy_id": "D1_quarantine_sen4",
+                "target": "sen4"
+              },
+              "target": "sen4",
+              "type": "quarantine_sensor"
+            }
+          },
+          "reason": "llm_selected_direct_ryu_intent",
+          "status": "skipped"
+        },
+        "defense_event": {
+          "reason": "defender action was not confirmed by Ryu/controller metrics",
+          "status": "skipped"
+        },
+        "payload": {
+          "action": "quarantine_sensor",
+          "decision_source": "llm_defender",
+          "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+          "source": "llm_defender",
+          "source_strategy_id": "D1_quarantine_sen4",
+          "target": "sen4"
+        },
+        "status": "dry_run"
+      }
+    },
+    "execution_summary": {
+      "attacker": {
+        "attempted_path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "dispatch_http_status": 0,
+        "dispatch_ok": false,
+        "dispatch_url": "",
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "operation_id": "",
+        "status": "dry_run",
+        "strategy_id": "A2_sensor_http_abuse_sen4",
+        "strategy_name": "Controlled sen4 HTTP telemetry abuse"
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "cloud_policy": {
+          "accepted_keys": [],
+          "context_http_status": 0,
+          "context_ok": false,
+          "decision_http_status": 0,
+          "decision_ok": false,
+          "external_context": {},
+          "observe_only": false,
+          "selected_action": {
+            "reason": "LLM-selected defender strategy was sent directly to Ryu.",
+            "ryu_intent": {
+              "action": "quarantine_sensor",
+              "decision_source": "llm_defender",
+              "llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+              "source": "llm_defender",
+              "source_strategy_id": "D1_quarantine_sen4",
+              "target": "sen4"
+            },
+            "target": "sen4",
+            "type": "quarantine_sensor"
+          }
+        },
+        "defense_event": {
+          "http_status": 0,
+          "ok": false,
+          "signals": {},
+          "status": "skipped",
+          "url": ""
+        },
+        "ryu_response": {
+          "action": "quarantine_sensor",
+          "active_policy_actions": 0,
+          "apply_duration_ms": 0.0,
+          "flow_delete_commands": 0,
+          "flow_rules_installed": 0,
+          "http_status": 0,
+          "meters_added": 0,
+          "ok": false,
+          "rule": "",
+          "status": "",
+          "target": "sen4",
+          "target_ips": []
+        },
+        "status": "dry_run",
+        "target": "sen4"
+      }
+    },
+    "fallback_reason": "",
+    "fallback_resolution": {
+      "constraint_name": "",
+      "constraint_trigger": {
+        "attack_active": true,
+        "path_stage": 3,
+        "urgency_level": "high"
+      },
+      "fallback_explanation": "",
+      "fallback_reason": "",
+      "fallback_selection_policy": "",
+      "fallback_used": false,
+      "final_defender_strategy_id": "D1_quarantine_sen4",
+      "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4"
+    },
+    "final_baseline_alignment": "followed",
+    "final_decision_alignment_vs_baseline": "followed",
+    "final_defender_action": "quarantine_sensor",
+    "final_defender_strategy_id": "D1_quarantine_sen4",
+    "final_defender_target": "sen4",
+    "inference": {
+      "attacker_execution_status": "dry_run",
+      "attacker_expected_effects": [
+        "gateway_seen",
+        "worker_seen",
+        "cloud_seen",
+        "attack_effect_success"
+      ],
+      "attacker_progressed": false,
+      "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "defender_execution_status": "dry_run",
+      "defender_expected_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "defender_strategy_id": "D1_quarantine_sen4",
+      "defense_applied": false,
+      "defense_containment_observed": false,
+      "defense_observed": false,
+      "path_frozen": true,
+      "path_stage_delta": 0
+    },
+    "llm": {
+      "alignment_source": "raw_llm_selected_defender_vs_canonical_baseline_top",
+      "baseline_top_defender": {
+        "base_cost": 0.2,
+        "population_share": 0.20379772323333334,
+        "strategy_id": "D1_quarantine_sen4",
+        "tiebreak_reason": "highest_utility",
+        "utility": 0.531675041060606
+      },
+      "baseline_top_defender_population_share": 0.20379772323333334,
+      "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+      "baseline_top_defender_tiebreak_reason": "highest_utility",
+      "baseline_top_defender_utility": 0.531675041060606,
+      "confidence": 0.95,
+      "executed_decision_reason": "llm_selected_strategy",
+      "executed_decision_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+      "executed_decision_source": "llm_defender",
+      "executed_defender_strategy_id": "D1_quarantine_sen4",
+      "executed_via_fallback": false,
+      "expected_controller_cost": 0.22,
+      "expected_qos_impact": 0.32,
+      "expected_security_gain": 0.82,
+      "fallback_constraint_name": "",
+      "fallback_reason": "",
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": true,
+          "path_stage": 3,
+          "urgency_level": "high"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D1_quarantine_sen4",
+        "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4"
+      },
+      "fallback_used": false,
+      "final_baseline_alignment": "followed",
+      "final_decision_alignment_vs_baseline": "followed",
+      "final_defender_action": "quarantine_sensor",
+      "final_defender_strategy_id": "D1_quarantine_sen4",
+      "final_defender_target": "sen4",
+      "llm_baseline_alignment": "followed",
+      "llm_decision_mode": "reactive_containment",
+      "llm_override_reason": "",
+      "llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D1_quarantine_sen4"
+        },
+        {
+          "llm_rank": 2,
+          "strategy_id": "D4_isolate_edge2_vm_s4"
+        }
+      ],
+      "llm_repeat_previous_action": false,
+      "llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+      "llm_stage_memory_used": true,
+      "llm_telemetry_confidence": "medium",
+      "llm_urgency_level": "high",
+      "llm_why_not_observe": "Observation is insufficient when an active attack has reached a critical stage (cloud) and previous defenses failed to fully contain the threat. The risk of data loss outweighs the minimal QoS impact.",
+      "llm_why_not_quarantine": "Quarantining sen4 provides maximum upstream control, effectively cutting off the attacker's access point at the source, which is more decisive than rate limiting or isolating a single intermediate component when the goal is immediate containment.",
+      "llm_why_not_rate_limit": "Rate limiting (D2) offers significantly lower security gain compared to full quarantine/isolation actions (D1, D3, D4). Given the high urgency and active threat status, maximum disruption of the attack path is required.",
+      "model": "gemma4:e4b",
+      "parse_success": true,
+      "provider": "ollama",
+      "raw_llm_alignment_vs_baseline": "followed",
+      "raw_llm_baseline_alignment": "followed",
+      "raw_llm_override_reason": "",
+      "raw_llm_ranked_candidates": [
+        {
+          "llm_rank": 1,
+          "strategy_id": "D1_quarantine_sen4"
+        },
+        {
+          "llm_rank": 2,
+          "strategy_id": "D4_isolate_edge2_vm_s4"
+        }
+      ],
+      "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+      "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+      "reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+      "recovery_used": false,
+      "request_error": "",
+      "request_success": true,
+      "stage_memory": {
+        "previous_attack_effect_success": false,
+        "previous_attack_progression_continued": true,
+        "previous_attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+        "previous_defender_execution_status": "dry_run",
+        "previous_defender_strategy_id": "D4_isolate_edge2_vm_s4",
+        "previous_defense_confirmed": false,
+        "previous_defense_success": true,
+        "previous_stage_id": 2,
+        "previous_stage_success": true,
+        "recent_controller_deltas": {
+          "active_policy_actions_delta": 0.0,
+          "controller_apply_ms_delta": 0.0,
+          "flow_delete_commands_delta": 0.0,
+          "flow_rules_installed_delta": 0.0,
+          "meters_added_delta": 0.0,
+          "total_cpu_seconds_delta": 13.007051,
+          "total_memory_kb_delta": 252.0
+        },
+        "recent_qos_deltas": {
+          "edge_to_cloud_latency_ms": -0.152,
+          "sensor_to_edge_latency_ms": 0.073
+        }
+      }
+    },
+    "llm_baseline_alignment": "followed",
+    "llm_decision_mode": "reactive_containment",
+    "llm_expected_controller_cost": 0.22,
+    "llm_expected_qos_impact": 0.32,
+    "llm_expected_security_gain": 0.82,
+    "llm_override_reason": "",
+    "llm_ranked_candidates": [
+      {
+        "llm_rank": 1,
+        "strategy_id": "D1_quarantine_sen4"
+      },
+      {
+        "llm_rank": 2,
+        "strategy_id": "D4_isolate_edge2_vm_s4"
+      }
+    ],
+    "llm_repeat_previous_action": false,
+    "llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+    "llm_stage_memory_used": true,
+    "llm_telemetry_confidence": "medium",
+    "llm_urgency_level": "high",
+    "llm_why_not_observe": "Observation is insufficient when an active attack has reached a critical stage (cloud) and previous defenses failed to fully contain the threat. The risk of data loss outweighs the minimal QoS impact.",
+    "llm_why_not_quarantine": "Quarantining sen4 provides maximum upstream control, effectively cutting off the attacker's access point at the source, which is more decisive than rate limiting or isolating a single intermediate component when the goal is immediate containment.",
+    "llm_why_not_rate_limit": "Rate limiting (D2) offers significantly lower security gain compared to full quarantine/isolation actions (D1, D3, D4). Given the high urgency and active threat status, maximum disruption of the attack path is required.",
+    "next_state": {
+      "attack_active": true,
+      "attack_effect_success": false,
+      "built_at": "2026-06-23T04:43:17.424453+00:00",
+      "counters_stopped": false,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": false,
+      "defense_success": false,
+      "drop_rules_active": false,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.74,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 0,
+        "controller_apply_ms": 0.0,
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 0,
+        "meters_added": 0,
+        "total_cpu_seconds": 384.677711043,
+        "total_memory_kb": 428464.0
+      },
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "qos": {
+        "edge_to_cloud_latency_ms": 0.627,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 0.6232727272727273,
+        "throughput_bytes_per_second": 9563.587720203368
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 8303.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 3775.0,
+        "gateway_received": 3775.0,
+        "generated_total": 3778.0,
+        "worker_requests": 3775.0
+      }
+    },
+    "population_after": {
+      "attacker": {
+        "A2_sensor_http_abuse_sen4": 0.502532577896,
+        "A6_sen4_edge_to_cloud_probe": 0.49746742210399997
+      },
+      "defender": {
+        "D0_observe": 0.19634543553333333,
+        "D1_quarantine_sen4": 0.20379772323333334,
+        "D2_rate_limit_sen4": 0.20196569816666668,
+        "D3_isolate_edge2_gw_for_sen4": 0.19809418473333334,
+        "D4_isolate_edge2_vm_s4": 0.19979695833333336
+      }
+    },
+    "population_before": {
+      "attacker": {
+        "A2_sensor_http_abuse_sen4": 0.5,
+        "A6_sen4_edge_to_cloud_probe": 0.5
+      },
+      "defender": {
+        "D0_observe": 0.2,
+        "D1_quarantine_sen4": 0.2,
+        "D2_rate_limit_sen4": 0.2,
+        "D3_isolate_edge2_gw_for_sen4": 0.2,
+        "D4_isolate_edge2_vm_s4": 0.2
+      }
+    },
+    "previous_state": {
+      "attack_active": true,
+      "attack_effect_success": false,
+      "built_at": "2026-06-23T04:37:25.771579+00:00",
+      "counters_stopped": false,
+      "current_path": [
+        "sen4",
+        "edge2_gw",
+        "edge2_vm_s4",
+        "cloud_db"
+      ],
+      "defense_active": false,
+      "defense_success": false,
+      "drop_rules_active": false,
+      "entry_node": "sen4",
+      "mulval": {
+        "current_path_risk": 0.74,
+        "plausible_paths": [
+          [
+            "sen4",
+            "edge2_gw",
+            "cloud_db"
+          ],
+          [
+            "sen4",
+            "edge2_gw",
+            "edge2_vm_s4",
+            "cloud_db"
+          ]
+        ]
+      },
+      "overhead": {
+        "controller_active_actions": 0,
+        "controller_apply_ms": 0.0,
+        "flow_delete_commands": 0,
+        "flow_rules_installed": 0,
+        "meters_added": 0,
+        "total_cpu_seconds": 378.2815938,
+        "total_memory_kb": 428344.0
+      },
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "qos": {
+        "edge_to_cloud_latency_ms": 3.266,
+        "loss_rate": 0.0,
+        "sensor_to_edge_latency_ms": 1.697818181818182,
+        "throughput_bytes_per_second": 9562.707637655403
+      },
+      "scenario_id": "sen4_edge2_clouddb",
+      "target_asset": "cloud_db",
+      "workload": {
+        "cloud_storage_confirmations": 7918.0,
+        "gateway_dropped": 0.0,
+        "gateway_forwarded": 3598.0,
+        "gateway_received": 3598.0,
+        "generated_total": 3600.0,
+        "worker_requests": 3600.0
+      }
+    },
+    "raw_llm_alignment_vs_baseline": "followed",
+    "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+    "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+    "recorded_at": "2026-06-23T04:43:17.424651+00:00",
+    "schema_version": "llm-mtd-stage-transition-v2",
+    "selection": {
+      "attacker": {
+        "action": "sensor_to_edge_http_abuse",
+        "action_payload": null,
+        "executor": {
+          "adversary_file": "integrations/caldera/adversaries/sensor_to_edge.yml",
+          "adversary_yaml_id": "c9bdece2-df3a-4c3f-bb70-31ff46bb7351",
+          "env": {
+            "ATTACK_SENSOR_ID": "sen4",
+            "TARGET_GATEWAYS": "http://10.0.2.1:8000/telemetry"
+          },
+          "name": "sensor_to_edge",
+          "type": "caldera_adversary"
+        },
+        "expected_effects": [
+          "gateway_seen",
+          "worker_seen",
+          "cloud_seen",
+          "attack_effect_success"
+        ],
+        "id": "A2_sensor_http_abuse_sen4",
+        "live_attack_type": "sensor_to_edge_http_abuse",
+        "mode": "dominant",
+        "name": "Controlled sen4 HTTP telemetry abuse",
+        "path": [
+          "sen4",
+          "edge2_gw",
+          "edge2_vm_s4",
+          "cloud_db"
+        ],
+        "population_after": 0.502532577896,
+        "population_after_rank": 1,
+        "population_before": 0.5,
+        "population_before_rank": 1,
+        "population_delta": 0.0025325778960000322,
+        "probability": 0.502532577896,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "cloud_db",
+        "utility": 0.2987021360000001,
+        "utility_rank": 1
+      },
+      "defender": {
+        "action": "quarantine_sensor",
+        "action_payload": {
+          "action": "quarantine_sensor",
+          "target": "sen4"
+        },
+        "executor": {
+          "type": "ryu_rest"
+        },
+        "expected_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "id": "D1_quarantine_sen4",
+        "live_attack_type": null,
+        "mode": "llm_defender",
+        "name": "Quarantine sen4",
+        "path": null,
+        "population_after": 0.20379772323333334,
+        "population_after_rank": 1,
+        "population_before": 0.2,
+        "population_before_rank": 1,
+        "population_delta": 0.0037977232333333277,
+        "probability": 0.20379772323333334,
+        "scenario_id": "sen4_edge2_clouddb",
+        "target": "sen4",
+        "utility": 0.531675041060606,
+        "utility_rank": 1
+      }
+    },
+    "stage_id": 4,
+    "stage_summary": {
+      "attacker_strategy_id": "A2_sensor_http_abuse_sen4",
+      "controller_delta": {
+        "active_policy_actions_delta": 0.0,
+        "controller_apply_ms_delta": 0.0,
+        "flow_delete_commands_delta": 0.0,
+        "flow_rules_installed_delta": 0.0,
+        "meters_added_delta": 0.0,
+        "total_cpu_seconds_delta": 6.396117,
+        "total_memory_kb_delta": 120.0
+      },
+      "decision_source": "llm_defender",
+      "defender_strategy_id": "D1_quarantine_sen4",
+      "execution": {
+        "attacker_status": "dry_run",
+        "defender_action": "quarantine_sensor",
+        "defender_status": "dry_run",
+        "defender_target": "sen4",
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": false,
+        "defense_executed": false,
+        "defense_selected": true,
+        "executed_via_fallback": false,
+        "operationally_executed_debug_stage": false,
+        "stage_kind": "dry_run",
+        "stage_success": true,
+        "stage_valid": false
+      },
+      "fallback_resolution": {
+        "constraint_name": "",
+        "constraint_trigger": {
+          "attack_active": true,
+          "path_stage": 3,
+          "urgency_level": "high"
+        },
+        "fallback_explanation": "",
+        "fallback_reason": "",
+        "fallback_selection_policy": "",
+        "fallback_used": false,
+        "final_defender_strategy_id": "D1_quarantine_sen4",
+        "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4"
+      },
+      "llm": {
+        "baseline_alignment": "followed",
+        "baseline_top_defender_population_share": 0.20379772323333334,
+        "baseline_top_defender_strategy_id": "D1_quarantine_sen4",
+        "baseline_top_defender_tiebreak_reason": "highest_utility",
+        "baseline_top_defender_utility": 0.531675041060606,
+        "decision_mode": "reactive_containment",
+        "executed_decision_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+        "executed_via_fallback": false,
+        "fallback_reason": "",
+        "fallback_used": false,
+        "final_decision_alignment_vs_baseline": "followed",
+        "final_defender_strategy_id": "D1_quarantine_sen4",
+        "model": "gemma4:e4b",
+        "override_reason": "",
+        "provider": "ollama",
+        "raw_llm_alignment_vs_baseline": "followed",
+        "raw_llm_baseline_alignment": "followed",
+        "raw_llm_reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+        "raw_llm_selected_defender_strategy_id": "D1_quarantine_sen4",
+        "reasoning_summary": "The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts.",
+        "repeat_previous_action": false,
+        "telemetry_confidence": "medium",
+        "urgency_level": "high",
+        "why_not_observe": "Observation is insufficient when an active attack has reached a critical stage (cloud) and previous defenses failed to fully contain the threat. The risk of data loss outweighs the minimal QoS impact.",
+        "why_not_quarantine": "Quarantining sen4 provides maximum upstream control, effectively cutting off the attacker's access point at the source, which is more decisive than rate limiting or isolating a single intermediate component when the goal is immediate containment.",
+        "why_not_rate_limit": "Rate limiting (D2) offers significantly lower security gain compared to full quarantine/isolation actions (D1, D3, D4). Given the high urgency and active threat status, maximum disruption of the attack path is required."
+      },
+      "qos_delta": {
+        "edge_to_cloud_latency_ms": -2.64,
+        "sensor_to_edge_latency_ms": -1.07,
+        "throughput_bytes_per_second": 39.81
+      },
+      "recorded_at": "2026-06-23T04:43:50.276136+00:00",
+      "scenario_id": "sen4_edge2_clouddb",
+      "security_outcome": {
+        "attack_deactivated": false,
+        "attack_effect_success": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effects_confirmed": false,
+        "defense_executed": false,
+        "defense_selected": true,
+        "defense_success": true,
+        "path_regressed": false,
+        "raw_state_defense_success": false,
+        "security_progression_reduced": false
+      },
+      "stage_id": 4,
+      "stage_validation": {
+        "attack_deactivated": false,
+        "comparable_stage": true,
+        "defender_execution_status": "dry_run",
+        "defense_applied": false,
+        "defense_applied_but_not_effective": false,
+        "defense_confirmed": false,
+        "defense_effect_mismatch": false,
+        "defense_effects_confirmed": false,
+        "defense_executed": false,
+        "defense_selected": true,
+        "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+        "effect_source_conflict": false,
+        "effect_source_details": {
+          "counters_stopped": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": false
+          },
+          "drop_rules_active": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": false
+          },
+          "rate_limit_active": {
+            "defense_event": null,
+            "ryu_response": false,
+            "state": null
+          }
+        },
+        "execution_stage_success": false,
+        "expected_defense_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "invalidity_reasons": [
+          "defender_dry_run"
+        ],
+        "learning_valid_stage": false,
+        "llm_parse_success": true,
+        "llm_recovery_used": false,
+        "llm_request_error": "",
+        "llm_request_success": true,
+        "llm_stage_success": true,
+        "llm_stage_valid": false,
+        "missing_defense_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "normalized_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": false,
+          "rate_limit_active": false
+        },
+        "observed_defense_effects": [],
+        "operationally_executed_debug_stage": false,
+        "paper_valid_stage": false,
+        "path_regressed": false,
+        "path_stage_after": 3,
+        "path_stage_before": 3,
+        "raw_state_effects": {
+          "counters_stopped": false,
+          "drop_rules_active": false,
+          "rate_limit_active": false
+        },
+        "security_progression_reduced": false,
+        "security_stage_success": true,
+        "semantic_effect_mapping_details": {
+          "counters_stopped": {
+            "action": "quarantine_sensor",
+            "active_action_for_target": false,
+            "flow_rules_installed": 0,
+            "installed_status": false,
+            "meters_added": 0,
+            "observed": false,
+            "path_stage_after": 3,
+            "path_stage_before": 3,
+            "target": "sen4",
+            "target_is_gateway": false,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": false
+          },
+          "drop_rules_active": {
+            "action": "quarantine_sensor",
+            "active_action_for_target": false,
+            "flow_rules_installed": 0,
+            "installed_status": false,
+            "meters_added": 0,
+            "observed": false,
+            "path_stage_after": 3,
+            "path_stage_before": 3,
+            "target": "sen4",
+            "target_is_gateway": false,
+            "target_is_worker": false,
+            "target_on_path": true,
+            "traffic_blocking": false
+          }
+        },
+        "semantic_missing_defense_effects": [
+          "drop_rules_active",
+          "counters_stopped"
+        ],
+        "semantic_observed_defense_effects": [],
+        "stage_kind": "dry_run",
+        "stage_success": true,
+        "state_effect_sources": {
+          "counters_stopped": "",
+          "drop_rules_active": "",
+          "rate_limit_active": ""
+        }
+      },
+      "summary_text": "Stage 4 for sen4_edge2_clouddb: attacker A2_sensor_http_abuse_sen4 met defender D1_quarantine_sen4. Action quarantine_sensor targeting sen4 ended with status dry_run; defense_confirmed=False; defense_effects_confirmed=False; defense_success=True. Path stage=3. Outcome: security progression was reduced. Rationale: The attack is active and has progressed through multiple stages (sen4 -> edge2_gw -> edge2_vm_s4 -> cloud_db). The current path stage is 'cloud' (path_stage=3), indicating a high level of urgency. Since the previous defense (D4) was executed in a dry run but did not confirm success, and the attacker successfully progressed to the next stage, immediate containment is necessary. Both D1 (quarantine_sensor) and D4 (isolate_edge2_vm_s4) offer the highest security gain (0.82) and are highly relevant (path_relevance=1.0). Given that the attack has reached the cloud database layer, isolating a critical upstream component like 'sen4' via quarantine is the most comprehensive reactive containment measure to halt further lateral movement or data exfiltration attempts."
+    },
+    "stage_validation": {
+      "attack_deactivated": false,
+      "comparable_stage": true,
+      "defender_execution_status": "dry_run",
+      "defense_applied": false,
+      "defense_applied_but_not_effective": false,
+      "defense_confirmed": false,
+      "defense_effect_mismatch": false,
+      "defense_effects_confirmed": false,
+      "defense_executed": false,
+      "defense_selected": true,
+      "effect_resolution_policy": "semantic_confirmation_preferred_over_stale_raw_state",
+      "effect_source_conflict": false,
+      "effect_source_details": {
+        "counters_stopped": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": false
+        },
+        "drop_rules_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": false
+        },
+        "rate_limit_active": {
+          "defense_event": null,
+          "ryu_response": false,
+          "state": null
+        }
+      },
+      "execution_stage_success": false,
+      "expected_defense_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "invalidity_reasons": [
+        "defender_dry_run"
+      ],
+      "learning_valid_stage": false,
+      "llm_parse_success": true,
+      "llm_recovery_used": false,
+      "llm_request_error": "",
+      "llm_request_success": true,
+      "llm_stage_success": true,
+      "llm_stage_valid": false,
+      "missing_defense_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "normalized_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": false
+      },
+      "observed_defense_effects": [],
+      "operationally_executed_debug_stage": false,
+      "paper_valid_stage": false,
+      "path_regressed": false,
+      "path_stage_after": 3,
+      "path_stage_before": 3,
+      "raw_state_effects": {
+        "counters_stopped": false,
+        "drop_rules_active": false,
+        "rate_limit_active": false
+      },
+      "security_progression_reduced": false,
+      "security_stage_success": true,
+      "semantic_effect_mapping_details": {
+        "counters_stopped": {
+          "action": "quarantine_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 0,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": false,
+          "path_stage_after": 3,
+          "path_stage_before": 3,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        },
+        "drop_rules_active": {
+          "action": "quarantine_sensor",
+          "active_action_for_target": false,
+          "flow_rules_installed": 0,
+          "installed_status": false,
+          "meters_added": 0,
+          "observed": false,
+          "path_stage_after": 3,
+          "path_stage_before": 3,
+          "target": "sen4",
+          "target_is_gateway": false,
+          "target_is_worker": false,
+          "target_on_path": true,
+          "traffic_blocking": false
+        }
+      },
+      "semantic_missing_defense_effects": [
+        "drop_rules_active",
+        "counters_stopped"
+      ],
+      "semantic_observed_defense_effects": [],
+      "stage_kind": "dry_run",
+      "stage_success": true,
+      "state_effect_sources": {
+        "counters_stopped": "",
+        "drop_rules_active": "",
+        "rate_limit_active": ""
+      }
+    },
+    "state_summary": {
+      "attack_active": true,
+      "attack_effect_success": false,
+      "attack_success": false,
+      "cloud_seen": true,
+      "controller_active_actions": 0,
+      "counters_stopped": false,
+      "defense_active": false,
+      "defense_success": true,
+      "drop_rules_active": false,
+      "flow_rules_installed": 0,
+      "gateway_seen": true,
+      "meters_added": 0,
+      "normalized_counters_stopped": false,
+      "normalized_drop_rules_active": false,
+      "normalized_rate_limit_active": false,
+      "path_stage": 3,
+      "path_stage_label": "cloud",
+      "rate_limit_active": false,
+      "raw_counters_stopped": false,
+      "raw_drop_rules_active": false,
+      "raw_rate_limit_active": false,
+      "raw_state_defense_success": false,
+      "scenario_id": "sen4_edge2_clouddb",
+      "worker_seen": true
+    },
+    "transition_id": "cfb616030091471eb43d8082189bb467"
+  }
+}
